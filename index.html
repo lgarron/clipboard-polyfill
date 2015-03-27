@@ -1,0 +1,26 @@
+<html>
+<head>
+  <title>Web Clipboard</title>
+  <script src="clipboard.js"></script>
+</head>
+<body>
+
+<button id="plain-copy">Copy text (plain)</button>
+<script>
+document.getElementById("plain-copy").addEventListener("click", function() {
+  clipboard.copy("This text is plain.");
+});
+</script>
+
+<button id="markup-copy">Copy text (markup)</button>
+<script>
+document.getElementById("markup-copy").addEventListener("click", function() {
+  clipboard.copy({
+    "text/plain": "Markup text. Paste me into a rich text editor.",
+    "text/html": "<i>Markup</i> <b>text</b>. Paste me into a rich text editor."
+  });
+});
+</script>
+
+</body>
+</html>
