@@ -18,3 +18,10 @@ Load the script:
     <script src="clipboard.js"></script>
 
 Then copy a `string` or an `object` (mapping [data types](http://www.w3.org/TR/clipboard-apis/#mandatory-data-types-1) to values) as above.
+
+## [Can I use](http://caniuse.com/#feat=clipboard) it?
+
+As of March 26, 2015:
+
+- Chrome Canary
+- Internet Explorer (doesn't work with `clipboard.js` yet)
