@@ -39,7 +39,14 @@ clipboard.paste = (function() {
       _intercept = true; // Race condition?
       _resolve = resolve;
       _dataType = dataType || "text/plain";
-      document.execCommand("paste");
+      try {
+        if (!document.execCommand("paste")) {
+          reject(new Error("Unable to paste. Perhaps it's not available in your browser?"));
+        }
+      }
+      catch (e) {
+        reject(new Error(e));
+      }
     });
   };
 }());
