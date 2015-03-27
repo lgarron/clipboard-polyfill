@@ -19,7 +19,6 @@ clipboard.copy = (function() {
   });
 
   return function(data) {
-    console.log("Copying:", data);
     interceptCopy = true;
     copyData = data;
     document.execCommand("copy");
