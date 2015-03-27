@@ -2,17 +2,12 @@ var clipboard = {};
 
 clipboard.copy = (function() {
   var interceptCopy = false;
-  var copyData;
+  var copyObject; // Map from data type (e.g. "text/html") to value.
 
   document.addEventListener("copy", function(e){
     if (interceptCopy) {
-      if (typeof copyData === "string") {
-        e.clipboardData.setData("text/plain", copyData);
-      }
-      else{
-        for (key in copyData) {
-          e.clipboardData.setData(key, copyData[key]);
-        }
+      for (key in copyObject) {
+        e.clipboardData.setData(key, copyObject[key]);
       }
       e.preventDefault();
     }
@@ -20,9 +15,8 @@ clipboard.copy = (function() {
 
   return function(data) {
     interceptCopy = true;
-    copyData = data;
+    copyObject = (typeof data === "string" ? {"text/plain": data} : data);
     document.execCommand("copy");
     interceptCopy = false;
   };
 }());
-
