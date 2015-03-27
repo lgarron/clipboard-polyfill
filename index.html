@@ -22,5 +22,16 @@ document.getElementById("markup-copy").addEventListener("click", function() {
 });
 </script>
 
+<button id="paste">Paste</button>
+<script>
+document.getElementById("paste").addEventListener("click", function() {
+  clipboard.paste().then(function(result) {
+    console.log(result);
+  }, function(err) {
+    console.error(err);
+  });
+});
+</script>
+
 </body>
 </html>

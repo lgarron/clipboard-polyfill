@@ -20,3 +20,26 @@ clipboard.copy = (function() {
     interceptCopy = false;
   };
 }());
+
+clipboard.paste = (function() {
+  var interceptPaste = false;
+  var _resolve;
+  var _dataType;
+
+  document.addEventListener("paste", function(e) {
+    if (interceptPaste) {
+      interceptPaste = false;
+      e.preventDefault();
+      _resolve(e.clipboardData.getData(_dataType));
+    }
+  });
+
+  return function(dataType) {
+    return new Promise(function(resolve, reject) {
+      interceptPaste = true; // Race condition?
+      _resolve = resolve;
+      _dataType = dataType || "text/plain";
+      document.execCommand("paste");
+    });
+  };
+}());
