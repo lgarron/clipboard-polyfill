@@ -6,7 +6,7 @@ clipboard.copy = (function() {
 
   document.addEventListener("copy", function(e){
     if (_intercept) {
-      for (key in _data) {
+      for (var key in _data) {
         e.clipboardData.setData(key, _data[key]);
       }
       e.preventDefault();
