@@ -11,13 +11,29 @@ clipboard.copy = (function() {
       }
       e.preventDefault();
     }
+    _intercept = false;
   });
 
   return function(data) {
-    _intercept = true;
-    _data = (typeof data === "string" ? {"text/plain": data} : data);
-    document.execCommand("copy");
-    _intercept = false;
+    return new Promise(function(resolve, reject) {
+      _intercept = true; // Race condition?
+      _data = (typeof data === "string" ? {"text/plain": data} : data);
+      try {
+        if (document.execCommand("copy")) {
+          // document.execCommand is synchronous: http://www.w3.org/TR/2015/WD-clipboard-apis-20150421/#integration-with-rich-text-editing-apis
+          // So we can call resolve() back here.
+          resolve();
+        }
+        else {
+          _intercept = false;
+          reject(new Error("Unable to copy. Perhaps it's not available in your browser?"));
+        }
+      }
+      catch (e) {
+        _intercept = false;
+        reject(e);
+      }
+    });
   };
 }());
 
@@ -41,10 +57,11 @@ clipboard.paste = (function() {
       _dataType = dataType || "text/plain";
       try {
         if (!document.execCommand("paste")) {
+          _intercept = false;
           reject(new Error("Unable to paste. Perhaps it's not available in your browser?"));
         }
-      }
-      catch (e) {
+      } catch (e) {
+        _intercept = false;
         reject(new Error(e));
       }
     });

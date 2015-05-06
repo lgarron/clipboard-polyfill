@@ -8,7 +8,10 @@
 <button id="plain-copy">Copy text (plain)</button>
 <script>
 document.getElementById("plain-copy").addEventListener("click", function() {
-  clipboard.copy("This text is plain.");
+  clipboard.copy("This text is plain.").then(
+    function(){console.log("success");},
+    function(err){console.log("failure", err);
+  });
 });
 </script>
 
@@ -18,6 +21,9 @@ document.getElementById("markup-copy").addEventListener("click", function() {
   clipboard.copy({
     "text/plain": "Markup text. Paste me into a rich text editor.",
     "text/html": "<i>Markup</i> <b>text</b>. Paste me into a rich text editor."
+  }).then(
+    function(){console.log("success");},
+    function(err){console.log("failure", err);
   });
 });
 </script>
@@ -28,7 +34,7 @@ document.getElementById("paste").addEventListener("click", function() {
   clipboard.paste().then(function(result) {
     console.log(result);
   }, function(err) {
-    console.error(err);
+    console.log("failure", err);
   });
 });
 </script>
