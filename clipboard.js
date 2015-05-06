@@ -6,12 +6,12 @@ clipboard.copy = (function() {
 
   document.addEventListener("copy", function(e){
     if (_intercept) {
+    _intercept = false;
       for (var key in _data) {
         e.clipboardData.setData(key, _data[key]);
       }
       e.preventDefault();
     }
-    _intercept = false;
   });
 
   return function(data) {
