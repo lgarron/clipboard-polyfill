@@ -18,7 +18,7 @@ You can optionally use the result as a Promise:
       function(err){console.log("failure", err);
     });
 
-Note: browsers may require you to trigger this code only in response to a user gesture.
+Note: Copying will fail if `clipboard.copy()` is not triggered in direct response to a user gesture.
 
 ## Usage
 
