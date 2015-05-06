@@ -20,6 +20,18 @@ You can optionally use the result as a Promise:
 
 Note: Copying will fail if `clipboard.copy()` is not triggered in direct response to a user gesture.
 
+## Paste
+
+Pasting currently works in IE.
+
+    clipboard.paste().then(function(result) {
+      console.log(result);
+    }, function(err) {
+      console.log("failure", err);
+    });
+
+Pasting is actually synchronous, but the API uses a Promise to guard against future implementations. (In particular, Chrome will probably try to issue an async permission request.)
+
 ## Usage
 
 Load the script:
