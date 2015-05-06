@@ -11,6 +11,15 @@ Or:
       "text/html": "<i>Markup</i> <b>text</b>. Paste me into a rich text editor."
     });
 
+You can optionally use the result as a Promise:
+
+    clipboard.copy("test").then(
+      function(){console.log("success");},
+      function(err){console.log("failure", err);
+    });
+
+Note: browsers may require you to trigger this code only in response to a user gesture.
+
 ## Usage
 
 Load the script:
