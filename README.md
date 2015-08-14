@@ -45,4 +45,4 @@ Then copy a `string` or an `object` (mapping [data types](http://www.w3.org/TR/c
 As of March 26, 2015:
 
 - Chrome Canary
-- Internet Explorer (doesn't work with `clipboard.js` yet)
+- Internet Explorer
