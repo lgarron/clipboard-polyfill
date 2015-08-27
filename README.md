@@ -42,7 +42,7 @@ Then copy a `string` or an `object` (mapping [data types](http://www.w3.org/TR/c
 
 ## [Can I use](http://caniuse.com/#feat=clipboard) it?
 
-As of March 26, 2015:
+As of August 27, 2015:
 
-- Chrome Canary
+- Chrome
 - Internet Explorer
