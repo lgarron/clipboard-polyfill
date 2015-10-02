@@ -44,5 +44,6 @@ Then copy a `string` or an `object` (mapping [data types](http://www.w3.org/TR/c
 
 As of August 27, 2015:
 
-- Chrome
 - Internet Explorer
+- Chrome 43+
+- Firefox 41+
