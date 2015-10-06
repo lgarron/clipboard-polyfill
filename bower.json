@@ -1,13 +1,16 @@
 {
   "name": "clipboard.js",
   "main": "clipboard.js",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "homepage": "https://github.com/lgarron/clipboard.js",
   "authors": [
     "code@garron.net"
   ],
   "description": "A web shim to handle clipboard APIs across browsers using a simple Promise API.",
   "moduleType": [],
+  "ignore": [
+    "index.html"
+  ],
   "keywords": [
     "clipboard",
     "HTML5",
