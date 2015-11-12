@@ -48,7 +48,7 @@
         }
       });
     };
-  }());
+  })();
 
   clipboard.paste = (function() {
     var _intercept = false;
@@ -79,7 +79,7 @@
         }
       });
     };
-  }());
+  })();
 
   // Handle IE behaviour.
   if (typeof ClipboardEvent === "undefined" &&
