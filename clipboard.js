@@ -9,11 +9,15 @@
 
   clipboard.copy = (function() {
     var _intercept = false;
-    var _data; // Map from data type (e.g. "text/html") to value.
+    var _data = null; // Map from data type (e.g. "text/html") to value.
+
+    function cleanup() {
+      _intercept = false;
+      _data = null;
+    }
 
     document.addEventListener("copy", function(e){
       if (_intercept) {
-        _intercept = false;
         for (var key in _data) {
           e.clipboardData.setData(key, _data[key]);
         }
@@ -35,15 +39,15 @@
           if (document.execCommand("copy")) {
             // document.execCommand is synchronous: http://www.w3.org/TR/2015/WD-clipboard-apis-20150421/#integration-with-rich-text-editing-apis
             // So we can call resolve() back here.
+            cleanup();
             resolve();
           }
           else {
-            _intercept = false;
+            cleanup();
             reject(new Error("Unable to copy. Perhaps it's not available in your browser?"));
           }
-        }
-        catch (e) {
-          _intercept = false;
+        } catch (e) {
+          cleanup();
           reject(e);
         }
       });
@@ -59,7 +63,9 @@
       if (_intercept) {
         _intercept = false;
         e.preventDefault();
-        _resolve(e.clipboardData.getData(_dataType));
+        var resolve = _resolve;
+        _resolve = null;
+        resolve(e.clipboardData.getData(_dataType));
       }
     });
 
