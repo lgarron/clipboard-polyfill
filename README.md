@@ -74,6 +74,11 @@ Supports paste (in IE)                             | -
 -                                                  | Offers a fallback prompt (`Press Ctrl+C to copy`)
 
 
+## This is way too complicated!
+
+Try [this gist](https://gist.github.com/lgarron/d1dee380f4ed9d825ca7) for a simpler solution.
+
+
 ## [Can I use](http://caniuse.com/#feat=clipboard) it?
 
 - Chrome 42+
