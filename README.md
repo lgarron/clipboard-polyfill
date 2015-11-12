@@ -22,7 +22,7 @@ Note: Copying will fail if `clipboard.copy()` is not triggered in direct respons
 
 ## Paste
 
-Pasting currently works in IE.
+Pasting plain strings currently works in IE.
 
     clipboard.paste().then(function(result) {
       console.log(result);
