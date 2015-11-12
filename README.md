@@ -42,7 +42,7 @@ Then copy a `string` or an `object` (mapping [data types](http://www.w3.org/TR/c
 
 ## What about [zenorocha/clipboard.js](https://github.com/zenorocha/clipboard.js)?
 
-This project is half a year older. :-P
+This project is half a year older. :-P  
 I created it partially to test the clipboard API while reviewing it for Chrome (I work on Chrome security), and partially to use in [my own project](https://alg.cubing.net/).
 
 I wouldn't have created this project if `zenorocha/clipboard.js` had already existed, but both projects have different uses right now. The fundamental difference is that this project hijacks the copy event, while `zenorocha/clipboard.js` uses fake element selection. Some details (as of November 2015):
