@@ -7,7 +7,7 @@ clipboard.min.js: clipboard.js
 
 .PHONY: publish
 publish:
-	echo "Push a tag to GitHub to update bower."
+	echo "Push a tag to GitHub to update bower. Use the following command to verify: bower info clipboard.js"
 	npm publish
 
 .PHONY: deploy
