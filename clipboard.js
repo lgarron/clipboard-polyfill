@@ -43,8 +43,7 @@
             resolve();
           }
           else {
-            cleanup();
-            reject(new Error("Unable to copy. Perhaps it's not available in your browser?"));
+            throw new Error("Unable to copy. Perhaps it's not available in your browser?");
           }
         } catch (e) {
           cleanup();
