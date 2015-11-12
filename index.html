@@ -28,11 +28,14 @@ document.getElementById("markup-copy").addEventListener("click", function() {
 });
 </script>
 
+<br>
+
 <button id="paste">Paste</button>
+<span id="paste-result"></span>
 <script>
 document.getElementById("paste").addEventListener("click", function() {
   clipboard.paste().then(function(result) {
-    console.log(result);
+    document.getElementById("paste-result").textContent = result;
   }, function(err) {
     console.log("failure", err);
   });
