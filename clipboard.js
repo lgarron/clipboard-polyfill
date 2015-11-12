@@ -24,7 +24,13 @@
     return function(data) {
       return new Promise(function(resolve, reject) {
         _intercept = true;
-        _data = (typeof data === "string" ? {"text/plain": data} : data);
+        if (typeof data === "string") {
+          _data = {"text/plain": data};
+        } else if (data instanceof Node) {
+          _data = {"text/html": new XMLSerializer().serializeToString(data)};
+        } else {
+          _data = data;
+        }
         try {
           if (document.execCommand("copy")) {
             // document.execCommand is synchronous: http://www.w3.org/TR/2015/WD-clipboard-apis-20150421/#integration-with-rich-text-editing-apis

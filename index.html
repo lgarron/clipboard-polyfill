@@ -17,7 +17,7 @@ document.getElementById("plain-copy").addEventListener("click", function() {
 });
 </script>
 
-<br>
+<hr>
 
 <button id="markup-copy">Copy text (markup)</button>
 <span id="markup-copy-result"></span>
@@ -25,7 +25,7 @@ document.getElementById("plain-copy").addEventListener("click", function() {
 document.getElementById("markup-copy").addEventListener("click", function() {
   clipboard.copy({
     "text/plain": "Markup text. Paste me into a rich text editor.",
-    "text/html": "<i>Markup</i> <b>text</b>. Paste me into a rich text editor."
+    "text/html":  new XMLSerializer().serializeToString(document.body)
   }).then(function(){
     document.getElementById("markup-copy-result").textContent = "success";
   }, function(err){
@@ -34,7 +34,23 @@ document.getElementById("markup-copy").addEventListener("click", function() {
 });
 </script>
 
+<hr>
+
+<button id="markup-dom-copy">Copy markup (DOM node &rarr; markup)</button>
+<span id="markup-dom-copy-result"></span>
 <br>
+<span id="markup-dom-copy-source" style="font-family: Helvetica;"><i><span style="font-size: 150%">T</span>his</i> <span style="background: orange; padding: 0px 2px">will be</span> <b>copied</b>.</span>
+<script>
+document.getElementById("markup-dom-copy").addEventListener("click", function() {
+  clipboard.copy(document.getElementById("markup-dom-copy-source")).then(function(){
+    document.getElementById("markup-dom-copy-result").textContent = "success";
+  }, function(err){
+    document.getElementById("markup-dom-copy-result").textContent = err;
+  });
+});
+</script>
+
+<hr>
 
 <button id="paste">Paste</button>
 <span id="paste-result"></span>
