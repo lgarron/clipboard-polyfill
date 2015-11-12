@@ -71,7 +71,7 @@
         try {
           if (!document.execCommand("paste")) {
             _intercept = false;
-            reject(new Error("Unable to paste. Perhaps it's not available in your browser?"));
+            reject(new Error("Unable to paste. Pasting only works in Internet Explorer at the moment."));
           }
         } catch (e) {
           _intercept = false;
