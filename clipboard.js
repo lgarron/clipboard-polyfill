@@ -23,7 +23,7 @@
 
     return function(data) {
       return new Promise(function(resolve, reject) {
-        _intercept = true; // Race condition?
+        _intercept = true;
         _data = (typeof data === "string" ? {"text/plain": data} : data);
         try {
           if (document.execCommand("copy")) {
@@ -59,7 +59,7 @@
 
     return function(dataType) {
       return new Promise(function(resolve, reject) {
-        _intercept = true; // Race condition?
+        _intercept = true;
         _resolve = resolve;
         _dataType = dataType || "text/plain";
         try {
