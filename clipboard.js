@@ -16,7 +16,7 @@
       _data = null;
     }
 
-    document.addEventListener("copy", function(e){
+    document.addEventListener("copy", function(e) {
       if (_intercept) {
         for (var key in _data) {
           e.clipboardData.setData(key, _data[key]);
