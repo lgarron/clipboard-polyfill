@@ -1,10 +1,9 @@
 //  Import support https://stackoverflow.com/questions/13673346/supporting-both-commonjs-and-amd
 (function(name, definition) {
-    if (typeof module != "undefined") module.exports = definition();
-    else if (typeof define == "function" && typeof define.amd == "object") define(definition);
-    else this[name] = definition();
+    if (typeof module !== "undefined") { module.exports = definition(); }
+    else if (typeof define === "function" && typeof define.amd === "object") { define(definition); }
+    else { this[name] = definition(); }
 }("clipboard", function() {
-
   var clipboard = {};
 
   clipboard.copy = (function() {
@@ -99,16 +98,20 @@
         // IE supports string and URL types: https://msdn.microsoft.com/en-us/library/ms536744(v=vs.85).aspx
         // We only support the string type for now.
         if (typeof data !== "string" && !("text/plain" in data)) {
-          throw new Error("You must provide a text/plain type.")
+          throw new Error("You must provide a text/plain type.");
         }
 
         var strData = (typeof data === "string" ? data : data["text/plain"]);
         var copySucceeded = window.clipboardData.setData("Text", strData);
-        copySucceeded ? resolve() : reject(new Error("Copying was rejected."));
+        if (copySucceeded) {
+          resolve();
+        } else {
+          reject(new Error("Copying was rejected."));
+        }
       });
     };
 
-    clipboard.paste = function(data) {
+    clipboard.paste = function() {
       return new Promise(function(resolve, reject) {
         var strData = window.clipboardData.getData("Text");
         if (strData) {
