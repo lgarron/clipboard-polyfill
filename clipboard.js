@@ -31,6 +31,9 @@
     return function(data) {
       return new Promise(function(resolve, reject) {
         _intercept = true;
+        if (typeof data === "function") {
+            data = data();
+        }
         if (typeof data === "string") {
           _data = {"text/plain": data};
         } else if (data instanceof Node) {
