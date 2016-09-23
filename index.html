@@ -1,68 +1,79 @@
 <html>
 <head>
-  <title>Web Clipboard</title>
+  <title>clipboard.js</title>
+  <link rel="stylesheet" href="index.css">
   <script src="clipboard.js"></script>
 </head>
 <body>
 
-<button id="plain-copy">Copy text (plain)</button>
-<span id="plain-copy-result"></span>
-<script>
-document.getElementById("plain-copy").addEventListener("click", function() {
-  clipboard.copy("This text is plain.").then(function(){
-    document.getElementById("plain-copy-result").textContent = "success";
-  }, function(err){
-    document.getElementById("plain-copy-result").textContent = err;
+<div class="header">
+  clipboard.js
+</div>
+<div class="ribbon"></div>
+<div class="content">
+
+  <h2>Plain Text</h2>
+
+  <button id="plain-copy">Copy text (plain)</button>
+  <span id="plain-copy-result"></span>
+  <script>
+  document.getElementById("plain-copy").addEventListener("click", function() {
+    clipboard.copy("This text is plain.").then(function(){
+      document.getElementById("plain-copy-result").textContent = "success";
+    }, function(err){
+      document.getElementById("plain-copy-result").textContent = err;
+    });
   });
-});
-</script>
+  </script>
 
-<hr>
+  <h2>Markup</h2>
 
-<button id="markup-copy">Copy text (markup)</button>
-<span id="markup-copy-result"></span>
-<script>
-document.getElementById("markup-copy").addEventListener("click", function() {
-  clipboard.copy({
-    "text/plain": "Markup text. Paste me into a rich text editor.",
-    "text/html": "<i>Markup</i> <b>text</b>. Paste me into a rich text editor."
-  }).then(function(){
-    document.getElementById("markup-copy-result").textContent = "success";
-  }, function(err){
-    document.getElementById("markup-copy-result").textContent = err;
+  <button id="markup-copy">Copy text (markup)</button>
+  <span id="markup-copy-result"></span>
+  <script>
+  document.getElementById("markup-copy").addEventListener("click", function() {
+    clipboard.copy({
+      "text/plain": "Markup text. Paste me into a rich text editor.",
+      "text/html": "<i>Markup</i> <b>text</b>. Paste me into a rich text editor."
+    }).then(function(){
+      document.getElementById("markup-copy-result").textContent = "success";
+    }, function(err){
+      document.getElementById("markup-copy-result").textContent = err;
+    });
   });
-});
-</script>
+  </script>
 
-<hr>
+  <h2>DOM node</h2>
 
-<button id="markup-dom-copy">Copy markup (DOM node &rarr; markup)</button>
-<span id="markup-dom-copy-result"></span>
-<br>
-<span id="markup-dom-copy-source" style="font-family: Helvetica;"><i><span style="font-size: 150%">T</span>his</i> <span style="background: orange; padding: 0px 2px">will be</span> <b>copied</b>.</span>
-<script>
-document.getElementById("markup-dom-copy").addEventListener("click", function() {
-  clipboard.copy(document.getElementById("markup-dom-copy-source")).then(function(){
-    document.getElementById("markup-dom-copy-result").textContent = "success";
-  }, function(err){
-    document.getElementById("markup-dom-copy-result").textContent = err;
+  <button id="markup-dom-copy">Copy markup (DOM node &rarr; markup)</button>
+  <span id="markup-dom-copy-result"></span>
+  <br>
+  <span id="markup-dom-copy-source" style="font-family: Helvetica;"><i><span style="font-size: 150%">T</span>his</i> <span style="background: orange; padding: 0px 2px">will be</span> <b>copied</b>.</span>
+  <script>
+  document.getElementById("markup-dom-copy").addEventListener("click", function() {
+    clipboard.copy(document.getElementById("markup-dom-copy-source")).then(function(){
+      document.getElementById("markup-dom-copy-result").textContent = "success";
+    }, function(err){
+      document.getElementById("markup-dom-copy-result").textContent = err;
+    });
   });
-});
-</script>
+  </script>
 
-<hr>
+  <h2>Paste</h2>
 
-<button id="paste">Paste</button>
-<span id="paste-result"></span>
-<script>
-document.getElementById("paste").addEventListener("click", function() {
-  clipboard.paste().then(function(result) {
-    document.getElementById("paste-result").textContent = result;
-  }, function(err) {
-    document.getElementById("paste-result").textContent = err;
+  <button id="paste">Paste</button>
+  <span id="paste-result"></span>
+  <script>
+  document.getElementById("paste").addEventListener("click", function() {
+    clipboard.paste().then(function(result) {
+      document.getElementById("paste-result").textContent = result;
+    }, function(err) {
+      document.getElementById("paste-result").textContent = err;
+    });
   });
-});
-</script>
+  </script>
+
+</div>
 
 </body>
 </html>
