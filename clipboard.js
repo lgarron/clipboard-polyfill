@@ -13,10 +13,15 @@
   clipboard.copy = (function() {
     var _intercept = false;
     var _data = null; // Map from data type (e.g. "text/html") to value.
+    var _bogusSelection = false;
 
     function cleanup() {
       _intercept = false;
       _data = null;
+      if (_bogusSelection) {
+        window.getSelection().removeAllRanges();
+      }
+      _bogusSelection = false;
     }
 
     document.addEventListener("copy", function(e) {
@@ -27,6 +32,32 @@
         e.preventDefault();
       }
     });
+
+    // Workaround for Safari: https://bugs.webkit.org/show_bug.cgi?id=156529
+    function bogusSelect() {
+      var sel = document.getSelection();
+      // If "nothing" is selected...
+      if (!document.queryCommandEnabled("copy") && sel.isCollapsed) {
+        // ... temporarily select the entire body.
+        //
+        // We select the entire body because:
+        // - it's guaranteed to exist,
+        // - it works (unlike, say, document.head, or phantom element that is
+        //   not inserted into the DOM),
+        // - it doesn't seem to flicker (due to the synchronous copy event), and
+        // - it avoids modifying the DOM (can trigger mutation observers).
+        //
+        // Because we can't do proper feature detection (we already checked
+        // document.queryCommandEnabled("copy") , which actually gives a false
+        // negative for Blink when nothing is selected) and UA sniffing is not
+        // reliable (a lot of UA strings contain "Safari"), this will also
+        // happen for some browsers other than Safari. :-()
+        var range = document.createRange();
+        range.selectNodeContents(document.body);
+        sel.addRange(range);
+        _bogusSelection = true;
+      }
+    };
 
     return function(data) {
       return new Promise(function(resolve, reject) {
@@ -39,6 +70,7 @@
           _data = data;
         }
         try {
+          bogusSelect();
           if (document.execCommand("copy")) {
             // document.execCommand is synchronous: http://www.w3.org/TR/2015/WD-clipboard-apis-20150421/#integration-with-rich-text-editing-apis
             // So we can call resolve() back here.
