@@ -25,7 +25,7 @@ document.getElementById("plain-copy").addEventListener("click", function() {
 document.getElementById("markup-copy").addEventListener("click", function() {
   clipboard.copy({
     "text/plain": "Markup text. Paste me into a rich text editor.",
-    "text/html":  new XMLSerializer().serializeToString(document.body)
+    "text/html": "<i>Markup</i> <b>text</b>. Paste me into a rich text editor."
   }).then(function(){
     document.getElementById("markup-copy-result").textContent = "success";
   }, function(err){
