@@ -85,3 +85,4 @@ Try [this gist](https://gist.github.com/lgarron/d1dee380f4ed9d825ca7) for a simp
 - Firefox 41+
 - Opera 29+
 - Internet Explorer 9+
+- Safari 10+
