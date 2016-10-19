@@ -4,7 +4,7 @@
     else if (typeof define === "function" && typeof define.amd === "object") { define(definition); }
     else { this[name] = definition(); }
 }("clipboard", function() {
-  if (!document.addEventListener) {
+  if (typeof document === 'undefined' || !document.addEventListener) {
     return null;
   }
 
