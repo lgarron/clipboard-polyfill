@@ -54,6 +54,7 @@
         // happen for some browsers other than Safari. :-()
         var range = document.createRange();
         range.selectNodeContents(document.body);
+        sel.removeAllRanges();
         sel.addRange(range);
         _bogusSelection = true;
       }
