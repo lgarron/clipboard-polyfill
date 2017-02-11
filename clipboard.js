@@ -84,6 +84,7 @@
                 bogusSelect();
                 triggerCopy(true);
               } else {
+                cleanup();
                 throw new Error("Unable to copy. Perhaps it's not available in your browser?");
               }
             }
