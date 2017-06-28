@@ -67,7 +67,7 @@
           _data = {"text/plain": data};
         } else if (data instanceof Node) {
           _data = {"text/html": new XMLSerializer().serializeToString(data)};
-        } else if (_data instanceof Object){
+        } else if (data instanceof Object){
           _data = data;
         } else {
           reject("Invalid data type. Must be string, DOM node, or an object mapping MIME types to strings.")
