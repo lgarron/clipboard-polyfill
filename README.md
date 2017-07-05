@@ -67,11 +67,13 @@ This project                                       | `zenorocha/clipboard.js`
 Supports plain strings, `text/html`, and DOM nodes | Only supports plain strings
 ≈100 lines                                         | ≈700 lines
 1.5KB minimized + gzipped                          | 2.9KB minimized + gzipped
-Doesn't change document selection                  | Clears document selection
+Doesn't change document selection †                | Clears document selection
 Only an imperative API (`clipboard.copy()`)        | Declarative DOM-based API
 Uses `Promise`s                                    | ---
 Supports paste (in IE)                             | ---
 ---                                                | Offers a fallback prompt (`Press Ctrl+C to copy`)
+
+† Copying in Safari doesn't work unless there is a selection. This library [works around that](https://github.com/lgarron/clipboard.js/blob/91f772fdbce2568bb29b376f2bbcb7cf5907dbcd/clipboard.js#L37) by temporarily selecting and deselecting the whole page if nothing was selected to start with. Unfortunately, due to feature detection limits this workaround is also triggered in Chrome when there is no selection.
 
 
 ## This is way too complicated!
