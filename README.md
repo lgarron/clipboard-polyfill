@@ -19,7 +19,7 @@ Note: in most browsers, copying is only allowed if `clipboard.copy()` is trigger
 
     clipboard.copy(document.body);
 
-(Uses [XMLSerializer](http://caniuse.com/#search=XMLSerializer).)
+(Uses [XMLSerializer](https://caniuse.com/#search=XMLSerializer).)
 
 
 ### Use the `copy` outcome as a Promise (optional):
