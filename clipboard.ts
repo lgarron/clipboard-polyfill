@@ -55,15 +55,26 @@ export class clipboard {
 export namespace clipboard {
   export class DT {
     private m: Map<string, string> = new Map<string, string>();
+
     setData(type: string, value: string): void {
       this.m.set(type, value);
     }
+
     getData(type: string): string | undefined {
       return this.m.get(type);
     }
+
     // TODO: Provide an iterator consistent with DataTransfer.
     forEach(f: (value: string, key: string) => void): void {
       return this.m.forEach(f);
+    }
+
+    static fromObject(obj: {[key:string]:string}) {
+      var dt = new DT();
+      for (var key in obj) {
+        dt.setData(key, obj[key]);
+      }
+      return dt;
     }
   }
 

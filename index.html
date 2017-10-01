@@ -33,9 +33,10 @@
   <span id="markup-copy-result"></span>
   <script>
   document.getElementById("markup-copy").addEventListener("click", function() {
-    var dt = new clipboard.DT();
-    dt.setData("text/plain", "Markup text. Paste me into a rich text editor.");
-    dt.setData("text/html", "<i>Markup</i> <b>text</b>. Paste me into a rich text editor.");
+    var dt = clipboard.DT.fromObject({
+      "text/plain": "Markup text. Paste me into a rich text editor.",
+      "text/html": "<i>Markup</i> <b>text</b>. Paste me into a rich text editor."
+    });
     clipboard.write(dt).then(function(){
       document.getElementById("markup-copy-result").textContent = "success";
     }, function(err){
