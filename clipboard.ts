@@ -20,20 +20,29 @@ export class clipboard {
     return result;
   }
 
-  private static writePromise(data: clipboard.DT, resolve: () => void, reject: (e: Error) => void) {
-    var result = this.execCopy(this.copyListener.bind(this, data));
-    if (result) {
-      resolve();
-    } else {
-      reject(new Error("Copy command failed."));
-    }
+  private static writePromise(data: clipboard.DT): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      var result = this.execCopy(this.copyListener.bind(this, data));
+      if (result) {
+        resolve();
+      } else {
+        reject(new Error("Copy command failed."));
+      }
+    });
+  }
+
+  static writeWithWorkaround(data: clipboard.DT, workaround: clipboard.Workaround): Promise<void> {
+    var p = this.writePromise(data);
+    workaround.teardown();
+    return p;
   }
 
   static write(data: clipboard.DT): Promise<void> {
-    var bogusSelection = clipboard.SafariWorkaround.setup();
-    var p = new Promise<void>(this.writePromise.bind(this, data));
-    clipboard.SafariWorkaround.teardown(bogusSelection);
-    return p;
+    if (clipboard.SafariWorkaround.shouldTry()) {
+      return this.writeWithWorkaround(data, new clipboard.SafariWorkaround());
+    } else {
+      return this.writePromise(data);
+    }
   }
 
   static writeText(s: string): Promise<void> {
@@ -68,19 +77,22 @@ export namespace clipboard {
     }
   }
 
-  export class SafariWorkaround {
-    static setup(): boolean {
-      if (!document.queryCommandEnabled("copy") && document.getSelection().isCollapsed) {
-        Selection.select(document.body)
-        return true;
-      }
-      return false;
+  export interface Workaround {
+    teardown(): void;
+  }
+
+  export class SafariWorkaround implements Workaround {
+    constructor() {
+      // TODO: Save exact selection
+      Selection.select(document.body);
     }
 
-    static teardown(bogusSelection: boolean): void {
-      if (bogusSelection) {
-        window.getSelection().removeAllRanges();
-      }
+    teardown(): void {
+      window.getSelection().removeAllRanges();
+    }
+
+    static shouldTry(): boolean {
+      return !document.queryCommandEnabled("copy") && document.getSelection().isCollapsed
     }
   }
 }
