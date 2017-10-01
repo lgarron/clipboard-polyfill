@@ -119,7 +119,7 @@
                 triggerCopy(true);
               } else {
                 cleanup();
-                throw new Error("Unable to copy. Perhaps it's not available in your browser?");
+                reject(new Error("Unable to copy. Perhaps it's not available in your browser?"));
               }
             }
           } catch (e) {
@@ -179,7 +179,7 @@
         // IE supports string and URL types: https://msdn.microsoft.com/en-us/library/ms536744(v=vs.85).aspx
         // We only support the string type for now.
         if (typeof data !== "string" && !("text/plain" in data)) {
-          throw new Error("You must provide a text/plain type.");
+          reject(new Error("You must provide a text/plain type.");)
         }
 
         var strData = (typeof data === "string" ? data : data["text/plain"]);
