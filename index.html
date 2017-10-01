@@ -2,6 +2,7 @@
 <head>
   <title>clipboard.js</title>
   <link rel="stylesheet" href="index.css">
+  <script>exports = {};</script>
   <script src="clipboard.js"></script>
 </head>
 <body>
@@ -18,7 +19,7 @@
   <span id="plain-copy-result"></span>
   <script>
   document.getElementById("plain-copy").addEventListener("click", function() {
-    clipboard.copy("This text is plain.").then(function(){
+    clipboard.write("This text is plain.").then(function(){
       document.getElementById("plain-copy-result").textContent = "success";
     }, function(err){
       document.getElementById("plain-copy-result").textContent = err;
