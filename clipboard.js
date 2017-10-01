@@ -14,24 +14,54 @@
     var _intercept = false;
     var _data = null; // Map from data type (e.g. "text/html") to value.
     var _bogusSelection = false;
+    var _useLastResort = false;
 
     function cleanup() {
       _intercept = false;
       _data = null;
-      if (_bogusSelection) {
+      if (_bogusSelection || _useLastResort) {
         window.getSelection().removeAllRanges();
       }
       _bogusSelection = false;
+      _useLastResort = false;
     }
 
     document.addEventListener("copy", function(e) {
-      if (_intercept) {
+      console.log("Sdf");
+      if (_intercept && !_useLastResort) {
         for (var key in _data) {
           e.clipboardData.setData(key, _data[key]);
+          if (key === "text/plain" && e.clipboardData.getData(key) === "") {
+            _useLastResort = true;
+          }
         }
         e.preventDefault();
       }
     });
+
+    function select(elem) {
+      var sel = document.getSelection();
+      var range = document.createRange();
+      range.selectNodeContents(elem);
+      sel.removeAllRanges();
+      sel.addRange(range);
+    }
+
+    function lastResortCopyTextUsingDOM(str) {
+      var result = false;
+      var elem = document.createElement("pre");
+      elem.textContent = str;
+      document.body.appendChild(elem);
+      try {
+        select(elem);
+        _copyUsingDOM = true;
+        result = document.execCommand("copy");
+      } finally {
+        _copyUsingDOM = false;
+        document.body.removeChild(elem);
+      }
+      return result;
+    };
 
     // Workaround for Safari: https://bugs.webkit.org/show_bug.cgi?id=156529
     function bogusSelect() {
@@ -46,22 +76,14 @@
         //   not inserted into the DOM),
         // - it doesn't seem to flicker (due to the synchronous copy event), and
         // - it avoids modifying the DOM (can trigger mutation observers).
-        //
-        // Because we can't do proper feature detection (we already checked
-        // document.queryCommandEnabled("copy") , which actually gives a false
-        // negative for Blink when nothing is selected) and UA sniffing is not
-        // reliable (a lot of UA strings contain "Safari"), this will also
-        // happen for some browsers other than Safari. :-()
-        var range = document.createRange();
-        range.selectNodeContents(document.body);
-        sel.removeAllRanges();
-        sel.addRange(range);
+        select(document.body);
         _bogusSelection = true;
       }
     };
 
     return function(data) {
       return new Promise(function(resolve, reject) {
+        debugger;
         _intercept = true;
         if (typeof data === "string") {
           _data = {"text/plain": data};
@@ -78,8 +100,18 @@
             if (document.execCommand("copy")) {
               // document.execCommand is synchronous: http://www.w3.org/TR/2015/WD-clipboard-apis-20150421/#integration-with-rich-text-editing-apis
               // So we can call resolve() back here.
+              if (_useLastResort) {
+                if (lastResortCopyTextUsingDOM(_data["text/plain"])) {
+                  cleanup();
+                  resolve();
+                } else {
+                  cleanup();
+                  reject();
+                }
+              } else {
               cleanup();
-              resolve();
+                resolve();
+              }
             }
             else {
               if (!tryBogusSelect) {

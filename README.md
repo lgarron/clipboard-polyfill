@@ -86,6 +86,14 @@ Try [this gist](https://gist.github.com/lgarron/d1dee380f4ed9d825ca7) for a simp
 - Chrome 42+
 - Firefox 41+
 - Opera 29+
-- Internet Explorer 9+
+- Internet Explorer 9+ (text only)
 - Desktop Safari 10+
-  - iOS Safari currently [suffers from a WebKit bug](https://github.com/lgarron/clipboard.js/issues/42#issuecomment-333356837).
+- iOS Safari 10+ (text only)
+
+### Limitations
+
+Whever possible, `clipboard.js` attempts to copy the given data without modifying the current selection or the DOM. However, Safari has a [few](https://bugs.webkit.org/show_bug.cgi?id=156529) [bugs](https://bugs.webkit.org/show_bug.cgi?id=177715). Therefore:
+
+- On desktop Safari, `clipboard.js` selects the entire document and synchronously deselects it after the copy event. There is no flicker, but the previous selection is lost.
+- On iOS Safari, [a bug](https://bugs.webkit.org/show_bug.cgi?id=177715) prevents `clipboard.js` from setting data for data types using the desktop Safari approach. `clipboard.js` will fall back to copying a plain string, by *temporarily inserting an copyable to the end of `document.body`*.
+  - The clipboard will end up empty if the input was a DOM node or an object whose `text/plain` key is not set. It is recommended that you always provide a `text/plain` representation where possible. (If you want to copy a DOM node with a text fallback on iOS, you can use `new XMLSerializer().serializeToString(data)` to get the `text/html` representation of a DOM node yourself, but the `text/plain` representation is up to you.)
