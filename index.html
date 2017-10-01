@@ -19,7 +19,7 @@
   <span id="plain-copy-result"></span>
   <script>
   document.getElementById("plain-copy").addEventListener("click", function() {
-    clipboard.write("This text is plain.").then(function(){
+    clipboard.writeText("This text is plain.").then(function(){
       document.getElementById("plain-copy-result").textContent = "success";
     }, function(err){
       document.getElementById("plain-copy-result").textContent = err;
@@ -33,10 +33,10 @@
   <span id="markup-copy-result"></span>
   <script>
   document.getElementById("markup-copy").addEventListener("click", function() {
-    clipboard.copy({
-      "text/plain": "Markup text. Paste me into a rich text editor.",
-      "text/html": "<i>Markup</i> <b>text</b>. Paste me into a rich text editor."
-    }).then(function(){
+    var dt = new clipboard.DT();
+    dt.setData("text/plain", "Markup text. Paste me into a rich text editor.");
+    dt.setData("text/html", "<i>Markup</i> <b>text</b>. Paste me into a rich text editor.");
+    clipboard.write(dt).then(function(){
       document.getElementById("markup-copy-result").textContent = "success";
     }, function(err){
       document.getElementById("markup-copy-result").textContent = err;

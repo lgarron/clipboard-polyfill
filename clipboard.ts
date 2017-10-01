@@ -1,7 +1,7 @@
 "use strict";
 
 export class clipboard {
-  private static copyListener(data: clipboard.DT, e: ClipboardEvent) {
+  private static copyListener(data: clipboard.DT, e: ClipboardEvent): void {
     data.forEach((value: string, key: string) => {
       console.log(key, value);
       e.clipboardData.setData(key, value);
@@ -30,13 +30,16 @@ export class clipboard {
   }
 
   static write(data: clipboard.DT): Promise<void> {
-    return new Promise(this.writePromise.bind(this, data));
+    var bogusSelection = clipboard.SafariWorkaround.setup();
+    var p = new Promise<void>(this.writePromise.bind(this, data));
+    clipboard.SafariWorkaround.teardown(bogusSelection);
+    return p;
   }
 
-  static writeText(s: string): void {
+  static writeText(s: string): Promise<void> {
     var dt = new clipboard.DT();
     dt.setData("text/plain", s);
-    clipboard.write(dt);
+    return clipboard.write(dt);
   }
 }
 
@@ -52,6 +55,32 @@ export namespace clipboard {
     // TODO: Provide an iterator consistent with DataTransfer.
     forEach(f: (value: string, key: string) => void): void {
       return this.m.forEach(f);
+    }
+  }
+
+  export class Selection {
+    static select(elem: Element): void {
+      var sel = document.getSelection();
+      var range = document.createRange();
+      range.selectNodeContents(elem);
+      sel.removeAllRanges();
+      sel.addRange(range);
+    }
+  }
+
+  export class SafariWorkaround {
+    static setup(): boolean {
+      if (!document.queryCommandEnabled("copy") && document.getSelection().isCollapsed) {
+        Selection.select(document.body)
+        return true;
+      }
+      return false;
+    }
+
+    static teardown(bogusSelection: boolean): void {
+      if (bogusSelection) {
+        window.getSelection().removeAllRanges();
+      }
     }
   }
 }
