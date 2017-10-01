@@ -87,4 +87,5 @@ Try [this gist](https://gist.github.com/lgarron/d1dee380f4ed9d825ca7) for a simp
 - Firefox 41+
 - Opera 29+
 - Internet Explorer 9+
-- Safari 10+
+- Desktop Safari 10+
+  - iOS Safari currently [suffers from a WebKit bug](https://github.com/lgarron/clipboard.js/issues/42#issuecomment-333356837).
