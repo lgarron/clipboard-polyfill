@@ -3,7 +3,6 @@
 export class clipboard {
   private static copyListener(data: clipboard.DT, e: ClipboardEvent): void {
     data.forEach((value: string, key: string) => {
-      console.log(key, value);
       e.clipboardData.setData(key, value);
     });
     e.preventDefault();
