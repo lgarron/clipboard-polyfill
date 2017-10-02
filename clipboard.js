@@ -27,7 +27,6 @@
     }
 
     document.addEventListener("copy", function(e) {
-      console.log("Sdf");
       if (_intercept && !_useLastResort) {
         for (var key in _data) {
           e.clipboardData.setData(key, _data[key]);
@@ -83,7 +82,6 @@
 
     return function(data) {
       return new Promise(function(resolve, reject) {
-        debugger;
         _intercept = true;
         if (typeof data === "string") {
           _data = {"text/plain": data};
@@ -179,7 +177,7 @@
         // IE supports string and URL types: https://msdn.microsoft.com/en-us/library/ms536744(v=vs.85).aspx
         // We only support the string type for now.
         if (typeof data !== "string" && !("text/plain" in data)) {
-          reject(new Error("You must provide a text/plain type.");)
+          reject(new Error("You must provide a text/plain type."));
         }
 
         var strData = (typeof data === "string" ? data : data["text/plain"]);
