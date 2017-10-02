@@ -12,19 +12,20 @@ Platforms tested:
 
 |   | Chrome 61 | Safari 11 (macOS) | Safari 11 (iOS) | Edge 15 | Firefox 54 |
 |---|---|---|---|---|---|
-|`supported` returns true †|✅|✅|✅|✅|✅|
+|`supported` always returns true †|✅|✅|✅|✅|✅|
 |`enabled` **without** selection returns true †|❌|❌|❌|❌|✅|
 |`exec` works **without** selection †|✅|✅|✅|✅|✅|
 |`enabled` **with** selection returns true †|✅|✅|✅|✅|✅|
 |`exec` works **with** selection †|✅|✅|✅|✅|✅|
+|`exec` fails outside user gesture |✅|✅|✅|✅|✅|
 |Can set `setData()` in listener|✅|✅|❌|✅|✅|
 |Copies all types set with `setData()`|✅|✅|✅|❌|✅|
-|Reports `exec` success correctly|✅|✅|⚠️|❌|✅|
+|`exec` reports success correctly|✅|✅|⚠️|❌|✅|
 |Can construct `new DataTransfer()`|✅|❌|❌|❌|❌|
 
 † Here, we are only specifically interested in the case where the handler is called directly in response to a user gesture. I didn't test for behaviour when there is no user gesture.
 
-## `supported` returns true
+## `supported` always returns true
 
 In all browsers, `document.queryCommandSupported("copy")` always returns true.
 
@@ -43,6 +44,10 @@ On all browsers, `document.queryCommandEnabled("copy")` returns true during a us
 ## `exec` works **with** selection
 
 On all platforms, `document.execCommand("copy")` actually always works during a user gesture, regardless of whether anything on the page is selected.
+
+## `enabled` returns false outside user gesture
+
+In all browsers, `document.execCommand("copy")` fails when there is no user gesture, and returns `false`.
 
 ## Can set `setData()` in listener (see issues 3/4 below)
 
@@ -75,7 +80,8 @@ This means that the following listeners put both plain text and HTML on the clip
     });
 
 Edge only places the *last* provided data type on the clipboard.
-## Reports `exec` success correctly (see issue 5 below)
+
+## `exec` reports success correctly (see issue 5 below)
 
 Most platforms correctly report if `document.execCommand("copy")` successfully copied something to the clipboard.
 

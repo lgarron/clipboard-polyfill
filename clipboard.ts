@@ -1,7 +1,8 @@
 "use strict";
 
 export class clipboard {
-  private static copyListener(data: clipboard.DT, e: ClipboardEvent): void {
+  private static copyListener(tracker: clipboard.FallbackTracker, data: clipboard.DT, e: ClipboardEvent): void {
+    tracker.tryFallback = false;
     data.forEach((value: string, key: string) => {
       e.clipboardData.setData(key, value);
     });
@@ -13,35 +14,49 @@ export class clipboard {
     document.addEventListener("copy", listener);
     try {
       result = document.execCommand("copy");
+    } catch (e) {
+      // TODO: Expose to Promise.
+      return false;
     } finally {
       document.removeEventListener("copy", listener);
     }
     return result;
   }
 
-  private static writePromise(data: clipboard.DT): Promise<void> {
+  // Uses shadow DOM.
+  private static copyTextUsingDOM(str: string): boolean {
+    var tempElem = document.createElement("div");
+    var shadowRoot = tempElem.attachShadow({mode: "open"});
+    document.body.appendChild(tempElem);
+
+    var span = document.createElement("span");
+    span.textContent = str;
+    span.style.whiteSpace = "pre-wrap";
+    shadowRoot.appendChild(span);
+    clipboard.Selection.select(span);
+
+    var result = document.execCommand("copy");
+
+    clipboard.Selection.clear();
+    document.body.removeChild(tempElem);
+
+    return result;
+  }
+
+  public static write(data: clipboard.DT): Promise<void> {
     return new Promise<void>((resolve, reject) => {
-      var result = this.execCopy(this.copyListener.bind(this, data));
+      var tracker = new clipboard.FallbackTracker();
+      var result = this.execCopy(this.copyListener.bind(this, tracker, data));
       if (result) {
         resolve();
       } else {
-        reject(new Error("Copy command failed."));
+        if (tracker.tryFallback && this.copyTextUsingDOM(<string>data.getData("text/plain"))) {
+          resolve();
+        } else {
+          reject(new Error("Copy command failed (or you're using Edge)."));
+        }
       }
     });
-  }
-
-  static writeWithWorkaround(data: clipboard.DT, workaround: clipboard.Workaround): Promise<void> {
-    var p = this.writePromise(data);
-    workaround.teardown();
-    return p;
-  }
-
-  static write(data: clipboard.DT): Promise<void> {
-    if (clipboard.SafariWorkaround.shouldTry()) {
-      return this.writeWithWorkaround(data, new clipboard.SafariWorkaround());
-    } else {
-      return this.writePromise(data);
-    }
   }
 
   static writeText(s: string): Promise<void> {
@@ -85,32 +100,16 @@ export namespace clipboard {
       sel.removeAllRanges();
       sel.addRange(range);
     }
-  }
 
-  export interface Workaround {
-    teardown(): void;
-  }
-
-  export class SafariWorkaround implements Workaround {
-    constructor() {
-      // TODO: Save exact selection
-      Selection.select(document.body);
-    }
-
-    teardown(): void {
-      window.getSelection().removeAllRanges();
-    }
-
-    static shouldTry(): boolean {
-      return !document.queryCommandEnabled("copy") && document.getSelection().isCollapsed
+    static clear(): void {
+      var sel = document.getSelection();
+      sel.removeAllRanges();
     }
   }
-}
 
-function test() {
-  var m = new clipboard.DT();
-  m.setData("text/plain", "hi");
-  clipboard.write(m).then(console.log, console.error);
+  export class FallbackTracker {
+    public tryFallback: boolean = true;
+  }
 }
 
 // document.addEventListener("copy")
