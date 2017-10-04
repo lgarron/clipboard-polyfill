@@ -107,7 +107,7 @@ Firstly
 
 All platforms except iOS can share the same default implementation. However:
 
-- **Issue 2**: Edge will only put the first provided data type on the clipboard**.
+- **Issue 2**: Edge will only put the first provided data type on the clipboard.
   - Workaround: File a bug against Edge. (Started: [Edge Bug #14080506](https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/14080506/))
   - Document that the caller should add the most important data type to the copy data first.
 
