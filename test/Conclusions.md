@@ -18,12 +18,16 @@ Platforms tested:
 |`enabled` **with** selection returns true †|✅|✅|✅|✅|✅|
 |`exec` works **with** selection †|✅|✅|✅|✅|✅|
 |`exec` fails outside user gesture |✅|✅|✅|✅|✅|
-|Can set `setData()` in listener|✅|✅|❌|✅|✅|
-|Copies all types set with `setData()`|✅|✅|✅|❌|✅|
-|`exec` reports success correctly|✅|✅|⚠️|❌|✅|
+|Can set `setData()` in listener|✅|✅|❌ ¹|✅|✅|
+|Copies all types set with `setData()`|✅|✅|✅|❌ ²|✅|
+|`exec` reports success correctly|✅|✅|⚠️ ¹|❌ ³|✅|
 |Can construct `new DataTransfer()`|✅|❌|❌|❌|❌|
 
 † Here, we are only specifically interested in the case where the handler is called directly in response to a user gesture. I didn't test for behaviour when there is no user gesture.
+
+- ¹ [WebKit Bug #177715](https://bugs.webkit.org/show_bug.cgi?id=177715)
+- ² [Edge Bug #14080506](https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/14080506/)
+- ³ [Edge Bug #14080262](https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/14080262/)
 
 ## `supported` always returns true
 
