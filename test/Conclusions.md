@@ -108,7 +108,7 @@ Firstly
 All platforms except iOS can share the same default implementation. However:
 
 - **Issue 2**: Edge will only put the first provided data type on the clipboard**.
-  - Workaround: none.
+  - Workaround: File a bug against Edge. (Started: [Edge Bug #14080506](https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/14080506/))
   - Document that the caller should add the most important data type to the copy data first.
 
 iOS Safari requires the trickiest fallback:
@@ -135,7 +135,7 @@ The Windows problem looks a bit annoying.
 On Windows, we perform the copy, but we will always get back `false`. 
 
 - **Issue 5**: On Windows, `execCommand("copy")` always returns false.
-  - Workaround 0: Report this bug to Edge, and hope they fix it.
+  - Workaround 0: Report this bug to Edge, and hope they fix it. (Started: [Edge Bug #14080262](https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/14080262/))
   - Workaround 1: Pass on the return value blindly, and document that Windows has a bug.
   - Workaround 2: Never check the return value of `execCommand("copy")`
   - Workaround 3: Detect Edge using a different mechanism (e.g. UA sniffing), and ignore the return value only when we think we're in Edge.
