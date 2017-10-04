@@ -143,4 +143,4 @@ On Windows, we perform the copy, but we will always get back `false`.
 We also need to add some more polyfilling than we might like:
 
 - **Issue 6**: The caller can't construct a `DataTransfer` to pass to the polyfill on any platform except Chrome..
-  - Workaround: Provide an object with a sufficiently ergonomic subset of the interface of `DataTransfer` that the caller can use. (We can wap out the implementation with `DataTransfer` as platforms allow calling the constructor directly.)
+  - Workaround: Provide an object with a sufficiently ergonomic subset of the interface of `DataTransfer` that the caller can use. (We can swap out the implementation with `DataTransfer` as platforms allow calling the constructor directly.)
