@@ -64,6 +64,14 @@ export class clipboard {
     dt.setData("text/plain", s);
     return clipboard.write(dt);
   }
+
+  static read(): Promise<string> {
+    return new Promise((resolve, reject) => reject("Cannot read in any modern browsers."));
+  }
+
+  static readText(): Promise<string> {
+    return new Promise((resolve, reject) => reject("Cannot read in any modern browsers."));
+  }
 }
 
 export namespace clipboard {
