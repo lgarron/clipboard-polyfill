@@ -14,20 +14,21 @@ Platforms tested:
 |---|---|---|---|---|---|
 |`supported` always returns true †|✅|✅|✅|✅|✅|
 |`enabled` **without** selection returns true †|❌|❌|❌|❌|✅|
-|`exec` works **without** selection †|✅|✅|✅|✅|✅|
+|`exec` works **without** selection †|✅|⚠️¹|⚠️¹|✅|✅|
 |`enabled` **with** selection returns true †|✅|✅|✅|✅|✅|
 |`exec` works **with** selection †|✅|✅|✅|✅|✅|
 |`exec` fails outside user gesture |✅|✅|✅|✅|✅|
-|Can set `setData()` in listener|✅|✅|❌ ¹|✅|✅|
-|Copies all types set with `setData()`|✅|✅|✅|❌ ²|✅|
-|`exec` reports success correctly|✅|✅|⚠️ ¹|❌ ³|✅|
+|Can set `setData()` in listener|✅|✅|❌ ²|✅|✅|
+|Copies all types set with `setData()`|✅|✅|✅|❌ ³|✅|
+|`exec` reports success correctly|✅|✅|⚠️ ²|❌ ⁴|✅|
 |Can construct `new DataTransfer()`|✅|❌|❌|❌|❌|
 
 † Here, we are only specifically interested in the case where the handler is called directly in response to a user gesture. I didn't test for behaviour when there is no user gesture.
 
-- ¹ [WebKit Bug #177715](https://bugs.webkit.org/show_bug.cgi?id=177715)
-- ² [Edge Bug #14080506](https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/14080506/)
-- ³ [Edge Bug #14080262](https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/14080262/)
+- ¹ `document.execCommand("copy")`, but listeners for the document's `copy` event aren't fired.
+- ² [WebKit Bug #177715](https://bugs.webkit.org/show_bug.cgi?id=177715)
+- ³ [Edge Bug #14080506](https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/14080506/)
+- ⁴ [Edge Bug #14080262](https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/14080262/)
 
 ## `supported` always returns true
 
@@ -37,17 +38,17 @@ In all browsers, `document.queryCommandSupported("copy")` always returns true.
 
 When nothing on the page is selected, `document.queryCommandEnabled("copy")` returns true in Firefox, but not any other browsers.
 
-## `exec` works **without**  selection
+## `exec` fires listener **without**  selection
 
-On all platforms, `document.execCommand("copy")` actually always works during a user gesture, regardless of whether anything on the page is selected.
+On all platforms, `document.execCommand("copy")` always works (triggers a copy) during a user gesture, regardless of whether anything on the page is selected. However, on Safari listeners registered using `document.addEventListener("copy")` don't fire (and therefore don't have an opportunity to set the data on the clipboard).
 
 ## `enabled` **with** selection returns true
 
 On all browsers, `document.queryCommandEnabled("copy")` returns true during a user gesture if some part of the page is selected (doesn't matter which part; can be the entire body on a single element). The selection may be made using Javascript during the user gesture handler itself.
 
-## `exec` works **with** selection
+## `exec` fires listener **with** selection
 
-On all platforms, `document.execCommand("copy")` actually always works during a user gesture, regardless of whether anything on the page is selected.
+On all platforms, `document.execCommand("copy")` works during a user gesture, regardless of whether anything on the page is selected. Listeners registered with ``document.addEventListener("copy")` fire.
 
 ## `enabled` returns false outside user gesture
 
@@ -110,6 +111,8 @@ All platforms except iOS can share the same default implementation. However:
 - **Issue 2**: Edge will only put the first provided data type on the clipboard.
   - Workaround: File a bug against Edge. (Started: [Edge Bug #14080506](https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/14080506/))
   - Document that the caller should add the most important data type to the copy data first.
+
+TODO: Add "Safari doesn't trigger listener without selection" issue.
 
 iOS Safari requires the trickiest fallback:
 
