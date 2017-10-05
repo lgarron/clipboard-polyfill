@@ -65,12 +65,38 @@ export class clipboard {
     return clipboard.write(dt);
   }
 
-  static read(): Promise<string> {
-    return new Promise((resolve, reject) => reject("Cannot read in any modern browsers."));
+  static read(): Promise<clipboard.DT> {
+    return new Promise((resolve, reject) => reject("Cannot read in any modern browsers. IE11 pasting is not implemented yet."));
   }
 
   static readText(): Promise<string> {
-    return new Promise((resolve, reject) => reject("Cannot read in any modern browsers."));
+    return new Promise((resolve, reject) => reject("Cannot read in any modern browsers. IE11 pasting is not implemented yet."));
+  }
+
+  // Legacy v1 API.
+  static copy(obj: string|{[key:string]:string}|Element): Promise<void> {
+    (console.warn || console.log).call(console, "[clipboard.js] The clipboard.copy() API is deprecated and may be removed in a future version. Please switch to clipboard.write() or clipboard.writeText().");
+
+    return new Promise((resolve, reject) => {
+      var data: {[key:string]:string};
+      if (typeof obj === "string") {
+        data = {"text/plain": obj};
+      } else if (obj instanceof Element) {
+        data = {"text/html": new XMLSerializer().serializeToString(obj)};
+      } else if (obj instanceof Object){
+        data = obj;
+      } else {
+        reject("Invalid data type. Must be string, DOM node, or an object mapping MIME types to strings.");
+        return;
+      }
+      this.write(clipboard.DT.fromObject(data));
+    });
+  }
+
+  // Legacy v1 API.
+  static paste(): Promise<string> {
+    (console.warn || console.log).call(console, "[clipboard.js] The clipboard.paste() API is deprecated and may be removed in a future version. Please switch to clipboard.read() or clipboard.readText().");
+    return new Promise((resolve, reject) => reject("Cannot read in any modern browsers. IE11 pasting is not implemented yet."));
   }
 }
 
