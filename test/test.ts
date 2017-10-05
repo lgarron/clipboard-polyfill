@@ -160,6 +160,16 @@ export class CopyTempElem extends Test {
   }
 }
 
+export class WindowClipboardData extends Test {
+  private tempElem: Element;
+ run() {
+    this.results["start.enabled"] = document.queryCommandEnabled("copy");
+   window.clipboardData.setData("Text", "WindowClipboardData");
+    this.results["end.enabled"] = document.queryCommandEnabled("copy");
+
+  }
+}
+
 export class DataTransferConstructor extends Test {
   setup() {
     try {
