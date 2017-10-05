@@ -160,7 +160,7 @@ export class CopyTempElem extends Test {
   }
 }
 
-export class DataTransfer extends Test {
+export class DataTransferConstructor extends Test {
   setup() {
     try {
       var dt = new DataTransfer();
