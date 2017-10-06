@@ -18,17 +18,19 @@ Platforms tested:
 |`enabled` **with** selection returns true †|✅|✅|✅|✅|✅|
 |`exec` works **with** selection †|✅|✅|✅|✅|✅|
 |`exec` fails outside user gesture |✅|✅|✅|✅|✅|
-|Can set `setData()` in listener|✅|✅|❌ ²|✅|✅|
-|Copies all types set with `setData()`|✅|✅|✅|❌ ³|✅|
-|`exec` reports success correctly|✅|✅|⚠️ ²|❌ ⁴|✅|
+|`setData()` in listener works|✅|✅|❌ ²|✅|✅|
+|`getData()` in listener shows if `setData()` worked|✅|✅|⚠️ ²|❌ ³|✅|
+|Copies all types set with `setData()`|✅|✅|✅|❌ ⁴|✅|
+|`exec` reports success correctly|✅|✅|⚠️ ²|❌ ⁵|✅|
 |Can construct `new DataTransfer()`|✅|❌|❌|❌|❌|
 
 † Here, we are only specifically interested in the case where the handler is called directly in response to a user gesture. I didn't test for behaviour when there is no user gesture.
 
-- ¹ `document.execCommand("copy")`, but listeners for the document's `copy` event aren't fired.
+- ¹ `document.execCommand("copy")` triggers a successul copy action, but listeners for the document's `copy` event aren't fired.
 - ² [WebKit Bug #177715](https://bugs.webkit.org/show_bug.cgi?id=177715)
-- ³ [Edge Bug #14080506](https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/14080506/)
-- ⁴ [Edge Bug #14080262](https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/14080262/)
+- ³ [Edge Bug #14110451](https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/14110451/)
+- ⁴ [Edge Bug #14080506](https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/14080506/)
+- ⁵ [Edge Bug #14080262](https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/14080262/)
 
 ## `supported` always returns true
 
@@ -54,7 +56,7 @@ On all platforms, `document.execCommand("copy")` works during a user gesture, re
 
 In all browsers, `document.execCommand("copy")` fails when there is no user gesture, and returns `false`.
 
-## Can set `setData()` in listener (see issues 3/4 below)
+## `setData()` works in listener (see issues 3/4 below)
 
 This means that the following works:
 
@@ -67,6 +69,12 @@ On iOS, the `setData` call doesn't work – it actually empties the clipboard (a
 Fortunately, it is possible to detect Safari's behaviour (when the value is not empty), because the following returns `""` even after the `setData()` call:
 
       e.clipboardData.getData("text/plain", "plain text")
+
+## `getData()` in listener shows if `setData()` worked
+
+In Edge, `setData()` works inside the copy listener, but `getData` never reports the data that was set, and returns the empty string instead.
+
+Note that on iOS Safari, `getData()` also returns the empty string, but since `setData()` doesn't work, this is the correct return value (And can be used to detect if setting the string succeeded).
 
 ## Copies all types set with `setData()` (see issue 2 below)
 
