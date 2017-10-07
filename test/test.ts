@@ -6,6 +6,14 @@ interface DataTransfer {
   getData: (key: string) => any;
 }
 
+interface IEWindowClipbardData {
+  setData: (key: string, value: string) => void;
+  getData: (key: string) => string;
+}
+
+interface IEWindow extends Window {
+  clipboardData: IEWindowClipbardData
+}
 
 export class Test {
   results: { [key:string]: any } = {};
@@ -164,7 +172,7 @@ export class WindowClipboardData extends Test {
   private tempElem: Element;
  run() {
     this.results["start.enabled"] = document.queryCommandEnabled("copy");
-   window.clipboardData.setData("Text", "WindowClipboardData");
+    (<IEWindow>(window)).clipboardData.setData("Text", "WindowClipboardData");
     this.results["end.enabled"] = document.queryCommandEnabled("copy");
 
   }

@@ -9,23 +9,17 @@ export class clipboard {
     this.DEBUG = true;
   }
 
-  private static debugLog(...args: any[]) {
-    if (this.DEBUG) {
-      (console.info || console.log).apply(console, args);
-    }
-  }
-
   private static suppressMissingPlainTextWarining() {
     this.misingPlainTextWarning = false;
   }
 
   private static copyListener(tracker: clipboard.FallbackTracker, data: clipboard.DT, e: ClipboardEvent): void {
-    this.debugLog("listener called");
+    if (this.DEBUG) (console.info || console.log).call(console, "listener called");
     tracker.listenerCalled = true;
     data.forEach((value: string, key: string) => {
       e.clipboardData.setData(key, value);
       if (key === clipboard.DataTypes.TEXT_PLAIN && e.clipboardData.getData(key) != value) {
-        this.debugLog("Setting text/plain failed.");
+        if (this.DEBUG) (console.info || console.log).call(console, "Setting text/plain failed.");
         tracker.listenerSetPlainTextFailed = true;
       }
     });
@@ -95,14 +89,15 @@ export class clipboard {
       var tracker = new clipboard.FallbackTracker();
       var result = this.execCopy(this.copyListener.bind(this, tracker, data));
       if (tracker.listenerCalled && !tracker.listenerSetPlainTextFailed) {
-        this.debugLog("Regular copy command succeeded.");
+        if (this.DEBUG) (console.info || console.log).call(console, "Regular copy command succeeded.");
         resolve();
         return;
       }
+ 
       // Success detection on Edge is not possible, due to bugs in all 4
       // detection mechanisms we could try to use. Assume success.
       if (navigator.userAgent.indexOf("Edge") > -1) {
-        this.debugLog("User agent contains \"Edge\". Blindly assuming success.");
+        if (this.DEBUG) (console.info || console.log).call(console, "User agent contains \"Edge\". Blindly assuming success.");
         resolve();
         return;
       }
@@ -111,7 +106,7 @@ export class clipboard {
       tracker = new clipboard.FallbackTracker();
       result = this.copyWorkaroundTempSelection(tracker, data);
       if (tracker.listenerCalled && !tracker.listenerSetPlainTextFailed) {
-        this.debugLog("Copied using temporary document selection.");
+        if (this.DEBUG) (console.info || console.log).call(console, "Copied using temporary document selection.");
         resolve();
         return;
       }
@@ -119,7 +114,7 @@ export class clipboard {
       // Fallback for iOS Safari.
       // TODO: Double-check to see that this is needed.
       if (this.copyTextUsingDOM(<string>data.getData(clipboard.DataTypes.TEXT_PLAIN))) {
-        this.debugLog("Copied text using DOM.");
+        if (this.DEBUG) (console.info || console.log).call(console, "Copied text using DOM.");
         resolve();
         return;
       }
@@ -143,14 +138,14 @@ export class clipboard {
   }
 
   // Legacy v1 API.
-  static copy(obj: string|{[key:string]:string}|Element): Promise<void> {
+  static copy(obj: string|{[key:string]:string}|HTMLElement): Promise<void> {
     (console.warn || console.log).call(console, "[clipboard.js] The clipboard.copy() API is deprecated and may be removed in a future version. Please switch to clipboard.write() or clipboard.writeText().");
 
     return new Promise((resolve, reject) => {
       var data: clipboard.DT;
       if (typeof obj === "string") {
         data = clipboard.DT.fromText(obj);
-      } else if (obj instanceof Element) {
+      } else if (obj instanceof HTMLElement) {
         data = clipboard.DT.fromElement(obj);
       } else if (obj instanceof Object){
         data = clipboard.DT.fromObject(obj);
@@ -175,12 +170,16 @@ export namespace clipboard {
     TEXT_HTML: "text/html"
   }
 
+  export const DataTypeLookup: {[key:string]:boolean} = {
+    "text/plain": true,
+    "text/html": true
+  }
+
   export class DT {
     private m: Map<string, string> = new Map<string, string>();
 
     setData(type: string, value: string): void {
-      // TODO: IE doesn't haveObject.values()
-      if (Object.values(clipboard.DataTypes).indexOf(type) === -1) {
+      if (!(type in DataTypeLookup)) {
         (console.warn || console.log).call(console, "[clipboard.js] Unknown data type: " + type);
       }
 
@@ -210,7 +209,7 @@ export namespace clipboard {
       return dt;
     }
 
-    static fromElement(e: Element): DT {
+    static fromElement(e: HTMLElement): DT {
       var dt = new DT();
       dt.setData(clipboard.DataTypes.TEXT_PLAIN, e.innerText);
       dt.setData(clipboard.DataTypes.TEXT_HTML, new XMLSerializer().serializeToString(e));
@@ -238,5 +237,3 @@ export namespace clipboard {
     public listenerSetPlainTextFailed: boolean = false;
   }
 }
-
-// document.addEventListener("copy")
