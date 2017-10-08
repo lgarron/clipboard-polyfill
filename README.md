@@ -12,7 +12,7 @@ As of October 2017, this library is a polyfill for the modern `Promise`-based [a
 
 Get the source using one of the following:
 
-- Download [`build/clipboard-polyfill.js`](./build/clipboard-polyfill.js) and include it using a `<script>` tag.
+- Download [`build/clipboard-polyfill.js`](https://raw.githubusercontent.com/lgarron/clipboard-polyfill/master/build/clipboard-polyfill.js) and include it using a `<script>` tag.
 - `npm install clipboard-polyfill`
 
 ## Write ("Copy")
