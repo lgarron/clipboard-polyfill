@@ -27,7 +27,7 @@ Platforms tested:
 
 † Here, we are only specifically interested in the case where the handler is called directly in response to a user gesture. I didn't test for behaviour when there is no user gesture.
 
-- ¹ `document.execCommand("copy")` triggers a successul copy action, but listeners for the document's `copy` event aren't fired.
+- ¹ `document.execCommand("copy")` triggers a successul copy action, but listeners for the document's `copy` event aren't fired. [WebKit Bug #177715](https://bugs.webkit.org/show_bug.cgi?id=156529)
 - ² [WebKit Bug #177715](https://bugs.webkit.org/show_bug.cgi?id=177715)
 - ³ [Edge Bug #14110451](https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/14110451/)
 - ⁴ [Edge Bug #14080506](https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/14080506/)
