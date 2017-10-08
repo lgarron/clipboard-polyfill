@@ -45,7 +45,7 @@
   <script>
   document.getElementById("markup-copy").addEventListener("click", function() {
     var dt = clipboard.DT.fromObject({
-      "text/plain": "Markup text. Paste me into a rich text editor.",
+      "text/plain": "Fallback markup text. Paste me into a rich text editor.",
       "text/html": "<i>Markup</i> <b>text</b>. Paste me into a rich text editor."
     });
     clipboard.write(dt).then(function(){
