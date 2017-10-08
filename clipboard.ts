@@ -6,62 +6,66 @@ export class clipboard {
 
   // TODO: Compile debug logging code out of release builds?
   private static enableDebugLogging() {
-    this.DEBUG = true;
+    clipboard.DEBUG = true;
   }
 
   private static suppressMissingPlainTextWarning() {
     this.misingPlainTextWarning = false;
   }
 
-  private static copyListener(tracker: clipboard.FallbackTracker, data: clipboard.DT, e: ClipboardEvent): void {
-    if (this.DEBUG) (console.info || console.log).call(console, "listener called");
+  protected static copyListener(tracker: clipboard.FallbackTracker, data: clipboard.DT, e: ClipboardEvent): void {
+    if (clipboard.DEBUG) (console.info || console.log).call(console, "listener called");
     tracker.listenerCalled = true;
     data.forEach((value: string, key: string) => {
       e.clipboardData.setData(key, value);
       if (key === clipboard.DataTypes.TEXT_PLAIN && e.clipboardData.getData(key) != value) {
-        if (this.DEBUG) (console.info || console.log).call(console, "Setting text/plain failed.");
+        if (clipboard.DEBUG) (console.info || console.log).call(console, "Setting text/plain failed.");
         tracker.listenerSetPlainTextFailed = true;
       }
     });
     e.preventDefault();
   }
 
-  private static execCopy(listener: (e: ClipboardEvent) => void): boolean {
-    var result = false;
+  protected static execCopy(data: clipboard.DT): clipboard.FallbackTracker {
+    var tracker = new clipboard.FallbackTracker();
+    var listener = this.copyListener.bind(this, tracker, data);
+
     document.addEventListener("copy", listener);
     try {
-      result = document.execCommand("copy");
-    } catch (e) {
-      // TODO: Expose to Promise.
-      return false;
+      tracker.execCommandReturnedTrue = document.execCommand("copy");
     } finally {
       document.removeEventListener("copy", listener);
     }
-    return result;
+    return tracker;
   }
 
-  // Temporarily select the entire document body, so that `execCommand()` is not
+  // Create a temporary DOM element to select, so that `execCommand()` is not
   // rejected.
-  private static copyUsingBogusSelection(tracker: clipboard.FallbackTracker, data: clipboard.DT): boolean {
-    var success = false;
+  private static copyUsingTempSelection(e: HTMLElement, data: clipboard.DT): clipboard.FallbackTracker {
+    clipboard.Selection.select(e);
+    var tracker = this.execCopy(data);
+    clipboard.Selection.clear();
+    return tracker;
+  }
+
+  // Create a temporary DOM element to select, so that `execCommand()` is not
+  // rejected.
+  private static copyUsingTempElem(data: clipboard.DT): clipboard.FallbackTracker {
     var tempElem = document.createElement("div");
+    // Place some text in the elem so that Safari has something to select.
     tempElem.textContent = "temporary element";
     document.body.appendChild(tempElem);
-    clipboard.Selection.select(tempElem);
-    try {
-      success = this.execCopy(this.copyListener.bind(this, tracker, data));
-    } catch (e) {
-      // TODO: Expose to Promise.
-      return false;
-    } finally {
-      clipboard.Selection.clear();
-      document.body.removeChild(tempElem);
-    }
-    return success;
+
+    var tracker = this.copyUsingTempSelection(tempElem, data);
+
+    document.body.removeChild(tempElem);
+    return tracker;
   }
 
   // Uses shadow DOM.
   private static copyTextUsingDOM(str: string): boolean {
+    if (clipboard.DEBUG) (console.info || console.log).call(console, "attempting to copy text using DOM");
+
     var tempElem = document.createElement("div");
     var shadowRoot = tempElem.attachShadow({mode: "open"});
     document.body.appendChild(tempElem);
@@ -89,28 +93,36 @@ export class clipboard {
         "to suppress this warning.");
     }
 
+    // TODO: Allow fallback graph other than a single line.
+
     return new Promise<void>((resolve, reject) => {
-      var tracker = new clipboard.FallbackTracker();
-      var result = this.execCopy(this.copyListener.bind(this, tracker, data));
+      var tracker = this.execCopy(data);
       if (tracker.listenerCalled && !tracker.listenerSetPlainTextFailed) {
-        if (this.DEBUG) (console.info || console.log).call(console, "Regular copy command succeeded.");
+        if (clipboard.DEBUG) (console.info || console.log).call(console, "Regular copy command succeeded.");
         resolve();
         return;
       }
 
       // Success detection on Edge is not possible, due to bugs in all 4
       // detection mechanisms we could try to use. Assume success.
-      if (navigator.userAgent.indexOf("Edge") > -1) {
-        if (this.DEBUG) (console.info || console.log).call(console, "User agent contains \"Edge\". Blindly assuming success.");
+      if (tracker.listenerCalled && navigator.userAgent.indexOf("Edge") > -1) {
+        if (clipboard.DEBUG) (console.info || console.log).call(console, "User agent contains \"Edge\". Blindly assuming success.");
         resolve();
         return;
       }
 
-      // Fallback for desktop Safari.
-      tracker = new clipboard.FallbackTracker();
-      var result = this.copyUsingBogusSelection(tracker, data);
+      // Fallback 1 for desktop Safari.
+      tracker = this.copyUsingTempSelection(document.body, data);
       if (tracker.listenerCalled && !tracker.listenerSetPlainTextFailed) {
-        if (this.DEBUG) (console.info || console.log).call(console, "Copied using temporary document selection.");
+        if (clipboard.DEBUG) (console.info || console.log).call(console, "Copied using temporary document.body selection.");
+        resolve();
+        return;
+      }
+
+      // Fallback 2 for desktop Safari. 
+      tracker = this.copyUsingTempElem(data);
+      if (tracker.listenerCalled && !tracker.listenerSetPlainTextFailed) {
+        if (clipboard.DEBUG) (console.info || console.log).call(console, "Copied using selection of temporary element added to DOM.");
         resolve();
         return;
       }
@@ -119,12 +131,12 @@ export class clipboard {
       // TODO: Double-check to see that this is needed.
       // TODO: Don't cast.
       if (this.copyTextUsingDOM(<string>data.getData(clipboard.DataTypes.TEXT_PLAIN))) {
-        if (this.DEBUG) (console.info || console.log).call(console, "Copied text using DOM.");
+        if (clipboard.DEBUG) (console.info || console.log).call(console, "Copied text using DOM.");
         resolve();
         return;
       }
 
-      reject(new Error("Copy command failed."));
+      // reject(new Error("Copy command failed."));
     });
   }
 
@@ -238,6 +250,7 @@ export namespace clipboard {
   }
 
   export class FallbackTracker {
+    public execCommandReturnedTrue: boolean = false;
     public listenerCalled: boolean = false;
     public listenerSetPlainTextFailed: boolean = false;
   }
