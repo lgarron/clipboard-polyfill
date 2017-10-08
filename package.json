@@ -1,11 +1,18 @@
 {
-  "name": "clipboard-js",
-  "version": "0.3.5",
-  "description": "A web shim to handle clipboard APIs across browsers using a simple Promise API.",
-  "main": "clipboard.js",
+  "name": "clipboard-polyfill",
+  "version": "0.4.3",
+  "description": "A polyfill for the asynchronous clipboard API",
+  "main": "build/clipboard.js",
   "dependencies": {
+    "es6-promise": "4.1.1"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "webpack-bundle-analyzer": "2.9.0",
+    "ts-loader": "2.3.7",
+    "typescript": "2.5.3",
+    "webpack": "3.6.0",
+    "webpack-notifier": "1.5.0"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/lgarron/clipboard.js"
@@ -19,7 +26,8 @@
     "paste",
     "execCommand",
     "setData",
-    "getData"
+    "getData",
+    "polyfill"
   ],
   "author": "Lucas Garron <code@garron.net> (https://garron.net/)",
   "license": "MIT",

@@ -2,78 +2,56 @@
 
 Make copying on the web as easy as:
 
-    clipboard.copy("This text is plain.");
+    clipboard.writeText("This text is plain.");
 
 Note: in most browsers, copying is only allowed if `clipboard.copy()` is triggered in direct response to a user gesture like a click or a key press.
 
+As of October 2017, this library is a polyfill for the modern `Promise`-based [asynchronous clipboard API](https://www.w3.org/TR/clipboard-apis/#async-clipboard-api).
 
-### Copy rich text
-
-    clipboard.copy({
-      "text/plain": "Markup text. Paste me into a rich text editor.",
-      "text/html": "<i>Markup</i> <b>text</b>. Paste me into a rich text editor."
-    });
-
-
-### Copy a DOM node as markup
-
-    clipboard.copy(document.body);
-
-(Uses [XMLSerializer](https://caniuse.com/#search=XMLSerializer).)
-
-
-### Use the `copy` outcome as a Promise (optional):
-
-    clipboard.copy("test").then(
-      function(){console.log("success");},
-      function(err){console.log("failure", err);}
-    );
-
-
-### Paste
-
-Pasting plain strings currently works in IE.
-
-    clipboard.paste().then(
-      function(result) {console.log(result);},
-      function(err) {console.log("failure", err);}
-    );
-
-
-## Usage
+# Usage
 
 Get the source using one of the following:
 
-- `clipboard.js` or `clipboard.min.js`
-- `npm install clipboard-js`
-- `bower install clipboard.js`
+- Download [`build/clipboard-polyfill.js`](./build/clipboard-polyfill.js) and include it using a `<script>` tag.
+- `npm install clipboard-polyfill`
 
-Load the script:
+## Write ("Copy")
 
-    <script src="clipboard.js"></script>
+    // Copy text
+    clipboard.writeText("hello world");
 
-Then copy a `string` or an `object` (mapping [data types](http://www.w3.org/TR/clipboard-apis/#mandatory-data-types-1) to values) as above.
+    // Copy other data types.
+    var dt = new clipboard.DT();
+    dt.setData("text/plain", "Fallback markup text.");
+    dt.setData("text/html", "<i>Markup</i> <b>text</b>");
+    clipboard.write(dt);
 
+Since copying only works in a user gesture, you should attempt it from inside an event listener, e.g. a button click listener.
 
-## What about [zenorocha/clipboard.js](https://github.com/zenorocha/clipboard.js)?
+## Read ("Paste")
 
-This project is half a year older. :-P  
-I created it partially to test the clipboard API while reviewing it for Chrome (I work on Chrome security), and partially to use in [my own project](https://alg.cubing.net/).
+    // Read text
+    // Fails if the clipboard does not contain `text/plain` data.
+    clipboard.readText().then(console.log, console.error);
 
-I wouldn't have created this project if `zenorocha/clipboard.js` had already existed, but both projects have different uses right now. The fundamental difference is that this project hijacks the copy event, while `zenorocha/clipboard.js` uses fake element selection. Some details (as of November 2015):
+    // Read all data types.
+    clipboard.read().then(console.log, console.error);
 
-This project                                       | `zenorocha/clipboard.js`
----------------------------------------------------|--------------------------
-Supports plain strings, `text/html`, and DOM nodes | Only supports plain strings
-≈100 lines                                         | ≈700 lines
-1.5KB minimized + gzipped                          | 2.9KB minimized + gzipped
-Doesn't change document selection †                | Clears document selection
-Only an imperative API (`clipboard.copy()`)        | Declarative DOM-based API
-Uses `Promise`s                                    | ---
-Supports paste (in IE)                             | ---
----                                                | Offers a fallback prompt (`Press Ctrl+C to copy`)
+Note that reading currently only works in Internet Explorer.
 
-† Copying in Safari doesn't work unless there is a selection. This library [works around that](https://github.com/lgarron/clipboard.js/blob/91f772fdbce2568bb29b376f2bbcb7cf5907dbcd/clipboard.js#L37) by temporarily selecting and deselecting the whole page if nothing was selected to start with. Unfortunately, due to feature detection limits this workaround is also triggered in Chrome when there is no selection.
+## A note on `clipboard.DT`
+
+The asynchronous clipboard API works like this:
+
+    var dt = new DataTransfer();
+    dt.setData("text/plain", "plain text");
+    navigator.clipboard.write(dt);
+
+Ideally, `clipboard-polyfill` would take a `DataTransfer`, so that the code above works verbatim when you replace `navigator.clipboard` with `clipboard`. However, *the `DataTransfer` constructor cannot be called* in most browsers. Thus, this library uses a light-weight alternative to `DataTransfer`, exposed as `clipboard.DT`:
+
+    var dt = new clipboard.DT();
+    dt.setData("text/plain", "plain text");
+    clipboard.write(dt);
 
 
 ## This is way too complicated!
@@ -87,13 +65,25 @@ Try [this gist](https://gist.github.com/lgarron/d1dee380f4ed9d825ca7) for a simp
 - Firefox 41+
 - Opera 29+
 - Internet Explorer 9+ (text only)
+- Edge
 - Desktop Safari 10+
 - iOS Safari 10+ (text only)
 
+This polyfill uses a variety of heuristics to get around compatibility bugs. Please [let us know](https://github.com/lgarron/clipboard-polyfill/issues/new) if you are running into compatibility issues with any of the browsers listed above.
+
 ### Limitations
 
-Whever possible, `clipboard.js` attempts to copy the given data without modifying the current selection or the DOM. However, Safari has a [few](https://bugs.webkit.org/show_bug.cgi?id=156529) [bugs](https://bugs.webkit.org/show_bug.cgi?id=177715). Therefore:
+- In Microsoft Edge, it seems to be impossible to detect whether the copy action actually succeeded ([Edge Bug #14110451](https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/14110451/), [Edge Bug #14080262](https://developer.microsoft.com/en-us/microsoft-edge/platform)). This polyfill will always call `resolve()` in Edge.
+- In Microsoft Edge, only the *first* data type you specify is copied to the clipboard ([Edge Bug #14080506](https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/14080506/)).
+  - `DataTransfer` and `clipbard.DT` keep track of the order in which you set items. If you care which data type Edge copies, call `setData()` with that data type first.
+- On iOS Safari ([WebKit Bug #177715](https://bugs.webkit.org/show_bug.cgi?id=177715)) and Internet Explorer, only text copying works.
+  - In other browsers, writing copy data that does *not* include the `text/plain` data type will succeed, but also show a console warning:
 
-- On desktop Safari, `clipboard.js` selects the entire document and synchronously deselects it after the copy event. There is no flicker, but the previous selection is lost.
-- On iOS Safari, [a bug](https://bugs.webkit.org/show_bug.cgi?id=177715) prevents `clipboard.js` from setting data for data types using the desktop Safari approach. `clipboard.js` will fall back to copying a plain string, by *temporarily inserting an copyable to the end of `document.body`*.
-  - The clipboard will end up empty if the input was a DOM node or an object whose `text/plain` key is not set. It is recommended that you always provide a `text/plain` representation where possible. (If you want to copy a DOM node with a text fallback on iOS, you can use `new XMLSerializer().serializeToString(data)` to get the `text/html` representation of a DOM node yourself, but the `text/plain` representation is up to you.)
+> ⚠️ clipboard.write() was called without a `text/plain` data type. On some platforms, this may result in an empty clipboard. Call clipboard.suppressMissingPlainTextWarning() to suppress this warning.
+
+- `clipboard-polyfill` attemps to avoid changing the document selection or modifying the DOM. However, `clipboard-polyfill` will automatically fall back to using them if needed:
+  - On iOS Safari, the user's current selection will be cleared. This *should* not happen on other platforms unless there are unanticipated bugs. (Please [file an issue](https://github.com/lgarron/clipboard-polyfill/issues/new) if you observe this!)
+  - On iOS Safari and under certain conditions on desktop Safari ([WebKit Bug #177715](https://bugs.webkit.org/show_bug.cgi?id=156529)), `clipbard-polyfill` needs to add a temporary element to the DOM. This will trigger a [mutation observer](https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver) if you have attached one to `document.body`. Please [file an issue](https://github.com/lgarron/clipboard-polyfill/issues/new) if you'd like to discuss how to detect temporary elements added by this library.
+- `read()` currently only works in Internet Explorer.
+  - Internet Explorer can only read `text/plain` values from the clipboard.
+- Internet Explorer does not have a native `Promise` implementation, so the standalone build file for this library also includes `stefanpenner`'s [`es6-promise` polyfill](https://github.com/stefanpenner/es6-promise). This adds significant size to the build. Please [file an issue](https://github.com/lgarron/clipboard-polyfill/issues/new) if you're interested in a minimal build without Internet Explorer support.
