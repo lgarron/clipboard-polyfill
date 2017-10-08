@@ -40,7 +40,7 @@ export default class ClipboardPolyfill {
       }
 
       var tracker = execCopy(data);
-      if (tracker.listenerCalled && !tracker.listenerSetPlainTextFailed) {
+      if (tracker.success) {
         if (DEBUG) (console.info || console.log).call(console, "Regular copy command succeeded.");
         resolve();
         return;
@@ -48,7 +48,7 @@ export default class ClipboardPolyfill {
 
       // Success detection on Edge is not possible, due to bugs in all 4
       // detection mechanisms we could try to use. Assume success.
-      if (tracker.listenerCalled && navigator.userAgent.indexOf("Edge") > -1) {
+      if (tracker.success && navigator.userAgent.indexOf("Edge") > -1) {
         if (DEBUG) (console.info || console.log).call(console, "User agent contains \"Edge\". Blindly assuming success.");
         resolve();
         return;
@@ -56,7 +56,7 @@ export default class ClipboardPolyfill {
 
       // Fallback 1 for desktop Safari.
       tracker = copyUsingTempSelection(document.body, data);
-      if (tracker.listenerCalled && !tracker.listenerSetPlainTextFailed) {
+      if (tracker.success) {
         if (DEBUG) (console.info || console.log).call(console, "Copied using temporary document.body selection.");
         resolve();
         return;
@@ -64,7 +64,7 @@ export default class ClipboardPolyfill {
 
       // Fallback 2 for desktop Safari. 
       tracker = copyUsingTempElem(data);
-      if (tracker.listenerCalled && !tracker.listenerSetPlainTextFailed) {
+      if (tracker.success) {
         if (DEBUG) (console.info || console.log).call(console, "Copied using selection of temporary element added to DOM.");
         resolve();
         return;
@@ -148,19 +148,17 @@ export default class ClipboardPolyfill {
 /******** Implementations ********/
 
 class FallbackTracker {
-  public execCommandReturnedTrue: boolean = false;
-  public listenerCalled: boolean = false;
-  public listenerSetPlainTextFailed: boolean = false;
+  public success: boolean = false;
 }
 
 function copyListener(tracker: FallbackTracker, data: DT, e: ClipboardEvent): void {
   if (DEBUG) (console.info || console.log).call(console, "listener called");
-  tracker.listenerCalled = true;
+  tracker.success = true;
   data.forEach((value: string, key: string) => {
     e.clipboardData.setData(key, value);
     if (key === DataType.TEXT_PLAIN && e.clipboardData.getData(key) != value) {
       if (DEBUG) (console.info || console.log).call(console, "Setting text/plain failed.");
-      tracker.listenerSetPlainTextFailed = true;
+      tracker.success = false;
     }
   });
   e.preventDefault();
@@ -172,7 +170,10 @@ function execCopy(data: DT): FallbackTracker {
 
   document.addEventListener("copy", listener);
   try {
-    tracker.execCommandReturnedTrue = document.execCommand("copy");
+    // We ignore the return value, since FallbackTracker tells us whether the
+    // listener was called. It seems that checking the return value here gives
+    // us no extra information in any browser.
+    document.execCommand("copy");
   } finally {
     document.removeEventListener("copy", listener);
   }
