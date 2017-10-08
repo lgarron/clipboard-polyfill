@@ -2,117 +2,23 @@ import {Promise} from "es6-promise";
 import {DataType} from "./DataType"
 import DT from "./DT";
 
-interface IEWindow extends Window {
-  clipboardData: {
-    setData: (key: string, value: string) => boolean;
-    getData: (key: string) => string|null;
-  }
-}
+var DEBUG: boolean = false;
+var missingPlainTextWarning = true;
 
 export default class ClipboardPolyfill {
-  private static _DEBUG: boolean = false;
-  private static _missingPlainTextWarning = true;
   public static DT = DT;
 
   // TODO: Compile _debug logging code out of release builds?
   public static enableDebugLogging() {
-    this._DEBUG = true;
+    DEBUG = true;
   }
 
   private static suppressMissingPlainTextWarning() {
-    this._missingPlainTextWarning = false;
-  }
-
-  private static _seemToBeInIE() {
-    return typeof ClipboardEvent === "undefined" &&
-           typeof (window as IEWindow).clipboardData !== "undefined" &&
-           typeof (window as IEWindow).clipboardData.setData !== "undefined";
-  }
-
-  protected static _copyListener(tracker: FallbackTracker, data: DT, e: ClipboardEvent): void {
-    if (this._DEBUG) (console.info || console.log).call(console, "listener called");
-    tracker.listenerCalled = true;
-    data.forEach((value: string, key: string) => {
-      e.clipboardData.setData(key, value);
-      if (key === DataType.TEXT_PLAIN && e.clipboardData.getData(key) != value) {
-        if (this._DEBUG) (console.info || console.log).call(console, "Setting text/plain failed.");
-        tracker.listenerSetPlainTextFailed = true;
-      }
-    });
-    e.preventDefault();
-  }
-
-  protected static _execCopy(data: DT): FallbackTracker {
-    var tracker = new FallbackTracker();
-    var listener = this._copyListener.bind(this, tracker, data);
-
-    document.addEventListener("copy", listener);
-    try {
-      tracker.execCommandReturnedTrue = document.execCommand("copy");
-    } finally {
-      document.removeEventListener("copy", listener);
-    }
-    return tracker;
-  }
-
-  // Create a temporary DOM element to select, so that `execCommand()` is not
-  // rejected.
-  private static _copyUsingTempSelection(e: HTMLElement, data: DT): FallbackTracker {
-    Selection.select(e);
-    var tracker = this._execCopy(data);
-    Selection.clear();
-    return tracker;
-  }
-
-  // Create a temporary DOM element to select, so that `execCommand()` is not
-  // rejected.
-  private static _copyUsingTempElem(data: DT): FallbackTracker {
-    var tempElem = document.createElement("div");
-    // Place some text in the elem so that Safari has something to select.
-    tempElem.textContent = "temporary element";
-    document.body.appendChild(tempElem);
-
-    var tracker = this._copyUsingTempSelection(tempElem, data);
-
-    document.body.removeChild(tempElem);
-    return tracker;
-  }
-
-  // Uses shadow DOM.
-  private static _copyTextUsingDOM(str: string): boolean {
-    if (this._DEBUG) (console.info || console.log).call(console, "attempting to copy text using DOM");
-
-    var tempElem = document.createElement("div");
-    var shadowRoot = tempElem.attachShadow({mode: "open"});
-    document.body.appendChild(tempElem);
-
-    var span = document.createElement("span");
-    span.textContent = str;
-    span.style.whiteSpace = "pre-wrap"; // TODO: Use `innerText` above instead?
-    shadowRoot.appendChild(span);
-    Selection.select(span);
-
-    var result = document.execCommand("copy");
-
-    // Selection.clear();
-    document.body.removeChild(tempElem);
-
-    return result;
-  }
-
-  public static writeIE(data: DT): boolean {
-    // IE supports text or URL, but not HTML: https://msdn.microsoft.com/en-us/library/ms536744(v=vs.85).aspx
-    // TODO: Write URLs to `text/uri-list`? https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API/Recommended_drag_types
-    var text = data.getData("text/plain");
-    if (text !== undefined) {
-      return (window as IEWindow).clipboardData.setData("Text", text);
-    }
-
-    throw ("No `text/plain` value was specified.");
+    missingPlainTextWarning = false;
   }
 
   public static write(data: DT): Promise<void> {
-    if (this._missingPlainTextWarning && !data.getData(DataType.TEXT_PLAIN)) {
+    if (missingPlainTextWarning && !data.getData(DataType.TEXT_PLAIN)) {
       (console.warn || console.log).call(console,
         "[clipboard.js] clipboard.write() was called without a "+
         "`text/plain` data type. On some platforms, this may result in an "+
@@ -124,8 +30,8 @@ export default class ClipboardPolyfill {
 
     return new Promise<void>((resolve, reject) => {
       // Internet Explorer
-      if (this._seemToBeInIE()) {
-        if (this.writeIE(data)) {
+      if (seemToBeInIE()) {
+        if (writeIE(data)) {
           resolve()
         } else {
           reject(new Error("Copying failed, possibly because the user rejected it."));
@@ -133,9 +39,9 @@ export default class ClipboardPolyfill {
         return;
       }
 
-      var tracker = this._execCopy(data);
+      var tracker = execCopy(data);
       if (tracker.listenerCalled && !tracker.listenerSetPlainTextFailed) {
-        if (this._DEBUG) (console.info || console.log).call(console, "Regular copy command succeeded.");
+        if (DEBUG) (console.info || console.log).call(console, "Regular copy command succeeded.");
         resolve();
         return;
       }
@@ -143,23 +49,23 @@ export default class ClipboardPolyfill {
       // Success detection on Edge is not possible, due to bugs in all 4
       // detection mechanisms we could try to use. Assume success.
       if (tracker.listenerCalled && navigator.userAgent.indexOf("Edge") > -1) {
-        if (this._DEBUG) (console.info || console.log).call(console, "User agent contains \"Edge\". Blindly assuming success.");
+        if (DEBUG) (console.info || console.log).call(console, "User agent contains \"Edge\". Blindly assuming success.");
         resolve();
         return;
       }
 
       // Fallback 1 for desktop Safari.
-      tracker = this._copyUsingTempSelection(document.body, data);
+      tracker = copyUsingTempSelection(document.body, data);
       if (tracker.listenerCalled && !tracker.listenerSetPlainTextFailed) {
-        if (this._DEBUG) (console.info || console.log).call(console, "Copied using temporary document.body selection.");
+        if (DEBUG) (console.info || console.log).call(console, "Copied using temporary document.body selection.");
         resolve();
         return;
       }
 
       // Fallback 2 for desktop Safari. 
-      tracker = this._copyUsingTempElem(data);
+      tracker = copyUsingTempElem(data);
       if (tracker.listenerCalled && !tracker.listenerSetPlainTextFailed) {
-        if (this._DEBUG) (console.info || console.log).call(console, "Copied using selection of temporary element added to DOM.");
+        if (DEBUG) (console.info || console.log).call(console, "Copied using selection of temporary element added to DOM.");
         resolve();
         return;
       }
@@ -167,7 +73,7 @@ export default class ClipboardPolyfill {
       // Fallback for iOS Safari.
       var text = data.getData(DataType.TEXT_PLAIN);
       if (text !== undefined) {
-        if (this._DEBUG) (console.info || console.log).call(console, "Copied text using DOM.");
+        if (DEBUG) (console.info || console.log).call(console, "Copied text using DOM.");
         resolve();
         return;
       }
@@ -182,14 +88,10 @@ export default class ClipboardPolyfill {
     return this.write(dt);
   }
 
-  public static _readIE(): string|null {
-    return (window as IEWindow).clipboardData.getData("Text");
-  }
-
   static read(): Promise<DT> {
     return new Promise((resolve, reject) => {
-      if (this._seemToBeInIE()) {
-        var text = this._readIE();
+      if (seemToBeInIE()) {
+        var text = readIE();
         if (text === null) {
           reject(new Error("Could not read plain text from clipboard"));
         } else {
@@ -203,8 +105,8 @@ export default class ClipboardPolyfill {
 
   static readText(): Promise<string> {
     return new Promise((resolve, reject) => {
-      if (this._seemToBeInIE()) {
-        var text = this._readIE();
+      if (seemToBeInIE()) {
+        var text = readIE();
         if (text === null) {
           reject(new Error("Could not read plain text from clipboard"));
         } else {
@@ -243,26 +145,131 @@ export default class ClipboardPolyfill {
   }
 }
 
-class Selection {
-  static select(elem: Element): void {
-    var sel = document.getSelection();
-    var range = document.createRange();
-    range.selectNodeContents(elem);
-    sel.removeAllRanges();
-    sel.addRange(range);
-  }
-
-  static clear(): void {
-    var sel = document.getSelection();
-    sel.removeAllRanges();
-  }
-}
+/******** Implementations ********/
 
 class FallbackTracker {
   public execCommandReturnedTrue: boolean = false;
   public listenerCalled: boolean = false;
   public listenerSetPlainTextFailed: boolean = false;
 }
+
+function copyListener(tracker: FallbackTracker, data: DT, e: ClipboardEvent): void {
+  if (DEBUG) (console.info || console.log).call(console, "listener called");
+  tracker.listenerCalled = true;
+  data.forEach((value: string, key: string) => {
+    e.clipboardData.setData(key, value);
+    if (key === DataType.TEXT_PLAIN && e.clipboardData.getData(key) != value) {
+      if (DEBUG) (console.info || console.log).call(console, "Setting text/plain failed.");
+      tracker.listenerSetPlainTextFailed = true;
+    }
+  });
+  e.preventDefault();
+}
+
+function execCopy(data: DT): FallbackTracker {
+  var tracker = new FallbackTracker();
+  var listener = copyListener.bind(this, tracker, data);
+
+  document.addEventListener("copy", listener);
+  try {
+    tracker.execCommandReturnedTrue = document.execCommand("copy");
+  } finally {
+    document.removeEventListener("copy", listener);
+  }
+  return tracker;
+}
+
+// Create a temporary DOM element to select, so that `execCommand()` is not
+// rejected.
+function copyUsingTempSelection(e: HTMLElement, data: DT): FallbackTracker {
+  selectionSet(e);
+  var tracker = execCopy(data);
+  selectionClear();
+  return tracker;
+}
+
+// Create a temporary DOM element to select, so that `execCommand()` is not
+// rejected.
+function copyUsingTempElem(data: DT): FallbackTracker {
+  var tempElem = document.createElement("div");
+  // Place some text in the elem so that Safari has something to select.
+  tempElem.textContent = "temporary element";
+  document.body.appendChild(tempElem);
+
+  var tracker = copyUsingTempSelection(tempElem, data);
+
+  document.body.removeChild(tempElem);
+  return tracker;
+}
+
+// Uses shadow DOM.
+function copyTextUsingDOM(str: string): boolean {
+  if (DEBUG) (console.info || console.log).call(console, "attempting to copy text using DOM");
+
+  var tempElem = document.createElement("div");
+  var shadowRoot = tempElem.attachShadow({mode: "open"});
+  document.body.appendChild(tempElem);
+
+  var span = document.createElement("span");
+  span.textContent = str;
+  span.style.whiteSpace = "pre-wrap"; // TODO: Use `innerText` above instead?
+  shadowRoot.appendChild(span);
+  selectionSet(span);
+
+  var result = document.execCommand("copy");
+
+  // Selection.clear();
+  document.body.removeChild(tempElem);
+
+  return result;
+}
+
+/******** Selection ********/
+
+function selectionSet(elem: Element): void {
+  var sel = document.getSelection();
+  var range = document.createRange();
+  range.selectNodeContents(elem);
+  sel.removeAllRanges();
+  sel.addRange(range);
+}
+
+function selectionClear(): void {
+  var sel = document.getSelection();
+  sel.removeAllRanges();
+}
+
+/******** Internet Explorer ********/
+
+interface IEWindow extends Window {
+  clipboardData: {
+    setData: (key: string, value: string) => boolean;
+    getData: (key: string) => string|null;
+  }
+}
+
+function seemToBeInIE(): boolean {
+  return typeof ClipboardEvent === "undefined" &&
+         typeof (window as IEWindow).clipboardData !== "undefined" &&
+         typeof (window as IEWindow).clipboardData.setData !== "undefined";
+}
+
+function writeIE(data: DT): boolean {
+  // IE supports text or URL, but not HTML: https://msdn.microsoft.com/en-us/library/ms536744(v=vs.85).aspx
+  // TODO: Write URLs to `text/uri-list`? https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API/Recommended_drag_types
+  var text = data.getData("text/plain");
+  if (text !== undefined) {
+    return (window as IEWindow).clipboardData.setData("Text", text);
+  }
+
+  throw ("No `text/plain` value was specified.");
+}
+
+function readIE(): string|null {
+  return (window as IEWindow).clipboardData.getData("Text");
+}
+
+/******** Expose `clipboard` on the global object in browser. ********/
 
 // TODO: Figure out how to expose ClipboardPolyfill as self.clipboard using
 // WebPack?
