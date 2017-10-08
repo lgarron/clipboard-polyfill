@@ -84,13 +84,13 @@ export default class ClipboardPolyfill {
     });
   }
 
-  static writeText(s: string): Promise<void> {
+  public static writeText(s: string): Promise<void> {
     var dt = new DT();
     dt.setData(DataType.TEXT_PLAIN, s);
     return this.write(dt);
   }
 
-  static read(): Promise<DT> {
+  public static read(): Promise<DT> {
     return new Promise((resolve, reject) => {
       if (seemToBeInIE()) {
         var text = readIE();
@@ -105,7 +105,7 @@ export default class ClipboardPolyfill {
     });
   }
 
-  static readText(): Promise<string> {
+  public static readText(): Promise<string> {
     return new Promise((resolve, reject) => {
       if (seemToBeInIE()) {
         var text = readIE();
@@ -121,7 +121,7 @@ export default class ClipboardPolyfill {
   }
 
   // Legacy v1 API.
-  static copy(obj: string|{[key:string]:string}|HTMLElement): Promise<void> {
+  public static copy(obj: string|{[key:string]:string}|HTMLElement): Promise<void> {
     warn("The clipboard.copy() API is deprecated and may be removed in a future version. Please switch to clipboard.write() or clipboard.writeText().");
 
     return new Promise((resolve, reject) => {
@@ -141,7 +141,7 @@ export default class ClipboardPolyfill {
   }
 
   // Legacy v1 API.
-  static paste(): Promise<string> {
+  public static paste(): Promise<string> {
     warn("The clipboard.paste() API is deprecated and may be removed in a future version. Please switch to clipboard.read() or clipboard.readText().");
     return this.readText();
   }
