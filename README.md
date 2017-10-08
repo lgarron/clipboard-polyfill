@@ -21,7 +21,6 @@ Copy text:
 
 Copy other data types:
 
-    // Look below for an explanation of clipboard.DT
     var dt = new clipboard.DT();
     dt.setData("text/plain", "Fallback markup text.");
     dt.setData("text/html", "<i>Markup</i> <b>text</b>");
