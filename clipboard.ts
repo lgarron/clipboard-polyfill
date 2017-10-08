@@ -6,7 +6,7 @@ import DT from "./DT";
 
 interface IEWindowClipbardData {
   setData: (key: string, value: string) => boolean;
-  getData: (key: string) => string | undefined;
+  getData: (key: string) => string|null;
 }
 
 interface IEWindow extends Window {
@@ -25,6 +25,12 @@ export default class ClipboardPolyfill {
 
   private static suppressMissingPlainTextWarning() {
     this.missingPlainTextWarning = false;
+  }
+
+  private static seemToBeInIE() {
+    return typeof ClipboardEvent === "undefined" &&
+           typeof (window as IEWindow).clipboardData !== "undefined" &&
+           typeof (window as IEWindow).clipboardData.setData !== "undefined";
   }
 
   protected static copyListener(tracker: FallbackTracker, data: DT, e: ClipboardEvent): void {
@@ -122,9 +128,7 @@ export default class ClipboardPolyfill {
 
     return new Promise<void>((resolve, reject) => {
       // Internet Explorer
-      if (typeof ClipboardEvent === "undefined" &&
-          typeof (window as IEWindow).clipboardData !== "undefined" &&
-          typeof (window as IEWindow).clipboardData.setData !== "undefined") {
+      if (this.seemToBeInIE()) {
         if (this.writeIE(data)) {
           resolve()
         } else {
@@ -182,12 +186,38 @@ export default class ClipboardPolyfill {
     return this.write(dt);
   }
 
+  public static readIE(): string|null {
+    return (window as IEWindow).clipboardData.getData("Text");
+  }
+
   static read(): Promise<DT> {
-    return new Promise((resolve, reject) => reject("Cannot read in any modern browsers. IE11 pasting is not implemented yet."));
+    return new Promise((resolve, reject) => {
+      if (this.seemToBeInIE()) {
+        var text = this.readIE();
+        if (text === null) {
+          reject(new Error("Could not read plain text from clipboard"));
+        } else {
+          resolve(DT.fromText(text));
+        }
+        return;
+      };
+      reject("Cannot read in any modern browsers.")
+    });
   }
 
   static readText(): Promise<string> {
-    return new Promise((resolve, reject) => reject("Cannot read in any modern browsers. IE11 pasting is not implemented yet."));
+    return new Promise((resolve, reject) => {
+      if (this.seemToBeInIE()) {
+        var text = this.readIE();
+        if (text === null) {
+          reject(new Error("Could not read plain text from clipboard"));
+        } else {
+          resolve(text);
+        }
+        return;
+      };
+      reject("Cannot read in any modern browsers.")
+    });
   }
 
   // Legacy v1 API.
@@ -213,7 +243,7 @@ export default class ClipboardPolyfill {
   // Legacy v1 API.
   static paste(): Promise<string> {
     (console.warn || console.log).call(console, "[clipboard.js] The clipboard.paste() API is deprecated and may be removed in a future version. Please switch to clipboard.read() or clipboard.readText().");
-    return new Promise((resolve, reject) => reject("Cannot read in any modern browsers. IE11 pasting is not implemented yet."));
+    return this.readText();
   }
 }
 
