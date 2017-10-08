@@ -74,7 +74,7 @@ export default class ClipboardPolyfill {
 
       // Fallback for iOS Safari.
       var text = data.getData(DataType.TEXT_PLAIN);
-      if (text !== undefined) {
+      if (text !== undefined && copyTextUsingDOM(text)) {
         debugLog("copyTextUsingDOM worked");
         resolve();
         return;
