@@ -221,7 +221,7 @@ function copyTextUsingDOM(str: string): boolean {
 
   var result = document.execCommand("copy");
 
-  // Selection.clear();
+  selectionClear();
   document.body.removeChild(tempElem);
 
   return result;
