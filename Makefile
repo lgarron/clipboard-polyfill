@@ -12,15 +12,15 @@ analyze:
 
 .PHONY: setup
 setup:
-	git update-index --assume-unchanged build/clipboard.js
+	git update-index --assume-unchanged build/clipboard-polyfill.js
 	yarn install
 
 .PHONY: stage-build
 stage-build:
-	git update-index --no-assume-unchanged build/clipboard.js
+	git update-index --no-assume-unchanged build/clipboard-polyfill.js
 	make prod
-	git stage build/clipboard.js
-	git update-index --assume-unchanged build/clipboard.js
+	git stage build/clipboard-polyfill.js
+	git update-index --assume-unchanged build/clipboard-polyfill.js
 
 .PHONY: deploy
 deploy:
