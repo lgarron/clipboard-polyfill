@@ -64,7 +64,8 @@
   <span id="markup-dom-copy-source" style="font-family: Helvetica;"><i><span style="font-size: 150%">T</span>his</i> <span style="background: orange; padding: 0px 2px">will be</span> <b>copied</b>.</span>
   <script>
   document.getElementById("markup-dom-copy").addEventListener("click", function() {
-    clipboard.copy(document.getElementById("markup-dom-copy-source")).then(function(){
+    var dt = clipboard.DT.fromElement(document.getElementById("markup-dom-copy-source"));
+    clipboard.write(dt).then(function(){
       document.getElementById("markup-dom-copy-result").textContent = "success";
     }, function(err){
       document.getElementById("markup-dom-copy-result").textContent = err;
@@ -78,7 +79,7 @@
   <span id="paste-result"></span>
   <script>
   document.getElementById("paste").addEventListener("click", function() {
-    clipboard.paste().then(function(result) {
+    clipboard.read().then(function(result) {
       document.getElementById("paste-result").textContent = result;
     }, function(err) {
       document.getElementById("paste-result").textContent = err;
