@@ -15,6 +15,13 @@ setup:
 	git update-index --assume-unchanged build/clipboard.js
 	yarn install
 
+.PHONY: stage-build
+stage-build:
+	git update-index --no-assume-unchanged build/clipboard.js
+	make prod
+	git stage build/clipboard.js
+	git update-index --assume-unchanged build/clipboard.js
+
 .PHONY: deploy
 deploy:
 	rsync -avz ./ garron.net:~/garron.net/code/clipboard-polyfill/ \
