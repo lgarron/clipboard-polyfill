@@ -7,7 +7,7 @@ import DT from "./DT";
 var debugLog: (s: string) => void = function(s: string) {};
 var missingPlainTextWarning = true;
 
-var warn = (console.warn || console.log).bind(console, "[clipboard.js]");
+var warn = (console.warn || console.log).bind(console, "[clipboard-polyfill]");
 
 export default class ClipboardPolyfill {
   public static DT = DT;
