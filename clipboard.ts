@@ -9,7 +9,7 @@ export class clipboard {
     this.DEBUG = true;
   }
 
-  private static suppressMissingPlainTextWarining() {
+  private static suppressMissingPlainTextWarning() {
     this.misingPlainTextWarning = false;
   }
 
@@ -85,7 +85,7 @@ export class clipboard {
       (console.warn || console.log).call(console,
         "[clipboard.js] clipboard.write() was called without a "+
         "`text/plain` data type. On some platforms, this may result in an "+
-        "empty clipboard. Call clipboard.suppressMissingPlainTextWarining() "+
+        "empty clipboard. Call clipboard.suppressMissingPlainTextWarning() "+
         "to suppress this warning.");
     }
 
