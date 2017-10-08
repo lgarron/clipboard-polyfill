@@ -28,8 +28,6 @@ export default class ClipboardPolyfill {
         "to suppress this warning.");
     }
 
-    // TODO: Allow fallback graph other than a single line.
-
     return new Promise<void>((resolve, reject) => {
       // Internet Explorer
       if (seemToBeInIE()) {
