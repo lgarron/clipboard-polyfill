@@ -23,7 +23,7 @@ Copy other data types:
 
     var dt = new clipboard.DT();
     dt.setData("text/plain", "Fallback markup text.");
-    dt.setData("text/html", "<i>Markup</i> <b>text</b>");
+    dt.setData("text/html", "<i>Markup</i> <b>text</b>.");
     clipboard.write(dt);
 
 Since copying only works in a user gesture, you should attempt it from inside an event listener, e.g. a button click listener.
