@@ -44,6 +44,22 @@ Read all data types:
 
 Note that reading currently only works in Internet Explorer.
 
+## Interface
+
+    clipboard {
+      static write:     (data: clipboard.DT)  => Promise<void>
+      static writeText: (s: string) => Promise<void>
+      static read:      () => Promise<clipboard.DT>
+      static readText:  () => Promise<string>
+      static suppressMissingPlainTextWarning: () => void
+    }
+
+    clipboard.DT {
+      constructor()
+      setData: (type: string, value: string): void
+      getData: (type: string): string | undefined
+    }
+
 ## A note on `clipboard.DT`
 
 The asynchronous clipboard API works like this:
