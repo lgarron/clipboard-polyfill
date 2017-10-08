@@ -164,7 +164,7 @@ export class clipboard {
         data = clipboard.DT.fromText(obj);
       } else if (obj instanceof HTMLElement) {
         data = clipboard.DT.fromElement(obj);
-      } else if (obj instanceof Object){
+      } else if (obj instanceof Object) {
         data = clipboard.DT.fromObject(obj);
       } else {
         reject("Invalid data type. Must be string, DOM node, or an object mapping MIME types to strings.");
