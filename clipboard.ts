@@ -2,13 +2,13 @@ import {Promise} from "es6-promise";
 import {DataTypes} from "./DataTypes"
 import DT from "./DT";
 
-interface IEWindowClipbardData {
+interface IEWindowClipboardData {
   setData: (key: string, value: string) => boolean;
   getData: (key: string) => string|null;
 }
 
 interface IEWindow extends Window {
-  clipboardData: IEWindowClipbardData
+  clipboardData: IEWindowClipboardData
 }
 
 export default class ClipboardPolyfill {
