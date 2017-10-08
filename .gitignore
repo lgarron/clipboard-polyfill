@@ -1,4 +1,4 @@
 *.js
 *.js.map
 /node_modules
-!build/clipboard.js
+!/build/clipboard.js
