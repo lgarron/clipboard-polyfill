@@ -15,7 +15,7 @@ interface IEWindow extends Window {
 
 export default class ClipboardPolyfill {
   private static DEBUG: boolean = false;
-  private static misingPlainTextWarning = true;
+  private static missingPlainTextWarning = true;
   public static DT = DT;
 
   // TODO: Compile debug logging code out of release builds?
@@ -24,7 +24,7 @@ export default class ClipboardPolyfill {
   }
 
   private static suppressMissingPlainTextWarning() {
-    this.misingPlainTextWarning = false;
+    this.missingPlainTextWarning = false;
   }
 
   protected static copyListener(tracker: FallbackTracker, data: DT, e: ClipboardEvent): void {
@@ -110,7 +110,7 @@ export default class ClipboardPolyfill {
   }
 
   public static write(data: DT): Promise<void> {
-    if (this.misingPlainTextWarning && !data.getData(DataTypes.TEXT_PLAIN)) {
+    if (this.missingPlainTextWarning && !data.getData(DataTypes.TEXT_PLAIN)) {
       (console.warn || console.log).call(console,
         "[clipboard.js] clipboard.write() was called without a "+
         "`text/plain` data type. On some platforms, this may result in an "+
