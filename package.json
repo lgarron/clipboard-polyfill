@@ -1,8 +1,8 @@
 {
   "name": "clipboard-polyfill",
-  "version": "0.4.0",
+  "version": "0.4.2",
   "description": "A polyfill for the asynchronous clipboard API",
-  "main": "clipboard.js",
+  "main": "build/clipboard.js",
   "dependencies": {
     "es6-promise": "4.1.1"
   },
