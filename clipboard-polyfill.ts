@@ -10,7 +10,7 @@ var missingPlainTextWarning = true;
 var warn = (console.warn || console.log).bind(console, "[clipboard-polyfill]");
 
 export default class ClipboardPolyfill {
-  public static DT = DT;
+  public static readonly DT = DT;
 
   public static setDebugLog(f: (s: string) => void): void {
     debugLog = f;
