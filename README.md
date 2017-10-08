@@ -4,8 +4,6 @@ Make copying on the web as easy as:
 
     clipboard.writeText("This text is plain.");
 
-Note: in most browsers, copying is only allowed if `clipboard.copy()` is triggered in direct response to a user gesture like a click or a key press.
-
 As of October 2017, this library is a polyfill for the modern `Promise`-based [asynchronous clipboard API](https://www.w3.org/TR/clipboard-apis/#async-clipboard-api).
 
 # Usage
