@@ -5,7 +5,7 @@
   <link rel="stylesheet" href="index.css">
   <script src="build/clipboard.js"></script>
   <script>
-    clipboard.enableDebugLogging();
+    clipboard.setDebugLog((console.info || console.log).bind(console));
   </script>
   <style>
     .editable {

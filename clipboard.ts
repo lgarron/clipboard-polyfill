@@ -2,15 +2,16 @@ import {Promise} from "es6-promise";
 import {DataType} from "./DataType"
 import DT from "./DT";
 
-var DEBUG: boolean = false;
+// Debug log strings shorts, since they are copmiled into the production build.
+// TODO: Compile debug logging code out of production builds?
+var debugLog: (s: string) => void = function(s: string) {};
 var missingPlainTextWarning = true;
 
 export default class ClipboardPolyfill {
   public static DT = DT;
 
-  // TODO: Compile _debug logging code out of release builds?
-  public static enableDebugLogging() {
-    DEBUG = true;
+  public static setDebugLog(f: (s: string) => void): void {
+    debugLog = f;
   }
 
   private static suppressMissingPlainTextWarning() {
@@ -41,7 +42,7 @@ export default class ClipboardPolyfill {
 
       var tracker = execCopy(data);
       if (tracker.success) {
-        if (DEBUG) (console.info || console.log).call(console, "Regular copy command succeeded.");
+        debugLog("regular execCopy worked");
         resolve();
         return;
       }
@@ -49,7 +50,7 @@ export default class ClipboardPolyfill {
       // Success detection on Edge is not possible, due to bugs in all 4
       // detection mechanisms we could try to use. Assume success.
       if (tracker.success && navigator.userAgent.indexOf("Edge") > -1) {
-        if (DEBUG) (console.info || console.log).call(console, "User agent contains \"Edge\". Blindly assuming success.");
+        debugLog("UA \"Edge\" => assuming success");
         resolve();
         return;
       }
@@ -57,7 +58,7 @@ export default class ClipboardPolyfill {
       // Fallback 1 for desktop Safari.
       tracker = copyUsingTempSelection(document.body, data);
       if (tracker.success) {
-        if (DEBUG) (console.info || console.log).call(console, "Copied using temporary document.body selection.");
+        debugLog("copyUsingTempSelection worked");
         resolve();
         return;
       }
@@ -65,7 +66,7 @@ export default class ClipboardPolyfill {
       // Fallback 2 for desktop Safari. 
       tracker = copyUsingTempElem(data);
       if (tracker.success) {
-        if (DEBUG) (console.info || console.log).call(console, "Copied using selection of temporary element added to DOM.");
+        debugLog("copyUsingTempElem worked");
         resolve();
         return;
       }
@@ -73,7 +74,7 @@ export default class ClipboardPolyfill {
       // Fallback for iOS Safari.
       var text = data.getData(DataType.TEXT_PLAIN);
       if (text !== undefined) {
-        if (DEBUG) (console.info || console.log).call(console, "Copied text using DOM.");
+        debugLog("copyTextUsingDOM worked");
         resolve();
         return;
       }
@@ -152,12 +153,12 @@ class FallbackTracker {
 }
 
 function copyListener(tracker: FallbackTracker, data: DT, e: ClipboardEvent): void {
-  if (DEBUG) (console.info || console.log).call(console, "listener called");
+  debugLog("listener called");
   tracker.success = true;
   data.forEach((value: string, key: string) => {
     e.clipboardData.setData(key, value);
     if (key === DataType.TEXT_PLAIN && e.clipboardData.getData(key) != value) {
-      if (DEBUG) (console.info || console.log).call(console, "Setting text/plain failed.");
+      debugLog("setting text/plain failed");
       tracker.success = false;
     }
   });
@@ -205,7 +206,7 @@ function copyUsingTempElem(data: DT): FallbackTracker {
 
 // Uses shadow DOM.
 function copyTextUsingDOM(str: string): boolean {
-  if (DEBUG) (console.info || console.log).call(console, "attempting to copy text using DOM");
+  debugLog("copyTextUsingDOM");
 
   var tempElem = document.createElement("div");
   var shadowRoot = tempElem.attachShadow({mode: "open"});
