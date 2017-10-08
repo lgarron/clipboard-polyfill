@@ -1,10 +1,10 @@
-import {DataTypes, DataTypeLookup} from "./DataTypes"
+import {DataType, DataTypeLookup} from "./DataType"
 
 export default class DT {
   private m: Map<string, string> = new Map<string, string>();
 
   setData(type: string, value: string): void {
-    if (!(type in DataTypeLookup)) {
+    if (!(DataTypeLookup.has(type))) {
       (console.warn || console.log).call(console, "[clipboard.js] Unknown data type: " + type);
     }
 
@@ -22,7 +22,7 @@ export default class DT {
 
   static fromText(s: string): DT {
     var dt = new DT();
-    dt.setData(DataTypes.TEXT_PLAIN, s);
+    dt.setData(DataType.TEXT_PLAIN, s);
     return dt;
   }
 
@@ -36,8 +36,8 @@ export default class DT {
 
   static fromElement(e: HTMLElement): DT {
     var dt = new DT();
-    dt.setData(DataTypes.TEXT_PLAIN, e.innerText);
-    dt.setData(DataTypes.TEXT_HTML, new XMLSerializer().serializeToString(e));
+    dt.setData(DataType.TEXT_PLAIN, e.innerText);
+    dt.setData(DataType.TEXT_HTML, new XMLSerializer().serializeToString(e));
     return dt;
   }
 }

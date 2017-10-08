@@ -1,5 +1,5 @@
 import {Promise} from "es6-promise";
-import {DataTypes} from "./DataTypes"
+import {DataType} from "./DataType"
 import DT from "./DT";
 
 interface IEWindow extends Window {
@@ -34,7 +34,7 @@ export default class ClipboardPolyfill {
     tracker.listenerCalled = true;
     data.forEach((value: string, key: string) => {
       e.clipboardData.setData(key, value);
-      if (key === DataTypes.TEXT_PLAIN && e.clipboardData.getData(key) != value) {
+      if (key === DataType.TEXT_PLAIN && e.clipboardData.getData(key) != value) {
         if (this.DEBUG) (console.info || console.log).call(console, "Setting text/plain failed.");
         tracker.listenerSetPlainTextFailed = true;
       }
@@ -112,7 +112,7 @@ export default class ClipboardPolyfill {
   }
 
   public static write(data: DT): Promise<void> {
-    if (this.missingPlainTextWarning && !data.getData(DataTypes.TEXT_PLAIN)) {
+    if (this.missingPlainTextWarning && !data.getData(DataType.TEXT_PLAIN)) {
       (console.warn || console.log).call(console,
         "[clipboard.js] clipboard.write() was called without a "+
         "`text/plain` data type. On some platforms, this may result in an "+
@@ -165,7 +165,7 @@ export default class ClipboardPolyfill {
       }
 
       // Fallback for iOS Safari.
-      var text = data.getData(DataTypes.TEXT_PLAIN);
+      var text = data.getData(DataType.TEXT_PLAIN);
       if (text !== undefined) {
         if (this.DEBUG) (console.info || console.log).call(console, "Copied text using DOM.");
         resolve();
@@ -178,7 +178,7 @@ export default class ClipboardPolyfill {
 
   static writeText(s: string): Promise<void> {
     var dt = new DT();
-    dt.setData(DataTypes.TEXT_PLAIN, s);
+    dt.setData(DataType.TEXT_PLAIN, s);
     return this.write(dt);
   }
 
