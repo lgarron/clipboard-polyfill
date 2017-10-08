@@ -22,6 +22,7 @@ Platforms tested:
 |`getData()` in listener shows if `setData()` worked|✅|✅|⚠️ ²|❌ ³|✅|
 |Copies all types set with `setData()`|✅|✅|✅|❌ ⁴|✅|
 |`exec` reports success correctly|✅|✅|⚠️ ²|❌ ⁵|✅|
+|`contenteditable` does not break document seleciton|❌|❌|❌|✅|✅|
 |Can construct `new DataTransfer()`|✅|❌|❌|❌|❌|
 
 † Here, we are only specifically interested in the case where the handler is called directly in response to a user gesture. I didn't test for behaviour when there is no user gesture.
@@ -101,6 +102,19 @@ Most platforms correctly report if `document.execCommand("copy")` successfully c
 On iOS, `document.execCommand("copy")` also returns `true` when `event.clipboardData.setData()` clears the clipboard. In this case, the clipboard is set to empty, but the return value is arguably correct once we account for the relevant bug.
 
 Edge, however, *always* returns `false`. Even when the copy attempt succeeds.
+
+## `contenteditable` does not break document seleciton
+
+Consider the following code:
+
+    var sel = document.getSelection();
+    var range = document.createRange();
+    range.selectNodeContents(document.body);
+    sel.addRange(range);
+
+This fails in Chrome and Safari if the last content in the DOM is the following:
+
+    <div contenteditable="true" class="editable"></div>
 
 ## Can construct `new DataTransfer()` (see issue 6 below)
 

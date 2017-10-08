@@ -42,16 +42,20 @@ export class clipboard {
 
   // Temporarily select the entire document body, so that `execCommand()` is not
   // rejected.
-  private static copyWorkaroundTempSelection(tracker: clipboard.FallbackTracker, data: clipboard.DT): boolean {
+  private static copyUsingBogusSelection(tracker: clipboard.FallbackTracker, data: clipboard.DT): boolean {
     var success = false;
-    clipboard.Selection.select(document.body);
+    var tempElem = document.createElement("div");
+    tempElem.textContent = "temporary element";
+    document.body.appendChild(tempElem);
+    clipboard.Selection.select(tempElem);
     try {
-      this.execCopy(this.copyListener.bind(this, tracker, data));
+      success = this.execCopy(this.copyListener.bind(this, tracker, data));
     } catch (e) {
       // TODO: Expose to Promise.
       return false;
     } finally {
       clipboard.Selection.clear();
+      document.body.removeChild(tempElem);
     }
     return success;
   }
@@ -70,7 +74,7 @@ export class clipboard {
 
     var result = document.execCommand("copy");
 
-    clipboard.Selection.clear();
+    // clipboard.Selection.clear();
     document.body.removeChild(tempElem);
 
     return result;
@@ -93,7 +97,7 @@ export class clipboard {
         resolve();
         return;
       }
- 
+
       // Success detection on Edge is not possible, due to bugs in all 4
       // detection mechanisms we could try to use. Assume success.
       if (navigator.userAgent.indexOf("Edge") > -1) {
@@ -104,7 +108,7 @@ export class clipboard {
 
       // Fallback for desktop Safari.
       tracker = new clipboard.FallbackTracker();
-      result = this.copyWorkaroundTempSelection(tracker, data);
+      var result = this.copyUsingBogusSelection(tracker, data);
       if (tracker.listenerCalled && !tracker.listenerSetPlainTextFailed) {
         if (this.DEBUG) (console.info || console.log).call(console, "Copied using temporary document selection.");
         resolve();
@@ -113,6 +117,7 @@ export class clipboard {
 
       // Fallback for iOS Safari.
       // TODO: Double-check to see that this is needed.
+      // TODO: Don't cast.
       if (this.copyTextUsingDOM(<string>data.getData(clipboard.DataTypes.TEXT_PLAIN))) {
         if (this.DEBUG) (console.info || console.log).call(console, "Copied text using DOM.");
         resolve();
