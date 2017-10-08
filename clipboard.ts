@@ -7,6 +7,8 @@ import DT from "./DT";
 var debugLog: (s: string) => void = function(s: string) {};
 var missingPlainTextWarning = true;
 
+var warn = (console.warn || console.log).bind(console, "[clipboard.js]");
+
 export default class ClipboardPolyfill {
   public static DT = DT;
 
@@ -20,8 +22,7 @@ export default class ClipboardPolyfill {
 
   public static write(data: DT): Promise<void> {
     if (missingPlainTextWarning && !data.getData(DataType.TEXT_PLAIN)) {
-      (console.warn || console.log).call(console,
-        "[clipboard.js] clipboard.write() was called without a "+
+      warn("clipboard.write() was called without a "+
         "`text/plain` data type. On some platforms, this may result in an "+
         "empty clipboard. Call clipboard.suppressMissingPlainTextWarning() "+
         "to suppress this warning.");
@@ -121,7 +122,7 @@ export default class ClipboardPolyfill {
 
   // Legacy v1 API.
   static copy(obj: string|{[key:string]:string}|HTMLElement): Promise<void> {
-    (console.warn || console.log).call(console, "[clipboard.js] The clipboard.copy() API is deprecated and may be removed in a future version. Please switch to clipboard.write() or clipboard.writeText().");
+    warn("The clipboard.copy() API is deprecated and may be removed in a future version. Please switch to clipboard.write() or clipboard.writeText().");
 
     return new Promise((resolve, reject) => {
       var data: DT;
@@ -141,7 +142,7 @@ export default class ClipboardPolyfill {
 
   // Legacy v1 API.
   static paste(): Promise<string> {
-    (console.warn || console.log).call(console, "[clipboard.js] The clipboard.paste() API is deprecated and may be removed in a future version. Please switch to clipboard.read() or clipboard.readText().");
+    warn("The clipboard.paste() API is deprecated and may be removed in a future version. Please switch to clipboard.read() or clipboard.readText().");
     return this.readText();
   }
 }
