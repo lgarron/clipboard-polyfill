@@ -16,7 +16,7 @@ export default class ClipboardPolyfill {
     debugLog = f;
   }
 
-  private static suppressMissingPlainTextWarning() {
+  public static suppressMissingPlainTextWarning() {
     missingPlainTextWarning = false;
   }
 
