@@ -91,30 +91,24 @@ export default class ClipboardPolyfill {
   public static read(): Promise<DT> {
     return new Promise((resolve, reject) => {
       if (seemToBeInIE()) {
-        var text = readIE();
-        if (text === "") {
-          reject(new Error("Empty clipboard or could not read plain text from clipboard"));
-        } else {
-          resolve(DT.fromText(text));
-        }
+        readIE().then(
+          (s: string) => resolve(DT.fromText(s)),
+          reject
+        );
         return;
-      };
-      reject("Cannot read in any modern browsers.")
+      }
+      // TODO: Attempt to read using async clipboard API.
+      reject("Read is not supported in your browser.")
     });
   }
 
   public static readText(): Promise<string> {
+    if (seemToBeInIE()) {
+      return readIE();
+    }
     return new Promise((resolve, reject) => {
-      if (seemToBeInIE()) {
-        var text = readIE();
-        if (text === "") {
-          reject(new Error("Empty clipboard or could not read plain text from clipboard"));
-        } else {
-          resolve(text);
-        }
-        return;
-      };
-      reject("Cannot read in any modern browsers.")
+      // TODO: Attempt to read using async clipboard API.
+      reject("Read is not supported in your browser.")
     });
   }
 
@@ -245,7 +239,8 @@ function selectionClear(): void {
 interface IEWindow extends Window {
   clipboardData: {
     setData: (key: string, value: string) => boolean;
-    getData: (key: string) => string|null;
+    // Always results in a string: https://msdn.microsoft.com/en-us/library/ms536436(v=vs.85).aspx
+    getData: (key: string) => string;
   }
 }
 
@@ -266,10 +261,16 @@ function writeIE(data: DT): boolean {
   throw ("No `text/plain` value was specified.");
 }
 
-// Always results in a string: https://msdn.microsoft.com/en-us/library/ms536436(v=vs.85).aspx
 // Returns "" if the read failed, e.g. because rejected the permission.
-function readIE(): string {
-  return (window as IEWindow).clipboardData.getData("Text");
+function readIE(): Promise<string> {
+  return new Promise((resolve, reject) => {
+    var text = (window as IEWindow).clipboardData.getData("Text");
+    if (text === "") {
+      reject(new Error("Empty clipboard or could not read plain text from clipboard"));
+    } else {
+      resolve(text);
+    }
+  })
 }
 
 /******** Expose `clipboard` on the global object in browser. ********/
