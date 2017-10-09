@@ -15,8 +15,8 @@ setup:
 	git update-index --assume-unchanged build/clipboard-polyfill.js
 	yarn install
 
-.PHONY: stage-build
-stage-build:
+.PHONY: build-for-git
+build-for-git:
 	git update-index --no-assume-unchanged build/clipboard-polyfill.js
 	make prod
 	git stage build/clipboard-polyfill.js
