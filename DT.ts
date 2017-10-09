@@ -1,11 +1,14 @@
 import {DataType, DataTypeLookup} from "./DataType"
 
+// TODO: Dedup with main file?
+var warn = (console.warn || console.log).bind(console, "[clipboard-polyfill]");
+
 export default class DT {
   private m: Map<string, string> = new Map<string, string>();
 
   public setData(type: string, value: string): void {
     if (!(DataTypeLookup.has(type))) {
-      (console.warn || console.log).call(console, "[clipboard.js] Unknown data type: " + type);
+      warn("Unknown data type: " + type);
     }
 
     this.m.set(type, value);

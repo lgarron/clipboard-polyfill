@@ -171,4 +171,4 @@ We also need to add some more polyfilling than we might like:
   - Workaround: Provide an object with a sufficiently ergonomic subset of the interface of `DataTransfer` that the caller can use. (We can swap out the implementation with `DataTransfer` as platforms allow calling the constructor directly.)
 
 - **Issue 7**: Internet Explorer did its own thing.
-  - Workaround: [old implementation](https://github.com/lgarron/clipboard.js/blob/94c9df4aa2ce1ca1b08280bf36923b65648d9f72/clipboard.js#L167) using `window.clipboardData`. Requires a `Promise` polyfill. :-/
+  - Workaround: [old implementation](https://github.com/lgarron/clipboard-polyfill/blob/94c9df4aa2ce1ca1b08280bf36923b65648d9f72/clipboard-polyfill#L167) using `window.clipboardData`. Requires a `Promise` polyfill. :-/

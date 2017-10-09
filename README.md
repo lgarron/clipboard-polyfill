@@ -1,4 +1,4 @@
-# `clipboard.js`
+# `clipboard-polyfill`
 
 Make copying on the web as easy as:
 

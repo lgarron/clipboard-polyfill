@@ -15,7 +15,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/lgarron/clipboard.js"
+    "url": "https://github.com/lgarron/clipboard-polyfill"
   },
   "keywords": [
     "clipboard",
@@ -32,6 +32,6 @@
   "author": "Lucas Garron <code@garron.net> (https://garron.net/)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/lgarron/clipboard.js/issues"
+    "url": "https://github.com/lgarron/clipboard-polyfill/issues"
   }
 }
