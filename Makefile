@@ -1,5 +1,5 @@
-.PHONY: build-watch
-build-watch:
+.PHONY: dev
+dev:
 	./node_modules/.bin/webpack --watch
 
 .PHONY: prod
