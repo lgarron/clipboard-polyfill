@@ -31,7 +31,7 @@
   <script>
   document.getElementById("plain-copy").addEventListener("click", function() {
     var resultField = document.getElementById("plain-copy-result");
-    
+
     clipboard.writeText("This text is plain.").then(function(){
       resultField.textContent = "success";
     }, function(err){
@@ -47,7 +47,7 @@
   <script>
   document.getElementById("markup-copy").addEventListener("click", function() {
     var resultField = document.getElementById("markup-copy-result");
-    
+
     var dt = clipboard.DT.fromObject({
       "text/plain": "Fallback markup text. Paste me into a rich text editor.",
       "text/html": "<i>Markup</i> <b>text</b>. Paste me into a rich text editor."
@@ -69,7 +69,7 @@
   <script>
   document.getElementById("markup-dom-copy").addEventListener("click", function() {
     var resultField = document.getElementById("markup-dom-copy-result");
-    
+
     var dt = clipboard.DT.fromElement(document.getElementById("markup-dom-copy-source"));
     clipboard.write(dt).then(function(){
       resultField.textContent = "success";
@@ -86,8 +86,8 @@
   <script>
   document.getElementById("paste").addEventListener("click", function() {
     var resultField = document.getElementById("paste-result");
-    
-    clipboard.read().then(function(result) {
+
+    clipboard.readText().then(function(result) {
       resultField.textContent = result;
     }, function(err) {
       resultField.textContent = err;

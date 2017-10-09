@@ -92,8 +92,8 @@ export default class ClipboardPolyfill {
     return new Promise((resolve, reject) => {
       if (seemToBeInIE()) {
         var text = readIE();
-        if (text === null) {
-          reject(new Error("Could not read plain text from clipboard"));
+        if (text === "") {
+          reject(new Error("Empty clipboard or could not read plain text from clipboard"));
         } else {
           resolve(DT.fromText(text));
         }
@@ -107,8 +107,8 @@ export default class ClipboardPolyfill {
     return new Promise((resolve, reject) => {
       if (seemToBeInIE()) {
         var text = readIE();
-        if (text === null) {
-          reject(new Error("Could not read plain text from clipboard"));
+        if (text === "") {
+          reject(new Error("Empty clipboard or could not read plain text from clipboard"));
         } else {
           resolve(text);
         }
@@ -212,8 +212,8 @@ function copyTextUsingDOM(str: string): boolean {
   document.body.appendChild(tempElem);
 
   var span = document.createElement("span");
-  span.textContent = str;
-  span.style.whiteSpace = "pre-wrap"; // TODO: Use `innerText` above instead?
+  span.innerText = str;
+  // span.style.whiteSpace = "pre-wrap"; // TODO: Use `innerText` above instead?
   shadowRoot.appendChild(span);
   selectionSet(span);
 
@@ -266,7 +266,9 @@ function writeIE(data: DT): boolean {
   throw ("No `text/plain` value was specified.");
 }
 
-function readIE(): string|null {
+// Always results in a string: https://msdn.microsoft.com/en-us/library/ms536436(v=vs.85).aspx
+// Returns "" if the read failed, e.g. because rejected the permission.
+function readIE(): string {
   return (window as IEWindow).clipboardData.getData("Text");
 }
 
