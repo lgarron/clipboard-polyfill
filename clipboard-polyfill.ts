@@ -48,7 +48,7 @@ export default class ClipboardPolyfill {
 
       // Success detection on Edge is not possible, due to bugs in all 4
       // detection mechanisms we could try to use. Assume success.
-      if (tracker.success && navigator.userAgent.indexOf("Edge") > -1) {
+      if (navigator.userAgent.indexOf("Edge") > -1) {
         debugLog("UA \"Edge\" => assuming success");
         resolve();
         return;
