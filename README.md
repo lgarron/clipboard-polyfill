@@ -93,7 +93,7 @@ Try [this gist](https://gist.github.com/lgarron/d1dee380f4ed9d825ca7) for a simp
 
 ### Limitations
 
-- In Microsoft Edge, it seems to be impossible to detect whether the copy action actually succeeded ([Edge Bug #14110451](https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/14110451/), [Edge Bug #14080262](https://developer.microsoft.com/en-us/microsoft-edge/platform)). `clipboard-polyfill` will always call `resolve()` in Edge.
+- In Microsoft Edge, it seems to be impossible to detect whether the copy action actually succeeded ([Edge Bug #14110451](https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/14110451/), [Edge Bug #14080262](https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/14080262/)). `clipboard-polyfill` will always call `resolve()` in Edge.
 - In Microsoft Edge, only the *first* data type you specify is copied to the clipboard ([Edge Bug #14080506](https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/14080506/)).
   - `DataTransfer` and `clipbard.DT` keep track of the order in which you set items. If you care which data type Edge copies, call `setData()` with that data type first.
 - On iOS Safari ([WebKit Bug #177715](https://bugs.webkit.org/show_bug.cgi?id=177715)) and Internet Explorer, only text copying works.
