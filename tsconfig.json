@@ -6,6 +6,7 @@
     "sourceMap": true,
     "strictNullChecks": true,
     "lib": ["es6", "DOM"],
-    "target": "es5"
+    "target": "es5",
+    "declaration": true
   }
 }

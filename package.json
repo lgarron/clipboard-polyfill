@@ -3,6 +3,7 @@
   "version": "2.0.3",
   "description": "A polyfill for the asynchronous clipboard API",
   "main": "build/clipboard-polyfill.js",
+  "types": "build/clipboard-polyfill.d.ts",
   "dependencies": {
     "es6-promise": "4.1.1"
   },
