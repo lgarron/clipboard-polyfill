@@ -24,3 +24,9 @@ deploy:
 	rsync -avz ./ garron.net:~/garron.net/code/clipboard-polyfill/ \
 		--exclude .git \
 		--exclude node_modules
+
+.PHONY: publish
+publish: deploy
+	git push --tags origin
+	git push origin master
+	npm publish
