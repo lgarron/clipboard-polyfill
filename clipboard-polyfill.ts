@@ -1,11 +1,12 @@
 import {Promise} from "es6-promise";
-import {DataType} from "./DataType"
 import DT from "./DT";
 
 // Debug log strings shorts, since they are copmiled into the production build.
 // TODO: Compile debug logging code out of production builds?
 var debugLog: (s: string) => void = function(s: string) {};
 var missingPlainTextWarning = true;
+
+var TEXT_PLAIN = "text/plain";
 
 var warn = (console.warn || console.log).bind(console, "[clipboard-polyfill]");
 
@@ -21,7 +22,7 @@ export default class ClipboardPolyfill {
   }
 
   public static write(data: DT): Promise<void> {
-    if (missingPlainTextWarning && !data.getData(DataType.TEXT_PLAIN)) {
+    if (missingPlainTextWarning && !data.getData(TEXT_PLAIN)) {
       warn("clipboard.write() was called without a "+
         "`text/plain` data type. On some platforms, this may result in an "+
         "empty clipboard. Call clipboard.suppressMissingPlainTextWarning() "+
@@ -71,7 +72,7 @@ export default class ClipboardPolyfill {
       }
 
       // Fallback for iOS Safari.
-      var text = data.getData(DataType.TEXT_PLAIN);
+      var text = data.getData(TEXT_PLAIN);
       if (text !== undefined && copyTextUsingDOM(text)) {
         debugLog("copyTextUsingDOM worked");
         resolve();
@@ -84,7 +85,7 @@ export default class ClipboardPolyfill {
 
   public static writeText(s: string): Promise<void> {
     var dt = new DT();
-    dt.setData(DataType.TEXT_PLAIN, s);
+    dt.setData(TEXT_PLAIN, s);
     return this.write(dt);
   }
 
@@ -150,7 +151,7 @@ function copyListener(tracker: FallbackTracker, data: DT, e: ClipboardEvent): vo
   tracker.success = true;
   data.forEach((value: string, key: string) => {
     e.clipboardData.setData(key, value);
-    if (key === DataType.TEXT_PLAIN && e.clipboardData.getData(key) != value) {
+    if (key === TEXT_PLAIN && e.clipboardData.getData(key) != value) {
       debugLog("setting text/plain failed");
       tracker.success = false;
     }

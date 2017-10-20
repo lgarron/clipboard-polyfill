@@ -1,4 +1,12 @@
-import {DataType, DataTypeLookup} from "./DataType"
+const DataType: {[key:string]:string} = {
+  TEXT_PLAIN: "text/plain",
+  TEXT_HTML: "text/html"
+};
+
+const DataTypeLookup: Set<string> = new Set<string>();
+for (var key in DataType) {
+  DataTypeLookup.add(DataType[key]);
+}
 
 // TODO: Dedup with main file?
 var warn = (console.warn || console.log).bind(console, "[clipboard-polyfill]");
