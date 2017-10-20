@@ -8,5 +8,8 @@
     "lib": ["es6", "DOM"],
     "target": "es5",
     "declaration": true
-  }
+  },
+  "exclude": [
+    "experiment"
+  ]
 }
