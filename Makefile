@@ -28,4 +28,4 @@ deploy:
 publish: deploy
 	git push --tags origin
 	git push origin master
-	npm publish
+	yarn publish

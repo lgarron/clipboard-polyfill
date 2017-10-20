@@ -1,5 +1,4 @@
 *.js
 *.js.map
-*.d.ts
 /node_modules
 !/webpack.config.js
