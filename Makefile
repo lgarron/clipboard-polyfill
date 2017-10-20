@@ -15,8 +15,7 @@ setup:
 	yarn install
 
 .PHONY: build-for-git
-build-for-git:
-	make prod
+build-for-git: prod
 	git stage -f build/*.js build/*d.ts
 
 .PHONY: deploy
