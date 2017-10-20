@@ -8,7 +8,7 @@ prod:
 
 .PHONY: analyze
 analyze:
-	env PROD=true BUNDLE_ANALYZER=true ./node_modules/.bin/webpack --watch
+	env PROD=true BUNDLE_ANALYZER=true ./node_modules/.bin/webpack
 
 .PHONY: setup
 setup:
