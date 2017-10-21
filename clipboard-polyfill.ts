@@ -1,7 +1,7 @@
 import {Promise} from "es6-promise";
 import DT from "./DT";
 
-// Debug log strings shorts, since they are copmiled into the production build.
+// Debug log strings should be short, since they are copmiled into the production build.
 // TODO: Compile debug logging code out of production builds?
 var debugLog: (s: string) => void = function(s: string) {};
 var missingPlainTextWarning = true;
@@ -262,7 +262,7 @@ function writeIE(data: DT): boolean {
   throw ("No `text/plain` value was specified.");
 }
 
-// Returns "" if the read failed, e.g. because rejected the permission.
+// Returns "" if the read failed, e.g. because the user rejected the permission.
 function readIE(): Promise<string> {
   return new Promise((resolve, reject) => {
     var text = (window as IEWindow).clipboardData.getData("Text");
