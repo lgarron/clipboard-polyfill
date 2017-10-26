@@ -10,6 +10,7 @@
     "declaration": true
   },
   "exclude": [
-    "experiment"
+    "experiment",
+    "build"
   ]
 }
