@@ -8,8 +8,4 @@ export default class ClipboardPolyfill {
     static writeText(s: string): Promise<void>;
     static read(): Promise<DT>;
     static readText(): Promise<string>;
-    static copy(obj: string | {
-        [key: string]: string;
-    } | HTMLElement): Promise<void>;
-    static paste(): Promise<string>;
 }
