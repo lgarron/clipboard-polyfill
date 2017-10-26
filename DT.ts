@@ -11,7 +11,7 @@ for (var key in DataType) {
 // TODO: Dedup with main file?
 var warn = (console.warn || console.log).bind(console, "[clipboard-polyfill]");
 
-export class DT {
+export default class DT {
   private m: Map<string, string> = new Map<string, string>();
 
   public setData(type: string, value: string): void {
@@ -29,28 +29,5 @@ export class DT {
   // TODO: Provide an iterator consistent with DataTransfer.
   public forEach(f: (value: string, key: string) => void): void {
     return this.m.forEach(f);
-  }
-}
-
-export class Convenience {
-  public static DTFromText(s: string): DT {
-    var dt = new DT();
-    dt.setData("text/plain", s);
-    return dt;
-  }
-
-  public static DTFromObject(obj: {[key:string]:string}): DT {
-    var dt = new DT();
-    for (var key in obj) {
-      dt.setData(key, obj[key]);
-    }
-    return dt;
-  }
-
-  public static DTFromElement(e: HTMLElement): DT {
-    var dt = new DT();
-    dt.setData("text/plain", e.innerText);
-    dt.setData("text/html", new XMLSerializer().serializeToString(e));
-    return dt;
   }
 }

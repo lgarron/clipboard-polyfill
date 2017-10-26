@@ -48,10 +48,9 @@
   document.getElementById("markup-copy").addEventListener("click", function() {
     var resultField = document.getElementById("markup-copy-result");
 
-    var dt = clipboard.Convenience.DTFromObject({
-      "text/plain": "Fallback markup text. Paste me into a rich text editor.",
-      "text/html": "<i>Markup</i> <b>text</b>. Paste me into a rich text editor."
-    });
+    var dt = new clipboard.DT();
+    dt.setData("text/html", "<i>Markup</i> <b>text</b>. Paste me into a rich text editor.");
+    dt.setData("text/plain", "Fallback markup text. Paste me into a rich text editor.");
     clipboard.write(dt).then(function(){
       resultField.textContent = "success";
     }, function(err){
@@ -70,7 +69,9 @@
   document.getElementById("markup-dom-copy").addEventListener("click", function() {
     var resultField = document.getElementById("markup-dom-copy-result");
 
-    var dt = clipboard.Convenience.DTFromElement(document.getElementById("markup-dom-copy-source"));
+    var dt = new clipboard.DT();
+    dt.setData("text/html", new XMLSerializer().serializeToString(document.getElementById("markup-dom-copy-source")));
+    dt.setData("text/plain", document.getElementById("markup-dom-copy-source").innerText);
     clipboard.write(dt).then(function(){
       resultField.textContent = "success";
     }, function(err){

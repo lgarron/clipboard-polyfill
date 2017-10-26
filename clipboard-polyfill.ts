@@ -1,5 +1,5 @@
 import {Promise} from "es6-promise";
-import {Convenience, DT} from "./DT";
+import DT from "./DT";
 
 // Debug log strings should be short, since they are copmiled into the production build.
 // TODO: Compile debug logging code out of production builds?
@@ -12,7 +12,6 @@ var warn = (console.warn || console.log).bind(console, "[clipboard-polyfill]");
 
 export default class ClipboardPolyfill {
   public static readonly DT = DT;
-  public static readonly Convenience = Convenience;
 
   public static setDebugLog(f: (s: string) => void): void {
     debugLog = f;
@@ -94,7 +93,7 @@ export default class ClipboardPolyfill {
     return new Promise((resolve, reject) => {
       if (seemToBeInIE()) {
         readIE().then(
-          (s: string) => resolve(Convenience.DTFromText(s)),
+          (s: string) => resolve(DTFromText(s)),
           reject
         );
         return;
@@ -208,6 +207,14 @@ function selectionSet(elem: Element): void {
 function selectionClear(): void {
   var sel = document.getSelection();
   sel.removeAllRanges();
+}
+
+/******** Convenience ********/
+
+function DTFromText(s: string): DT {
+  var dt = new DT();
+  dt.setData("text/plain", s);
+  return dt;
 }
 
 /******** Internet Explorer ********/
