@@ -213,7 +213,7 @@ function selectionClear(): void {
 
 function DTFromText(s: string): DT {
   var dt = new DT();
-  dt.setData("text/plain", s);
+  dt.setData(TEXT_PLAIN, s);
   return dt;
 }
 
@@ -236,7 +236,7 @@ function seemToBeInIE(): boolean {
 function writeIE(data: DT): boolean {
   // IE supports text or URL, but not HTML: https://msdn.microsoft.com/en-us/library/ms536744(v=vs.85).aspx
   // TODO: Write URLs to `text/uri-list`? https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API/Recommended_drag_types
-  var text = data.getData("text/plain");
+  var text = data.getData(TEXT_PLAIN);
   if (text !== undefined) {
     return (window as IEWindow).clipboardData.setData("Text", text);
   }
