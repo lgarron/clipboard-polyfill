@@ -1,14 +1,13 @@
 import {Promise} from "es6-promise";
-import DT from "./DT";
+import {DT, suppressDTWarnings} from "./DT";
 
 // Debug log strings should be short, since they are copmiled into the production build.
 // TODO: Compile debug logging code out of production builds?
 var debugLog: (s: string) => void = function(s: string) {};
-var missingPlainTextWarning = true;
+var showWarnings = true;
+var warn = (console.warn || console.log).bind(console, "[clipboard-polyfill]");
 
 var TEXT_PLAIN = "text/plain";
-
-var warn = (console.warn || console.log).bind(console, "[clipboard-polyfill]");
 
 export default class ClipboardPolyfill {
   public static readonly DT = DT;
@@ -17,15 +16,16 @@ export default class ClipboardPolyfill {
     debugLog = f;
   }
 
-  public static suppressMissingPlainTextWarning() {
-    missingPlainTextWarning = false;
+  public static suppressWarnings() {
+    showWarnings = false;
+    suppressDTWarnings();
   }
 
   public static write(data: DT): Promise<void> {
-    if (missingPlainTextWarning && !data.getData(TEXT_PLAIN)) {
+    if (showWarnings && !data.getData(TEXT_PLAIN)) {
       warn("clipboard.write() was called without a "+
         "`text/plain` data type. On some platforms, this may result in an "+
-        "empty clipboard. Call clipboard.suppressMissingPlainTextWarning() "+
+        "empty clipboard. Call clipboard.suppressWarnings() "+
         "to suppress this warning.");
     }
 

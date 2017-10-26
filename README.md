@@ -50,7 +50,7 @@ Note that reading currently only works in Internet Explorer.
       static writeText: (s: string) => Promise<void>
       static read:      () => Promise<clipboard.DT>
       static readText:  () => Promise<string>
-      static suppressMissingPlainTextWarning: () => void
+      static suppressWarnings: () => void
     }
 
     clipboard.DT {
@@ -99,7 +99,7 @@ Try [this gist](https://gist.github.com/lgarron/d1dee380f4ed9d825ca7) for a simp
 - On iOS Safari ([WebKit Bug #177715](https://bugs.webkit.org/show_bug.cgi?id=177715)) and Internet Explorer, only text copying works.
   - In other browsers, writing copy data that does *not* include the `text/plain` data type will succeed, but also show a console warning:
 
-> clipboard.write() was called without a `text/plain` data type. On some platforms, this may result in an empty clipboard. Call clipboard.suppressMissingPlainTextWarning() to suppress this warning.
+> clipboard.write() was called without a `text/plain` data type. On some platforms, this may result in an empty clipboard. Call clipboard.suppressWarnings() to suppress this warning.
 
 - `clipboard-polyfill` attemps to avoid changing the document selection or modifying the DOM. However, `clipboard-polyfill` will automatically fall back to using them if needed:
   - On iOS Safari, the user's current selection will be cleared. This *should* not happen on other platforms unless there are unanticipated bugs. (Please [file an issue](https://github.com/lgarron/clipboard-polyfill/issues/new) if you observe this!)

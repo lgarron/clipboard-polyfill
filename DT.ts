@@ -10,13 +10,18 @@ for (var key in DataType) {
 
 // TODO: Dedup with main file?
 var warn = (console.warn || console.log).bind(console, "[clipboard-polyfill]");
+var showWarnings = true;
+export function suppressDTWarnings() {
+  showWarnings = false;
+}
 
-export default class DT {
+export class DT {
   private m: Map<string, string> = new Map<string, string>();
 
   public setData(type: string, value: string): void {
-    if (!(DataTypeLookup.has(type))) {
-      warn("Unknown data type: " + type);
+    if (showWarnings && !(DataTypeLookup.has(type))) {
+      warn("Unknown data type: " + type, "Call clipboard.suppressWarnings() "+
+        "to suppress this warning.");
     }
 
     this.m.set(type, value);
