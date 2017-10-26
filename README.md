@@ -97,6 +97,7 @@ Try [this gist](https://gist.github.com/lgarron/d1dee380f4ed9d825ca7) for a simp
 - In Microsoft Edge, only the *first* data type you specify is copied to the clipboard ([Edge Bug #14080506](https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/14080506/)).
   - `DataTransfer` and `clipbard.DT` keep track of the order in which you set items. If you care which data type Edge copies, call `setData()` with that data type first.
 - On iOS Safari ([WebKit Bug #177715](https://bugs.webkit.org/show_bug.cgi?id=177715)) and Internet Explorer, only text copying works.
+  - On iOS Safari, `clipboard-polyfill` needs to use the DOM to copy, so the text will be copied as rich text. `clipboard-polyfill` attempts to use shadow DOM in order to avoid some of the page formatting (e.g. background color) from affecting the copied text. However, such formatting might be copied if shadow DOM is not available.
   - In other browsers, writing copy data that does *not* include the `text/plain` data type will succeed, but also show a console warning:
 
 > clipboard.write() was called without a `text/plain` data type. On some platforms, this may result in an empty clipboard. Call clipboard.suppressWarnings() to suppress this warning.

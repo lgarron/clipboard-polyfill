@@ -177,13 +177,19 @@ function copyTextUsingDOM(str: string): boolean {
   debugLog("copyTextUsingDOM");
 
   var tempElem = document.createElement("div");
-  var shadowRoot = tempElem.attachShadow({mode: "open"});
-  document.body.appendChild(tempElem);
+  // Use shadow DOM if available.
+  var spanParent: Node = tempElem;
+  if (tempElem.attachShadow) {
+    debugLog("Using shadow DOM.");
+    spanParent = tempElem.attachShadow({mode: "open"});
+  }
 
   var span = document.createElement("span");
   span.innerText = str;
   // span.style.whiteSpace = "pre-wrap"; // TODO: Use `innerText` above instead?
-  shadowRoot.appendChild(span);
+
+  spanParent.appendChild(span);
+  document.body.appendChild(tempElem);
   selectionSet(span);
 
   var result = document.execCommand("copy");
