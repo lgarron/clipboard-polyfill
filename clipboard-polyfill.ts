@@ -113,32 +113,6 @@ export default class ClipboardPolyfill {
       reject("Read is not supported in your browser.")
     });
   }
-
-  // Legacy v1 API.
-  public static copy(obj: string|{[key:string]:string}|HTMLElement): Promise<void> {
-    warn("The clipboard.copy() API is deprecated and may be removed in a future version. Please switch to clipboard.write() or clipboard.writeText().");
-
-    return new Promise((resolve, reject) => {
-      var data: DT;
-      if (typeof obj === "string") {
-        data = Convenience.DTFromText(obj);
-      } else if (obj instanceof HTMLElement) {
-        data = Convenience.DTFromElement(obj);
-      } else if (obj instanceof Object) {
-        data = Convenience.DTFromObject(obj);
-      } else {
-        reject("Invalid data type. Must be string, DOM node, or an object mapping MIME types to strings.");
-        return;
-      }
-      this.write(data);
-    });
-  }
-
-  // Legacy v1 API.
-  public static paste(): Promise<string> {
-    warn("The clipboard.paste() API is deprecated and may be removed in a future version. Please switch to clipboard.read() or clipboard.readText().");
-    return this.readText();
-  }
 }
 
 /******** Implementations ********/
