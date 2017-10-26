@@ -48,7 +48,7 @@
   document.getElementById("markup-copy").addEventListener("click", function() {
     var resultField = document.getElementById("markup-copy-result");
 
-    var dt = clipboard.DT.fromObject({
+    var dt = clipboard.Convenience.DTFromObject({
       "text/plain": "Fallback markup text. Paste me into a rich text editor.",
       "text/html": "<i>Markup</i> <b>text</b>. Paste me into a rich text editor."
     });
@@ -70,7 +70,7 @@
   document.getElementById("markup-dom-copy").addEventListener("click", function() {
     var resultField = document.getElementById("markup-dom-copy-result");
 
-    var dt = clipboard.DT.fromElement(document.getElementById("markup-dom-copy-source"));
+    var dt = clipboard.Convenience.DTFromElement(document.getElementById("markup-dom-copy-source"));
     clipboard.write(dt).then(function(){
       resultField.textContent = "success";
     }, function(err){

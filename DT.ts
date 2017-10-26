@@ -11,7 +11,7 @@ for (var key in DataType) {
 // TODO: Dedup with main file?
 var warn = (console.warn || console.log).bind(console, "[clipboard-polyfill]");
 
-export default class DT {
+export class DT {
   private m: Map<string, string> = new Map<string, string>();
 
   public setData(type: string, value: string): void {
@@ -30,14 +30,16 @@ export default class DT {
   public forEach(f: (value: string, key: string) => void): void {
     return this.m.forEach(f);
   }
+}
 
-  public static fromText(s: string): DT {
+export class Convenience {
+  public static DTFromText(s: string): DT {
     var dt = new DT();
-    dt.setData(DataType.TEXT_PLAIN, s);
+    dt.setData("text/plain", s);
     return dt;
   }
 
-  public static fromObject(obj: {[key:string]:string}): DT {
+  public static DTFromObject(obj: {[key:string]:string}): DT {
     var dt = new DT();
     for (var key in obj) {
       dt.setData(key, obj[key]);
@@ -45,10 +47,10 @@ export default class DT {
     return dt;
   }
 
-  public static fromElement(e: HTMLElement): DT {
+  public static DTFromElement(e: HTMLElement): DT {
     var dt = new DT();
-    dt.setData(DataType.TEXT_PLAIN, e.innerText);
-    dt.setData(DataType.TEXT_HTML, new XMLSerializer().serializeToString(e));
+    dt.setData("text/plain", e.innerText);
+    dt.setData("text/html", new XMLSerializer().serializeToString(e));
     return dt;
   }
 }
