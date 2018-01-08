@@ -1,12 +1,7 @@
-const DataType: {[key:string]:string} = {
-  TEXT_PLAIN: "text/plain",
-  TEXT_HTML: "text/html"
-};
-
-const DataTypeLookup: Set<string> = new Set<string>();
-for (var key in DataType) {
-  DataTypeLookup.add(DataType[key]);
-}
+const dataTypes = [
+  "text/plain",
+  "text/html"
+];
 
 // TODO: Dedup with main file?
 var warn = (console.warn || console.log).bind(console, "[clipboard-polyfill]");
@@ -19,7 +14,7 @@ export class DT {
   private m: Map<string, string> = new Map<string, string>();
 
   public setData(type: string, value: string): void {
-    if (showWarnings && !(DataTypeLookup.has(type))) {
+    if (showWarnings && dataTypes.indexOf(type) === -1) {
       warn("Unknown data type: " + type, "Call clipboard.suppressWarnings() "+
         "to suppress this warning.");
     }
