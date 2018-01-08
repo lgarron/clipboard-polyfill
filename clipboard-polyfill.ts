@@ -12,6 +12,7 @@ var TEXT_PLAIN = "text/plain";
 declare global {
   interface Navigator {
     clipboard: {
+      writeText?: (s: string) => Promise<void>;
       readText?: () => Promise<string>;
     };
   }
@@ -92,6 +93,9 @@ export default class ClipboardPolyfill {
   }
 
   public static writeText(s: string): Promise<void> {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      return navigator.clipboard.writeText(s);
+    }
     var dt = new DT();
     dt.setData(TEXT_PLAIN, s);
     return this.write(dt);
