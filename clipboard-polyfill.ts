@@ -9,6 +9,14 @@ var warn = (console.warn || console.log).bind(console, "[clipboard-polyfill]");
 
 var TEXT_PLAIN = "text/plain";
 
+declare global {
+  interface Navigator {
+    clipboard: {
+      readText?: () => Promise<string>;
+    };
+  }
+}
+
 export default class ClipboardPolyfill {
   public static readonly DT = DT;
 
@@ -104,6 +112,9 @@ export default class ClipboardPolyfill {
   }
 
   public static readText(): Promise<string> {
+    if (navigator.clipboard && navigator.clipboard.readText) {
+      return navigator.clipboard.readText();
+    }
     if (seemToBeInIE()) {
       return readIE();
     }
