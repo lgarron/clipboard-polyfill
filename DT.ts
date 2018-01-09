@@ -11,7 +11,7 @@ export function suppressDTWarnings() {
 }
 
 export class DT {
-  private m: Map<string, string> = new Map<string, string>();
+  private m: {[key:string]: string} = {};
 
   public setData(type: string, value: string): void {
     if (showWarnings && dataTypes.indexOf(type) === -1) {
@@ -19,15 +19,17 @@ export class DT {
         "to suppress this warning.");
     }
 
-    this.m.set(type, value);
+    this.m[type] = value;
   }
 
   public getData(type: string): string | undefined {
-    return this.m.get(type);
+    return this.m[type];
   }
 
   // TODO: Provide an iterator consistent with DataTransfer.
   public forEach(f: (value: string, key: string) => void): void {
-    return this.m.forEach(f);
+    for (var k in this.m) {
+      f(this.m[k], k);
+    }
   }
 }
