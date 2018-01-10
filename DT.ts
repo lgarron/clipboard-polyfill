@@ -4,7 +4,10 @@ const dataTypes = [
 ];
 
 // TODO: Dedup with main file?
-var warn = (console.warn || console.log).bind(console, "[clipboard-polyfill]");
+var warnOrLog = function() {
+  (console.warn || console.log).call(arguments);
+}; // IE9 workaround (can't bind console functions).
+var warn = warnOrLog.bind(console, "[clipboard-polyfill]");
 var showWarnings = true;
 export function suppressDTWarnings() {
   showWarnings = false;

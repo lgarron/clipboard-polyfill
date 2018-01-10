@@ -5,7 +5,10 @@ import {DT, suppressDTWarnings} from "./DT";
 // TODO: Compile debug logging code out of production builds?
 var debugLog: (s: string) => void = function(s: string) {};
 var showWarnings = true;
-var warn = (console.warn || console.log).bind(console, "[clipboard-polyfill]");
+var warnOrLog = function() {
+  (console.warn || console.log).call(arguments);
+}; // IE9 workaround (can't bind console functions).
+var warn = warnOrLog.bind(console, "[clipboard-polyfill]");
 
 var TEXT_PLAIN = "text/plain";
 

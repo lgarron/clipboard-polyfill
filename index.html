@@ -6,7 +6,8 @@
   <link rel="stylesheet" href="index.css">
   <script src="build/clipboard-polyfill.js"></script>
   <script>
-    clipboard.setDebugLog((console.info || console.log).bind(console));
+    var infoOrLog = function() {(console.info || console.log).call(arguments);}; // IE9 workaround (can't bind console functions).
+    clipboard.setDebugLog(infoOrLog.bind(console));
   </script>
   <style>
     .editable {
