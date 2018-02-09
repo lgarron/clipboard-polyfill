@@ -25,7 +25,7 @@ Platforms tested:
 |`contenteditable` does not break document selection|❌|❌|❌|✅|✅|
 |`user-select: none` does not break document selection|✅(Cr 64)|❌|❌|✅(Edge 16)|✅ (FF 57)|
 |Can construct `new DataTransfer()`|✅|❌|❌|❌|❌|
-|Writes `CF_HTML` on Windows|✅|N/A|N/A|❌|✅|
+|Writes `CF_HTML` on Windows|✅|N/A|N/A|❌⁶|✅|
 
 † Here, we are only specifically interested in the case where the handler is called directly in response to a user gesture. I didn't test for behaviour when there is no user gesture.
 
@@ -34,7 +34,7 @@ Platforms tested:
 - ³ [Edge Bug #14110451](https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/14110451/)
 - ⁴ [Edge Bug #14080506](https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/14080506/)
 - ⁵ [Edge Bug #14080262](https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/14080262/)
-- ⁵ [Edge Bug #14372529](https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/14372529/), [GitHub issue #73](https://github.com/lgarron/clipboard-polyfill/issues/73)
+- ⁶ [Edge Bug #14372529](https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/14372529/), [GitHub issue #73](https://github.com/lgarron/clipboard-polyfill/issues/73)
 
 ## `supported` always returns true
 
