@@ -22,7 +22,7 @@ function test() {
     var dt = new clipboard.DT();
     dt.setData("text/html", "<i>Markup</i> <b>text</b>. Paste me into a rich text editor.");
     dt.setData("text/plain", "Fallback markup text. Paste me into a rich text editor.");
-    clipboard.write(dt).then("Safari user select test").then(
+    clipboard.write(dt).then(
       reportResult.bind(this, "PASS"),
       function(e) {
         reportResult("FAIL (after promise): ", e);
