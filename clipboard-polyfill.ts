@@ -45,7 +45,7 @@ export default class ClipboardPolyfill {
       // Internet Explorer
       if (seemToBeInIE()) {
         if (writeIE(data)) {
-          resolve()
+          resolve();
         } else {
           reject(new Error("Copying failed, possibly because the user rejected it."));
         }
@@ -114,7 +114,7 @@ export default class ClipboardPolyfill {
         return;
       }
       // TODO: Attempt to read using async clipboard API.
-      reject("Read is not supported in your browser.")
+      reject("Read is not supported in your browser.");
     });
   }
 
@@ -127,7 +127,7 @@ export default class ClipboardPolyfill {
     }
     return new Promise((resolve, reject) => {
       // TODO: Attempt to read using async clipboard API.
-      reject("Read is not supported in your browser.")
+      reject("Read is not supported in your browser.");
     });
   }
 }
@@ -279,7 +279,7 @@ function readIE(): Promise<string> {
     } else {
       resolve(text);
     }
-  })
+  });
 }
 
 /******** Expose `clipboard` on the global object in browser. ********/
