@@ -11,7 +11,11 @@
 <script>
 clipboard.setDebugLog(console.log.bind(console));
 function reportResult(text, e) {
-  document.querySelector("#result").textContent = text + e;
+  document.querySelector("#result").textContent = text;
+  if (e) {
+    console.log(e);
+    document.querySelector("#result").textContent += " " + e;
+  }
 }
 function test() {
   try {
@@ -23,7 +27,7 @@ function test() {
       },
     );
   } catch (e) {
-    reportResult("FAIL (outside promise): " + e);
+    reportResult("FAIL (outside promise): ", e);
   }
 }
 </script>
