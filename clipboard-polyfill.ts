@@ -176,6 +176,9 @@ function copyUsingTempSelection(e: HTMLElement, data: DT): boolean {
 // rejected.
 function copyUsingTempElem(data: DT): boolean {
   var tempElem = document.createElement("div");
+  // Setting an individual property does not support `!important`, so we set the
+  // whole style instead of just the `-webkit-user-select` property.
+  tempElem.setAttribute("style", "-webkit-user-select: text !important");
   // Place some text in the elem so that Safari has something to select.
   tempElem.textContent = "temporary element";
   document.body.appendChild(tempElem);
