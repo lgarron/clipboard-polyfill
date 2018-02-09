@@ -167,8 +167,7 @@ function execCopy(data: DT): FallbackTracker {
   return tracker;
 }
 
-// Create a temporary DOM element to select, so that `execCommand()` is not
-// rejected.
+// Temporarily select a DOM element, so that `execCommand()` is not rejected.
 function copyUsingTempSelection(e: HTMLElement, data: DT): FallbackTracker {
   selectionSet(e);
   var tracker = execCopy(data);
@@ -195,6 +194,9 @@ function copyTextUsingDOM(str: string): boolean {
   debugLog("copyTextUsingDOM");
 
   var tempElem = document.createElement("div");
+  // Setting an individual property does not support `!important`, so we set the
+  // whole style instead of just the `-webkit-user-select` property.
+  tempElem.setAttribute("style", "-webkit-user-select: text !important");
   // Use shadow DOM if available.
   var spanParent: Node = tempElem;
   if (tempElem.attachShadow) {
