@@ -52,8 +52,7 @@ export default class ClipboardPolyfill {
         return;
       }
 
-      var tracker = execCopy(data);
-      if (tracker.success) {
+      if (execCopy(data)) {
         debugLog("regular execCopy worked");
         resolve();
         return;
@@ -68,16 +67,14 @@ export default class ClipboardPolyfill {
       }
 
       // Fallback 1 for desktop Safari.
-      tracker = copyUsingTempSelection(document.body, data);
-      if (tracker.success) {
+      if (copyUsingTempSelection(document.body, data)) {
         debugLog("copyUsingTempSelection worked");
         resolve();
         return;
       }
 
       // Fallback 2 for desktop Safari. 
-      tracker = copyUsingTempElem(data);
-      if (tracker.success) {
+      if (copyUsingTempElem(data)) {
         debugLog("copyUsingTempElem worked");
         resolve();
         return;
@@ -151,7 +148,7 @@ function copyListener(tracker: FallbackTracker, data: DT, e: ClipboardEvent): vo
   e.preventDefault();
 }
 
-function execCopy(data: DT): FallbackTracker {
+function execCopy(data: DT): boolean {
   var tracker = new FallbackTracker();
   var listener = copyListener.bind(this, tracker, data);
 
@@ -164,29 +161,29 @@ function execCopy(data: DT): FallbackTracker {
   } finally {
     document.removeEventListener("copy", listener);
   }
-  return tracker;
+  return tracker.success;
 }
 
 // Temporarily select a DOM element, so that `execCommand()` is not rejected.
-function copyUsingTempSelection(e: HTMLElement, data: DT): FallbackTracker {
+function copyUsingTempSelection(e: HTMLElement, data: DT): boolean {
   selectionSet(e);
-  var tracker = execCopy(data);
+  var success = execCopy(data);
   selectionClear();
-  return tracker;
+  return success;
 }
 
 // Create a temporary DOM element to select, so that `execCommand()` is not
 // rejected.
-function copyUsingTempElem(data: DT): FallbackTracker {
+function copyUsingTempElem(data: DT): boolean {
   var tempElem = document.createElement("div");
   // Place some text in the elem so that Safari has something to select.
   tempElem.textContent = "temporary element";
   document.body.appendChild(tempElem);
 
-  var tracker = copyUsingTempSelection(tempElem, data);
+  var success = copyUsingTempSelection(tempElem, data);
 
   document.body.removeChild(tempElem);
-  return tracker;
+  return success;
 }
 
 // Uses shadow DOM.
