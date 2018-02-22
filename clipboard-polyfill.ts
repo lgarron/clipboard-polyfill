@@ -45,7 +45,7 @@ export default class ClipboardPolyfill {
         "to suppress this warning.");
     }
 
-    return new Promise<void>((resolve, reject) => {
+    return (new PromiseOrPolyfill((resolve, reject) => {
       // Internet Explorer
       if (seemToBeInIE()) {
         if (writeIE(data)) {
@@ -93,7 +93,7 @@ export default class ClipboardPolyfill {
       }
 
       reject(new Error("Copy command failed."));
-    });
+    })) as Promise<void>;
   }
 
   public static writeText(s: string): Promise<void> {
