@@ -1,5 +1,9 @@
-import {Promise} from "es6-promise";
+import {Promise as PromisePolyfill} from "es6-promise";
 import {DT, suppressDTWarnings} from "./DT";
+
+// Avoid using the Promise polyfill unless needed.
+// https://github.com/lgarron/clipboard-polyfill/issues/59
+var PromiseOrPolyfill = Promise ? Promise : PromisePolyfill;
 
 // Debug log strings should be short, since they are copmiled into the production build.
 // TODO: Compile debug logging code out of production builds?
@@ -102,7 +106,7 @@ export default class ClipboardPolyfill {
   }
 
   public static read(): Promise<DT> {
-    return new Promise((resolve, reject) => {
+    return (new PromiseOrPolyfill((resolve, reject) => {
       if (seemToBeInIE()) {
         readIE().then(
           (s: string) => resolve(DTFromText(s)),
@@ -112,7 +116,7 @@ export default class ClipboardPolyfill {
       }
       // TODO: Attempt to read using async clipboard API.
       reject("Read is not supported in your browser.");
-    });
+    })) as Promise<DT>;
   }
 
   public static readText(): Promise<string> {
@@ -122,10 +126,10 @@ export default class ClipboardPolyfill {
     if (seemToBeInIE()) {
       return readIE();
     }
-    return new Promise((resolve, reject) => {
+    return (new PromiseOrPolyfill((resolve, reject) => {
       // TODO: Attempt to read using async clipboard API.
       reject("Read is not supported in your browser.");
-    });
+    })) as Promise<string>;
   }
 }
 
@@ -272,14 +276,14 @@ function writeIE(data: DT): boolean {
 
 // Returns "" if the read failed, e.g. because the user rejected the permission.
 function readIE(): Promise<string> {
-  return new Promise((resolve, reject) => {
+  return (new PromiseOrPolyfill((resolve, reject) => {
     var text = (window as IEWindow).clipboardData.getData("Text");
     if (text === "") {
       reject(new Error("Empty clipboard or could not read plain text from clipboard"));
     } else {
       resolve(text);
     }
-  });
+  })) as Promise<string>;
 }
 
 /******** Expose `clipboard` on the global object in browser. ********/
