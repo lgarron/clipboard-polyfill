@@ -3,7 +3,7 @@ import {DT, suppressDTWarnings} from "./DT";
 
 // Avoid using the Promise polyfill unless needed.
 // https://github.com/lgarron/clipboard-polyfill/issues/59
-var PromiseOrPolyfill = Promise ? Promise : PromisePolyfill;
+var PromiseOrPolyfill = (typeof Promise === "undefined") ? PromisePolyfill : Promise;
 
 // Debug log strings should be short, since they are copmiled into the production build.
 // TODO: Compile debug logging code out of production builds?
