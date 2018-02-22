@@ -1,4 +1,3 @@
-import { Promise } from "es6-promise";
 import { DT } from "./DT";
 declare global  {
     interface Navigator {
