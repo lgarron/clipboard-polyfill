@@ -13,6 +13,8 @@ Get the source using one of the following:
 - Download [`build/clipboard-polyfill.js`](https://raw.githubusercontent.com/lgarron/clipboard-polyfill/master/build/clipboard-polyfill.js) and include it using a `<script>` tag.
 - `npm install clipboard-polyfill` and import as `clipboard`.
 
+Please note that this library uses ES6 features, notably [`Promise`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise), so if you need to support environments that do not natively support `Promise` (ie. IE <= 11) you will need to include that dependency separately. Recommendations include [es6-promise](https://github.com/stefanpenner/es6-promise) and [core-js](https://github.com/zloirock/core-js).
+
 ## Write / Copy
 
 Copy text:
@@ -107,5 +109,4 @@ Try [this gist](https://gist.github.com/lgarron/d1dee380f4ed9d825ca7) for a simp
   - On iOS Safari and under certain conditions on desktop Safari ([WebKit Bug #177715](https://bugs.webkit.org/show_bug.cgi?id=156529)), `clipbard-polyfill` needs to add a temporary element to the DOM. This will trigger a [mutation observer](https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver) if you have attached one to `document.body`. Please [file an issue](https://github.com/lgarron/clipboard-polyfill/issues/new) if you'd like to discuss how to detect temporary elements added by `clipboard-polyfill`.
 - `read()` currently only works in Internet Explorer.
   - Internet Explorer can only read `text/plain` values from the clipboard.
-- Internet Explorer does not have a native `Promise` implementation, so the standalone build file for `clipboard-polyfill` also includes `stefanpenner`'s [`es6-promise` polyfill](https://github.com/stefanpenner/es6-promise). This adds significant size to the build. Please [file an issue](https://github.com/lgarron/clipboard-polyfill/issues/new) if you're interested in a minimal build without Internet Explorer support.
 - Microsoft Edge (at least version <17) does not write `text/html` to the clipboard using the Windows `CF_HTML` clipboard format ([Edge Bug #14372529](https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/14372529/)), which prevents other programs (including other browsers) from recognizing the copied HTML data ([issue #73](https://github.com/lgarron/clipboard-polyfill/issues/73)). `clipboard-polyfill` currently does not attempt to work around this issue.
