@@ -102,15 +102,12 @@ export default class ClipboardPolyfill {
 
   public static read(): Promise<DT> {
     return (new Promise((resolve, reject) => {
-      if (seemToBeInIE()) {
-        readIE().then(
-          (s: string) => resolve(DTFromText(s)),
-          reject
-        );
-        return;
-      }
-      // TODO: Attempt to read using async clipboard API.
-      reject("Read is not supported in your browser.");
+      // TODO: Attempt to use navigator.clipboard.read() directly.
+      // Requires DT -> DataTransfer conversion.
+      this.readText().then(
+        (s: string) => resolve(DTFromText(s)),
+        reject
+      );
     })) as Promise<DT>;
   }
 
@@ -122,7 +119,6 @@ export default class ClipboardPolyfill {
       return readIE();
     }
     return (new Promise((resolve, reject) => {
-      // TODO: Attempt to read using async clipboard API.
       reject("Read is not supported in your browser.");
     })) as Promise<string>;
   }
