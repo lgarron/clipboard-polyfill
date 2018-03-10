@@ -2,7 +2,7 @@
 
 Make copying on the web as easy as:
 
-    clipboard.writeText("This text is plain.");
+    clipboard.writeText("hello world");
 
 As of October 2017, this library is a polyfill for the modern `Promise`-based [asynchronous clipboard API](https://www.w3.org/TR/clipboard-apis/#async-clipboard-api).
 
@@ -13,35 +13,41 @@ Get the source using one of the following:
 - Download [`build/clipboard-polyfill.js`](https://raw.githubusercontent.com/lgarron/clipboard-polyfill/master/build/clipboard-polyfill.js) and include it using a `<script>` tag.
 - `npm install clipboard-polyfill` and import as `clipboard`.
 
-## Write / Copy
+## Plain Text
 
-Copy text:
+Copy text to the clipboard (all modern browsers):
 
-    clipboard.writeText("hello world");
+    clipboard.writeText("This text is plain.");
 
-Copy other data types:
+Read text from the clipboard (IE 9-11 and Chrome 65+):
+
+    clipboard.readText().then(console.log, console.error);
+
+Caveats:
+
+- Browsers may require a user gesture or user permission to access the clipboard. In particular, you should write text only in response to an event listener, e.g. a button click listener.
+- Reading fails if the clipboard does not contain `text/plain` data.
+
+## Other Data Types (e.g. HTML)
+
+Write (all modern browsers):
 
     var dt = new clipboard.DT();
     dt.setData("text/plain", "Fallback markup text.");
     dt.setData("text/html", "<i>Markup</i> <b>text</b>.");
     clipboard.write(dt);
 
-Since copying only works in a user gesture, you should attempt it from inside an event listener, e.g. a button click listener.
-
-## Read / Paste
-
-Read text:
-
-    // The success callback receives a string.
-    // Fails if the clipboard does not contain `text/plain` data.
-    clipboard.readText().then(console.log, console.error);
-
-Read all data types:
+Read (IE 9-11, Chrome 65+):
 
     // The success callback receives a clipboard.DT object.
     clipboard.read().then(console.log, console.error);
 
-Note that reading currently only works in Internet Explorer.
+Caveats:
+
+- Currently, `text/plain` and `text/html` are the only data types that can be written to the clipboard across most browsers.
+- Unsupported data types will be silently dropped. In general, it is not possible to tell which data types will be dropped.
+- This part of the clipboard API is still under active discussion, and may change.
+- Currently, reading will only return the `text/plain` data type, if it is on the clipboard.
 
 ## Interface
 
@@ -77,7 +83,6 @@ Ideally, `clipboard-polyfill` would take a `DataTransfer`, so that the code abov
 ## This is way too complicated!
 
 Try [this gist](https://gist.github.com/lgarron/d1dee380f4ed9d825ca7) for a simpler solution.
-
 
 ## [Can I use](http://caniuse.com/#feat=clipboard) it?
 
