@@ -1,3 +1,5 @@
+![Logo for clipboard-polyfill: an icon of a clipboard fading into a drafting paper grid.](clipboard-polyfill-logo.svg)
+
 # `clipboard-polyfill`
 
 Make copying on the web as easy as:
