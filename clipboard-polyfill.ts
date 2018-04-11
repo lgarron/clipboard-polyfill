@@ -206,7 +206,6 @@ function copyTextUsingDOM(str: string): boolean {
 
   var span = document.createElement("span");
   span.innerText = str;
-  // span.style.whiteSpace = "pre-wrap"; // TODO: Use `innerText` above instead?
 
   spanParent.appendChild(span);
   document.body.appendChild(tempElem);
