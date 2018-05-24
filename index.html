@@ -6,8 +6,13 @@
   <link rel="stylesheet" href="index.css">
   <script src="build/clipboard-polyfill.js"></script>
   <script>
-    var infoOrLog = function() {(console.info || console.log).call(arguments);}; // IE9 workaround (can't bind console functions).
-    clipboard.setDebugLog(infoOrLog.bind(console));
+    // Workaround for:
+    // - IE9 (can't bind console functions directly), and
+    // - Edge Issue #14495220 (referencing `console` without F12 Developer Tools can cause an exception)
+    var infoOrLog = function() {
+      (console.info || console.log).apply(console, arguments);
+    };
+    clipboard.setDebugLog(infoOrLog);
   </script>
   <style>
     .editable {
