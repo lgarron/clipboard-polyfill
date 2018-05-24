@@ -46,21 +46,21 @@ When nothing on the page is selected, `document.queryCommandEnabled("copy")` ret
 
 ## `exec` fires listener **without**  selection
 
-On all platforms, `document.execCommand("copy")` always works (triggers a copy) during a user gesture, regardless of whether anything on the page is selected. However, on Safari listeners registered using `document.addEventListener("copy")` don't fire (and therefore don't have an opportunity to set the data on the clipboard).
+On all platforms, `document.execCommand("copy")` always works (triggers a copy) during a user gesture, regardless of whether anything on the page is selected. However, on Safari listeners registered using `document.addEventListener("copy")` don't fire (and therefore don't have an opportunity to set the data on the clipboard) if there is no selection.
 
 ## `enabled` **with** selection returns true
 
-On all browsers, `document.queryCommandEnabled("copy")` returns true during a user gesture if some part of the page is selected (doesn't matter which part; can be the entire body on a single element). The selection may be made using Javascript during the user gesture handler itself.
+On all browsers, `document.queryCommandEnabled("copy")` returns true during a user gesture if some part of the page is selected (doesn't matter which part; can be the entire body or a single element). The selection may be made using Javascript during the user gesture handler itself.
 
 ## `exec` fires listener **with** selection
 
-On all platforms, `document.execCommand("copy")` works during a user gesture, regardless of whether anything on the page is selected. Listeners registered with ``document.addEventListener("copy")` fire.
+On all platforms, `document.execCommand("copy")` works during a user gesture, regardless of whether anything on the page is selected. Listeners registered with `document.addEventListener("copy")` fire.
 
 ## `enabled` returns false outside user gesture
 
 In all browsers, `document.execCommand("copy")` fails when there is no user gesture, and returns `false`.
 
-## `setData()` works in listener (see issues 3/4 below)
+## `setData()` works in listener (see issue 3 and issue 4 below)
 
 This means that the following works:
 
@@ -76,9 +76,9 @@ Fortunately, it is possible to detect Safari's behaviour (when the value is not 
 
 ## `getData()` in listener shows if `setData()` worked
 
-In Edge, `setData()` works inside the copy listener, but `getData` never reports the data that was set, and returns the empty string instead.
+In Edge, `setData()` works inside the copy listener, but `getData()` never reports the data that was set, and returns the empty string instead.
 
-Note that on iOS Safari, `getData()` also returns the empty string, but since `setData()` doesn't work, this is the correct return value (And can be used to detect if setting the string succeeded).
+Note that on iOS Safari, `getData()` also returns the empty string, but since `setData()` doesn't work, this is the correct return value (and can be used to detect if setting a non-empty string succeeded).
 
 ## Copies all types set with `setData()` (see issue 2 below)
 
@@ -125,7 +125,7 @@ In Safari, the DOM selection API does not allow Javascript to select parts of th
 
 Reported at https://github.com/lgarron/clipboard-polyfill/issues/75
 
-As a workaround for Safari, it is possible to select an element nested unside an unselectable element that explicitly uses `-webkit-user-select: text` to enable selection. It seems that this [is the specced behaviour](https://drafts.csswg.org/css-ui-4/#valdef-user-select-none), although e.g. [Firefox <21](https://developer.mozilla.org/en-US/docs/Web/CSS/user-select) had a different behaviour.
+As a workaround for Safari, it is possible to select an element nested unside an unselectable element that explicitly uses `-webkit-user-select: text` to enable selection. It seems that we should be able to rely on this, since it [is the specified behaviour](https://drafts.csswg.org/css-ui-4/#valdef-user-select-none). However, note that other browsers (e.g. [Firefox <21](https://developer.mozilla.org/en-US/docs/Web/CSS/user-select)) have implemented behaviour that doesn't match the spec.
 
 ## Writes `CF_HTML` on Windows
 
@@ -135,21 +135,21 @@ Reported at https://github.com/lgarron/clipboard-polyfill/issues/73
 
 ## Can construct `new DataTransfer()` (see issue 6 below)
 
-The new asynchronous clipboard API takes a `DataTranfer` input. However, you can only call the DataTransfer constructor in Chrome right now. (The constructor was made publicly callable specifically for the async clipboard API.)
+The new asynchronous clipboard API takes a `DataTranfer` input. However, the only browser in which you can call the `DataTransfer` constructor is Chrome. (The constructor was made publicly callable specifically for the async clipboard API.)
 
 
 # Strategy
 
-Firstly
+Firstly:
 
 - **Issue 1**: `queryCommandEnabled()` doesn't tell us when copying will work.
   - Workaround: Don't consult `queryCommandEnabled()`; just try `execCommand()` every time.
 
 All platforms except iOS can share the same default implementation. However:
 
-- **Issue 2**: Edge will only put the first provided data type on the clipboard.
+- **Issue 2**: Edge will only put the last provided data type on the clipboard.
   - Workaround: File a bug against Edge. (Started: [Edge Bug #14080506](https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/14080506/))
-  - Document that the caller should add the most important data type to the copy data first.
+  - Document that the caller should add the most important data type to the copy data last.
 
 TODO: Add "Safari doesn't trigger listener without selection" issue.
 
@@ -160,7 +160,7 @@ iOS Safari requires the trickiest fallback:
   - Document that callers should always provide a `text/plain` data type if they want copying to work on iOS.
 
 The logic will be as follows:
-- Is there a `text/plain` data type in the input:
+- Is there a `text/plain` data type in the input?
   - No? ⇒ No fallback. Clipboard will likely end up blank on iOS. (Consider warning the user if they don't provide a value for the `text/plain` data type.)
   - Yes? ⇒ Check `setData()` against `getData()` for the `text/plain` data type. Do they match?
     - Yes? ⇒ Do nothing. (This will result in a blank clipboard when the copied string is empty.)
@@ -184,8 +184,8 @@ On Windows, we perform the copy, but we will always get back `false`.
 
 We also need to add some more polyfilling than we might like:
 
-- **Issue 6**: The caller can't construct a `DataTransfer` to pass to the polyfill on any platform except Chrome..
-  - Workaround: Provide an object with a sufficiently ergonomic subset of the interface of `DataTransfer` that the caller can use. (We can swap out the implementation with `DataTransfer` as platforms allow calling the constructor directly.)
+- **Issue 6**: The caller can't construct a `DataTransfer` to pass to the polyfill on any platform except Chrome.
+  - Workaround: Provide an object with a sufficiently ergonomic subset of the interface of `DataTransfer` that the caller can use. (We can swap out the implementation with `DataTransfer` once platforms allow calling the constructor directly.)
 
 - **Issue 7**: Internet Explorer did its own thing.
   - Workaround: [old implementation](https://github.com/lgarron/clipboard-polyfill/blob/94c9df4aa2ce1ca1b08280bf36923b65648d9f72/clipboard-polyfill#L167) using `window.clipboardData`. Requires a `Promise` polyfill. :-/
