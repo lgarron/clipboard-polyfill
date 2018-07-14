@@ -7,7 +7,10 @@ var PROD = JSON.parse(process.env.PROD || false);
 var BUNDLE_ANALYZER = JSON.parse(process.env.BUNDLE_ANALYZER || false);
 
 module.exports = {
-   entry: "./clipboard-polyfill.ts",
+   entry: {
+     "clipboard-polyfill": "./clipboard-polyfill.ts",
+     "clipboard-polyfill.promise": ["es6-promise/dist/es6-promise.auto.js", "./clipboard-polyfill.ts"]
+   },
    module: {
      rules: [
        { test: /\.ts$/, use: "ts-loader" }
@@ -15,7 +18,7 @@ module.exports = {
    },
    output: {
     path: __dirname + "/build",
-    filename: "clipboard-polyfill.js",
+    filename: "[name].js",
     library: "clipboard",
     libraryTarget: "umd"
    },
