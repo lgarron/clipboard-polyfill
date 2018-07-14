@@ -19,7 +19,12 @@ Note: If you only need to copy text and want a super simple polyfill that gets y
 Get the source using one of the following:
 
 - Download [`build/clipboard-polyfill.js`](https://raw.githubusercontent.com/lgarron/clipboard-polyfill/master/build/clipboard-polyfill.js) and include it using a `<script>` tag.
-- `npm install clipboard-polyfill` and import as `clipboard`.
+- `npm install clipboard-polyfill` and `import clipboard from 'clipboard-polyfill'`.
+
+If you need a Promise polyfill included
+
+- Download [`build/clipboard-polyfill.promise.js`](https://raw.githubusercontent.com/lgarron/clipboard-polyfill/master/build/clipboard-polyfill.promise.js) and include it using a `<script>` tag.
+- `npm install clipboard-polyfill` and `import clipboard from 'clipboard-polyfill/build/clipboard-polyfill.promise.js'`.
 
 Please note that this library uses ES6 [`Promise`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)s, so if you need to support environments that do not natively support `Promise` (ie. IE <= 11) you will need to include that dependency separately. Recommendations include [es6-promise](https://github.com/stefanpenner/es6-promise) and [core-js](https://github.com/zloirock/core-js). Instructions for how to use polyfills are build system dependent and can be found on the READMEs of these libraries.
 
