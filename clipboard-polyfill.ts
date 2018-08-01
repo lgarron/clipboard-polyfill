@@ -196,18 +196,18 @@ function copyTextUsingDOM(str: string): boolean {
   // whole style instead of just the `-webkit-user-select` property.
   tempElem.setAttribute("style", "-webkit-user-select: text !important");
   // Use shadow DOM if available.
-  var spanParent: Node = tempElem;
+  var textareaParent: Node = tempElem;
   if (tempElem.attachShadow) {
     debugLog("Using shadow DOM.");
-    spanParent = tempElem.attachShadow({mode: "open"});
+    textareaParent = tempElem.attachShadow({mode: "open"});
   }
 
-  var span = document.createElement("span");
-  span.innerText = str;
+  var textarea = document.createElement("textarea");
+  textarea.innerText = str;
 
-  spanParent.appendChild(span);
+  textareaParent.appendChild(textarea);
   document.body.appendChild(tempElem);
-  selectionSet(span);
+  textarea.select();
 
   var result = document.execCommand("copy");
 
