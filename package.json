@@ -5,9 +5,9 @@
   "main": "build/clipboard-polyfill.js",
   "types": "build/clipboard-polyfill.d.ts",
   "dependencies": {
-    "es6-promise": "4.1.1"
   },
   "devDependencies": {
+    "es6-promise": "4.1.1",
     "ts-loader": "2.3.7",
     "typescript": "2.5.3",
     "webpack": "3.6.0",

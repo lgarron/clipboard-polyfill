@@ -1,9 +1,4 @@
-import {Promise as PromisePolyfill} from "es6-promise";
 import {DT, suppressDTWarnings} from "./DT";
-
-// Avoid using the Promise polyfill unless needed.
-// https://github.com/lgarron/clipboard-polyfill/issues/59
-var PromiseOrPolyfill = (typeof Promise === "undefined") ? PromisePolyfill : Promise;
 
 // Debug log strings should be short, since they are copmiled into the production build.
 // TODO: Compile debug logging code out of production builds?
@@ -48,7 +43,7 @@ export default class ClipboardPolyfill {
         "to suppress this warning.");
     }
 
-    return (new PromiseOrPolyfill((resolve, reject) => {
+    return (new Promise((resolve, reject) => {
       // Internet Explorer
       if (seemToBeInIE()) {
         if (writeIE(data)) {
@@ -109,7 +104,7 @@ export default class ClipboardPolyfill {
   }
 
   public static read(): Promise<DT> {
-    return (new PromiseOrPolyfill((resolve, reject) => {
+    return (new Promise((resolve, reject) => {
       // TODO: Attempt to use navigator.clipboard.read() directly.
       // Requires DT -> DataTransfer conversion.
       this.readText().then(
@@ -126,7 +121,7 @@ export default class ClipboardPolyfill {
     if (seemToBeInIE()) {
       return readIE();
     }
-    return (new PromiseOrPolyfill((resolve, reject) => {
+    return (new Promise((resolve, reject) => {
       reject("Read is not supported in your browser.");
     })) as Promise<string>;
   }
@@ -274,7 +269,7 @@ function writeIE(data: DT): boolean {
 
 // Returns "" if the read failed, e.g. because the user rejected the permission.
 function readIE(): Promise<string> {
-  return (new PromiseOrPolyfill((resolve, reject) => {
+  return (new Promise((resolve, reject) => {
     var text = (window as IEWindow).clipboardData.getData("Text");
     if (text === "") {
       reject(new Error("Empty clipboard or could not read plain text from clipboard"));
