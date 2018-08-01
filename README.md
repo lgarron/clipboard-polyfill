@@ -23,14 +23,14 @@ Get the code using one of the following. If you don't know how to pick and want 
 This version is smaller, but does not work in Internet Explorer unless you add your own `Promise` polyfill (see below).
 
 - Download [`build/clipboard-polyfill.js`](https://raw.githubusercontent.com/lgarron/clipboard-polyfill/master/build/clipboard-polyfill.js) and include it using a `<script>` tag.
-- `npm install clipboard-polyfill` and `import clipboard from 'clipboard-polyfill'`.
+- `npm install clipboard-polyfill` and `import clipboard from "clipboard-polyfill"`.
 
 ## With Promise Polyfill
 
 This version works "out of the box" in all browsers that support copying to the clipboard, but is about 2.5x as large.
 
 - Download [`build/clipboard-polyfill.promise.js`](https://raw.githubusercontent.com/lgarron/clipboard-polyfill/master/build/clipboard-polyfill.promise.js) and include it using a `<script>` tag.
-- `npm install clipboard-polyfill` and `import clipboard from 'clipboard-polyfill/build/clipboard-polyfill.promise.js'`.
+- `npm install clipboard-polyfill` and `import clipboard from "clipboard-polyfill/build/clipboard-polyfill.promise"`.
 
 ## Which One?
 
