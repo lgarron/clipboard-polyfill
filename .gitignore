@@ -1,5 +1,6 @@
 *.js
 *.js.map
-*.log
-/node_modules
 !/webpack.config.js
+!/build
+/yarn-error.log
+/node_modules
