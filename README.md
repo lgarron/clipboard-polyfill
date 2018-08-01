@@ -14,19 +14,29 @@ Browsers have implemented several clipboard APIs over time, and writing to the c
 
 Note: If you only need to copy text and want a super simple polyfill that gets you 80% of the way, consider using [this gist](https://gist.github.com/lgarron/d1dee380f4ed9d825ca7).
 
-# Usage
+# Installation
 
-Get the source using one of the following:
+Get the code using one of the following. If you don't know how to pick and want maximum browser compatibility, start by using "With Promise Polyfill".
+
+## Without Promise Polyfill
+
+This version is smaller, but does not work in Internet Explorer unless you add your own `Promise` polyfill (see below).
 
 - Download [`build/clipboard-polyfill.js`](https://raw.githubusercontent.com/lgarron/clipboard-polyfill/master/build/clipboard-polyfill.js) and include it using a `<script>` tag.
 - `npm install clipboard-polyfill` and `import clipboard from 'clipboard-polyfill'`.
 
-If you need a Promise polyfill included
+## With Promise Polyfill
+
+This version works "out of the box" in all browsers that support copying to the clipboard, but is about 2.5x as large.
 
 - Download [`build/clipboard-polyfill.promise.js`](https://raw.githubusercontent.com/lgarron/clipboard-polyfill/master/build/clipboard-polyfill.promise.js) and include it using a `<script>` tag.
 - `npm install clipboard-polyfill` and `import clipboard from 'clipboard-polyfill/build/clipboard-polyfill.promise.js'`.
 
-Please note that this library uses ES6 [`Promise`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)s, so if you need to support environments that do not natively support `Promise` (ie. IE <= 11) you will need to include that dependency separately. Recommendations include [es6-promise](https://github.com/stefanpenner/es6-promise) and [core-js](https://github.com/zloirock/core-js). Instructions for how to use polyfills are build system dependent and can be found on the READMEs of these libraries.
+## Which One?
+
+The async clipboard API design uses ES6 [`Promise`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise), which is not supported in Internet Explorer. If you want the `clipboard-polyfill` to work in as many browsers as possible, you will need to include a polyfill for `Promise`. You can do this by either using the "With Promise Polyfill" version, or by using the "Without Promise Polyfill" version with a polyfill of your own choice. Recommendations include [es6-promise](https://github.com/stefanpenner/es6-promise) and [core-js](https://github.com/zloirock/core-js). Instructions for how to use these polyfills are dependent on your build system and can be found in the `README`s of these libraries.
+
+# Usage
 
 ## Plain Text
 
