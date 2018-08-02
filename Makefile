@@ -1,10 +1,10 @@
+.PHONY: build
+build:
+	env PROD=true ./node_modules/.bin/webpack
+
 .PHONY: dev
 dev:
 	./node_modules/.bin/webpack --watch
-
-.PHONY: prod
-prod:
-	env PROD=true ./node_modules/.bin/webpack
 
 .PHONY: analyze
 analyze:
