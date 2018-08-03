@@ -14,7 +14,7 @@ Browsers have implemented several clipboard APIs over time, and writing to the c
 
 Note: If you only need to copy text and want a super simple polyfill that gets you 80% of the way, consider using [this gist](https://gist.github.com/lgarron/d1dee380f4ed9d825ca7).
 
-# Installation
+# Get the Code
 
 Get the code using one of the following. If you don't know how to pick and want maximum browser compatibility, start by using "With Promise Polyfill".
 
