@@ -35,7 +35,7 @@ export default class ClipboardPolyfill {
     suppressDTWarnings();
   }
 
-  public static write(data: DT): Promise<void> {
+  public static async write(data: DT): Promise<void> {
     if (showWarnings && !data.getData(TEXT_PLAIN)) {
       warn("clipboard.write() was called without a "+
         "`text/plain` data type. On some platforms, this may result in an "+
@@ -43,79 +43,62 @@ export default class ClipboardPolyfill {
         "to suppress this warning.");
     }
 
-    return (new Promise((resolve, reject) => {
-      // Internet Explorer
-      if (seemToBeInIE()) {
-        if (writeIE(data)) {
-          resolve();
-        } else {
-          reject(new Error("Copying failed, possibly because the user rejected it."));
-        }
+    // Internet Explorer
+    if (seemToBeInIE()) {
+      if (writeIE(data)) {
         return;
+      } else {
+        throw "Copying failed, possibly because the user rejected it.";
       }
+    }
 
-      if (execCopy(data)) {
-        debugLog("regular execCopy worked");
-        resolve();
-        return;
-      }
+    if (execCopy(data)) {
+      debugLog("regular execCopy worked");
+      return;
+    }
 
-      // Success detection on Edge is not possible, due to bugs in all 4
-      // detection mechanisms we could try to use. Assume success.
-      if (navigator.userAgent.indexOf("Edge") > -1) {
-        debugLog("UA \"Edge\" => assuming success");
-        resolve();
-        return;
-      }
+    // Success detection on Edge is not possible, due to bugs in all 4
+    // detection mechanisms we could try to use. Assume success.
+    if (navigator.userAgent.indexOf("Edge") > -1) {
+      debugLog("UA \"Edge\" => assuming success");
+      return;
+    }
 
-      // Fallback 1 for desktop Safari.
-      if (copyUsingTempSelection(document.body, data)) {
-        debugLog("copyUsingTempSelection worked");
-        resolve();
-        return;
-      }
+    // Fallback 1 for desktop Safari.
+    if (copyUsingTempSelection(document.body, data)) {
+      debugLog("copyUsingTempSelection worked");
+      return;
+    }
 
-      // Fallback 2 for desktop Safari. 
-      if (copyUsingTempElem(data)) {
-        debugLog("copyUsingTempElem worked");
-        resolve();
-        return;
-      }
+    // Fallback 2 for desktop Safari. 
+    if (copyUsingTempElem(data)) {
+      debugLog("copyUsingTempElem worked");
+      return;
+    }
 
-      // Fallback for iOS Safari.
-      var text = data.getData(TEXT_PLAIN);
-      if (text !== undefined && copyTextUsingDOM(text)) {
-        debugLog("copyTextUsingDOM worked");
-        resolve();
-        return;
-      }
+    // Fallback for iOS Safari.
+    var text = data.getData(TEXT_PLAIN);
+    if (text !== undefined && copyTextUsingDOM(text)) {
+      debugLog("copyTextUsingDOM worked");
+      return;
+    }
 
-      reject(new Error("Copy command failed."));
-    })) as Promise<void>;
+    throw "Copy command failed.";
   }
 
-  public static writeText(s: string): Promise<void> {
+  public static async writeText(s: string): Promise<void> {
     if (navigator.clipboard && navigator.clipboard.writeText) {
       debugLog("Using `navigator.clipboard.writeText()`.");
       return navigator.clipboard.writeText(s);
     }
-    var dt = new DT();
-    dt.setData(TEXT_PLAIN, s);
-    return this.write(dt);
+    return this.write(DTFromText(s));
   }
 
-  public static read(): Promise<DT> {
-    return (new Promise((resolve, reject) => {
-      // TODO: Attempt to use navigator.clipboard.read() directly.
-      // Requires DT -> DataTransfer conversion.
-      this.readText().then(
-        (s: string) => resolve(DTFromText(s)),
-        reject
-      );
-    })) as Promise<DT>;
+  public static async read(): Promise<DT> {
+    return DTFromText(await this.readText());
   }
 
-  public static readText(): Promise<string> {
+  public static async readText(): Promise<string> {
     if (navigator.clipboard && navigator.clipboard.readText) {
       debugLog("Using `navigator.clipboard.readText()`.");
       return navigator.clipboard.readText();
@@ -124,9 +107,7 @@ export default class ClipboardPolyfill {
       debugLog("Reading text using IE strategy.");
       return readIE();
     }
-    return (new Promise((resolve, reject) => {
-      reject("Read is not supported in your browser.");
-    })) as Promise<string>;
+    throw "Read is not supported in your browser.";
   }
 }
 
@@ -271,15 +252,12 @@ function writeIE(data: DT): boolean {
 }
 
 // Returns "" if the read failed, e.g. because the user rejected the permission.
-function readIE(): Promise<string> {
-  return (new Promise((resolve, reject) => {
-    var text = (window as IEWindow).clipboardData.getData("Text");
-    if (text === "") {
-      reject(new Error("Empty clipboard or could not read plain text from clipboard"));
-    } else {
-      resolve(text);
-    }
-  })) as Promise<string>;
+async function readIE(): Promise<string> {
+  var text = (window as IEWindow).clipboardData.getData("Text");
+  if (text === "") {
+    throw "Empty clipboard or could not read plain text from clipboard";
+  }
+  return text;
 }
 
 /******** Expose `clipboard` on the global object in browser. ********/
