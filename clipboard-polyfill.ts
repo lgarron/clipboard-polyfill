@@ -96,6 +96,7 @@ export default class ClipboardPolyfill {
 
   public static writeText(s: string): Promise<void> {
     if (navigator.clipboard && navigator.clipboard.writeText) {
+      debugLog("Using `navigator.clipboard.writeText()`.");
       return navigator.clipboard.writeText(s);
     }
     var dt = new DT();
@@ -116,9 +117,11 @@ export default class ClipboardPolyfill {
 
   public static readText(): Promise<string> {
     if (navigator.clipboard && navigator.clipboard.readText) {
+      debugLog("Using `navigator.clipboard.readText()`.");
       return navigator.clipboard.readText();
     }
     if (seemToBeInIE()) {
+      debugLog("Reading text using IE strategy.");
       return readIE();
     }
     return (new Promise((resolve, reject) => {
