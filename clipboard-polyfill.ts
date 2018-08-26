@@ -70,7 +70,7 @@ export default class ClipboardPolyfill {
       return;
     }
 
-    // Fallback 2 for desktop Safari. 
+    // Fallback 2 for desktop Safari.
     if (copyUsingTempElem(data)) {
       debugLog("copyUsingTempElem worked");
       return;
