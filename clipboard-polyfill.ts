@@ -259,10 +259,3 @@ async function readIE(): Promise<string> {
   }
   return text;
 }
-
-/******** Expose `clipboard` on the global object in browser. ********/
-
-// TODO: Figure out how to expose ClipboardPolyfill as self.clipboard using
-// WebPack?
-declare var module: any;
-module.exports = ClipboardPolyfill;
