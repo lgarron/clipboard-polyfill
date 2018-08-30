@@ -43,6 +43,15 @@ export default class ClipboardPolyfill {
         "to suppress this warning.");
     }
 
+    // Internet Explorer
+    if (seemToBeInIE()) {
+      if (writeIE(data)) {
+        return;
+      } else {
+        throw "Copying failed, possibly because the user rejected it.";
+      }
+    }
+
     if (execCopy(data)) {
       debugLog("regular execCopy worked");
       return;
@@ -53,15 +62,6 @@ export default class ClipboardPolyfill {
     if (navigator.userAgent.indexOf("Edge") > -1) {
       debugLog("UA \"Edge\" => assuming success");
       return;
-    }
-
-    // Internet Explorer
-    if (seemToBeInIE()) {
-      if (writeIE(data)) {
-        return;
-      } else {
-        throw "Copying failed, possibly because the user rejected it.";
-      }
     }
 
     // Fallback 1 for desktop Safari.
