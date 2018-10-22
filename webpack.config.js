@@ -9,7 +9,7 @@ var BUNDLE_ANALYZER = JSON.parse(process.env.BUNDLE_ANALYZER || false);
 module.exports = {
    entry: {
      "clipboard-polyfill": "./clipboard-polyfill.ts",
-     "clipboard-polyfill.promise": ["es6-promise/dist/es6-promise.auto.js", "./clipboard-polyfill.ts"]
+     "clipboard-polyfill.promise": ["./clipboard-polyfill.promise.ts"]
    },
    module: {
      rules: [
