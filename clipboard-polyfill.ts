@@ -205,15 +205,19 @@ function copyTextUsingDOM(str: string): boolean {
 
 function selectionSet(elem: Element): void {
   var sel = document.getSelection();
-  var range = document.createRange();
-  range.selectNodeContents(elem);
-  sel.removeAllRanges();
-  sel.addRange(range);
+  if (sel) {
+    var range = document.createRange();
+    range.selectNodeContents(elem);
+    sel.removeAllRanges();
+    sel.addRange(range);
+  }
 }
 
 function selectionClear(): void {
   var sel = document.getSelection();
-  sel.removeAllRanges();
+  if (sel) {
+    sel.removeAllRanges();
+  }
 }
 
 /******** Convenience ********/
