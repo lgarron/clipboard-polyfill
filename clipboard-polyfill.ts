@@ -23,92 +23,90 @@ declare global {
   }
 }
 
-export default class ClipboardPolyfill {
-  public static readonly DT = DT;
+export {DT};
 
-  public static setDebugLog(f: (s: string) => void): void {
-    debugLog = f;
+export function setDebugLog(f: (s: string) => void): void {
+  debugLog = f;
+}
+
+export function suppressWarnings() {
+  showWarnings = false;
+  suppressDTWarnings();
+}
+
+export async function write(data: DT): Promise<void> {
+  if (showWarnings && !data.getData(TEXT_PLAIN)) {
+    warn("clipboard.write() was called without a "+
+      "`text/plain` data type. On some platforms, this may result in an "+
+      "empty clipboard. Call clipboard.suppressWarnings() "+
+      "to suppress this warning.");
   }
 
-  public static suppressWarnings() {
-    showWarnings = false;
-    suppressDTWarnings();
-  }
-
-  public static async write(data: DT): Promise<void> {
-    if (showWarnings && !data.getData(TEXT_PLAIN)) {
-      warn("clipboard.write() was called without a "+
-        "`text/plain` data type. On some platforms, this may result in an "+
-        "empty clipboard. Call clipboard.suppressWarnings() "+
-        "to suppress this warning.");
-    }
-
-    // Internet Explorer
-    if (seemToBeInIE()) {
-      if (writeIE(data)) {
-        return;
-      } else {
-        throw "Copying failed, possibly because the user rejected it.";
-      }
-    }
-
-    if (execCopy(data)) {
-      debugLog("regular execCopy worked");
+  // Internet Explorer
+  if (seemToBeInIE()) {
+    if (writeIE(data)) {
       return;
+    } else {
+      throw "Copying failed, possibly because the user rejected it.";
     }
-
-    // Success detection on Edge is not possible, due to bugs in all 4
-    // detection mechanisms we could try to use. Assume success.
-    if (navigator.userAgent.indexOf("Edge") > -1) {
-      debugLog("UA \"Edge\" => assuming success");
-      return;
-    }
-
-    // Fallback 1 for desktop Safari.
-    if (copyUsingTempSelection(document.body, data)) {
-      debugLog("copyUsingTempSelection worked");
-      return;
-    }
-
-    // Fallback 2 for desktop Safari.
-    if (copyUsingTempElem(data)) {
-      debugLog("copyUsingTempElem worked");
-      return;
-    }
-
-    // Fallback for iOS Safari.
-    var text = data.getData(TEXT_PLAIN);
-    if (text !== undefined && copyTextUsingDOM(text)) {
-      debugLog("copyTextUsingDOM worked");
-      return;
-    }
-
-    throw "Copy command failed.";
   }
 
-  public static async writeText(s: string): Promise<void> {
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      debugLog("Using `navigator.clipboard.writeText()`.");
-      return navigator.clipboard.writeText(s);
-    }
-    return this.write(DTFromText(s));
+  if (execCopy(data)) {
+    debugLog("regular execCopy worked");
+    return;
   }
 
-  public static async read(): Promise<DT> {
-    return DTFromText(await this.readText());
+  // Success detection on Edge is not possible, due to bugs in all 4
+  // detection mechanisms we could try to use. Assume success.
+  if (navigator.userAgent.indexOf("Edge") > -1) {
+    debugLog("UA \"Edge\" => assuming success");
+    return;
   }
 
-  public static async readText(): Promise<string> {
-    if (navigator.clipboard && navigator.clipboard.readText) {
-      debugLog("Using `navigator.clipboard.readText()`.");
-      return navigator.clipboard.readText();
-    }
-    if (seemToBeInIE()) {
-      debugLog("Reading text using IE strategy.");
-      return readIE();
-    }
-    throw "Read is not supported in your browser.";
+  // Fallback 1 for desktop Safari.
+  if (copyUsingTempSelection(document.body, data)) {
+    debugLog("copyUsingTempSelection worked");
+    return;
   }
+
+  // Fallback 2 for desktop Safari.
+  if (copyUsingTempElem(data)) {
+    debugLog("copyUsingTempElem worked");
+    return;
+  }
+
+  // Fallback for iOS Safari.
+  var text = data.getData(TEXT_PLAIN);
+  if (text !== undefined && copyTextUsingDOM(text)) {
+    debugLog("copyTextUsingDOM worked");
+    return;
+  }
+
+  throw "Copy command failed.";
+}
+
+export async function writeText(s: string): Promise<void> {
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    debugLog("Using `navigator.clipboard.writeText()`.");
+    return navigator.clipboard.writeText(s);
+  }
+  return write(DTFromText(s));
+}
+
+export async function read(): Promise<DT> {
+  return DTFromText(await readText());
+}
+
+export async function readText(): Promise<string> {
+  if (navigator.clipboard && navigator.clipboard.readText) {
+    debugLog("Using `navigator.clipboard.readText()`.");
+    return navigator.clipboard.readText();
+  }
+  if (seemToBeInIE()) {
+    debugLog("Reading text using IE strategy.");
+    return readIE();
+  }
+  throw "Read is not supported in your browser.";
 }
 
 /******** Implementations ********/
