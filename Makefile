@@ -1,18 +1,31 @@
+NODE_BIN = ./node_modules/.bin
+
 .PHONY: build
 build:
-	env PROD=true ./node_modules/.bin/webpack
+	env PROD=true ${NODE_BIN}/webpack
 
 .PHONY: dev
 dev:
-	./node_modules/.bin/webpack --watch
+	${NODE_BIN}/webpack --watch
 
 .PHONY: analyze
 analyze:
-	env PROD=true BUNDLE_ANALYZER=true ./node_modules/.bin/webpack
+	env PROD=true BUNDLE_ANALYZER=true ${NODE_BIN}/webpack
 
 .PHONY: setup
 setup:
 	yarn install
+
+.PHONY: test
+test: build
+	-node test/import/node-require/index.js
+	-${NODE_BIN}/tsc test/import/ts-star-import/index.ts
+		-node test/import/ts-star-import/index.js
+	-node --experimental-modules test/import/node-star-experimental-modules/index.mjs
+
+	-${NODE_BIN}/tsc test/import/ts-default-import/index.ts
+		-node test/import/ts-default-import/index.js
+	-node --experimental-modules test/import/node-default-experimental-modules/index.mjs
 
 .PHONY: build-for-git
 build-for-git: prod
