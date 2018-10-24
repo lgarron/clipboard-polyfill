@@ -23,14 +23,18 @@ Get the code using one of the following. If you don't know how to pick and want 
 This version is smaller, but does not work in Internet Explorer unless you add your own `Promise` polyfill (see below).
 
 - Download [`build/clipboard-polyfill.js`](https://raw.githubusercontent.com/lgarron/clipboard-polyfill/master/build/clipboard-polyfill.js) and include it using a `<script>` tag.
-- `npm install clipboard-polyfill` and `import clipboard from "clipboard-polyfill"`.
+- `npm install clipboard-polyfill` and one of:
+  - `import * as clipboard from "clipboard-polyfill"`
+  - `const clipboard = require("clipboard-polyfill");`
 
 ## With Promise Polyfill
 
 This version works "out of the box" in all browsers that support copying to the clipboard, but is about 2.5x as large.
 
 - Download [`build/clipboard-polyfill.promise.js`](https://raw.githubusercontent.com/lgarron/clipboard-polyfill/master/build/clipboard-polyfill.promise.js) and include it using a `<script>` tag.
-- `npm install clipboard-polyfill` and `import clipboard from "clipboard-polyfill/build/clipboard-polyfill.promise"`.
+- `npm install clipboard-polyfill` and one of:
+  - `import * as clipboard from "clipboard-polyfill/build/clipboard-polyfill.promise"`
+  - `const clipboard = require("clipboard-polyfill/build/clipboard-polyfill.promise");`
 
 ## Which One?
 
@@ -138,3 +142,4 @@ Try [this gist](https://gist.github.com/lgarron/d1dee380f4ed9d825ca7) for a simp
 - `read()` currently only works in Internet Explorer.
   - Internet Explorer can only read `text/plain` values from the clipboard.
 - Microsoft Edge (at least EdgeHTML version <17) does not write `text/html` to the clipboard using the Windows `CF_HTML` clipboard format ([Edge Bug #14372529](https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/14372529/)), which prevents other programs (including other browsers) from recognizing the copied HTML data ([issue #73](https://github.com/lgarron/clipboard-polyfill/issues/73)). `clipboard-polyfill` currently does not attempt to work around this issue.
+- Node with `--experimental-modules` seems to require using `import clipboard from "clipboard-polyfill"` (instead of `import * from`) as of October 2018. Some environments may also require this.
