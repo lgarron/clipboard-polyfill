@@ -8,7 +8,8 @@
     "lib": ["es6", "DOM"],
     "target": "es5",
     "declaration": true,
-    "noUnusedLocals": true
+    "noUnusedLocals": true,
+    "outDir": "build"
   },
   "exclude": [
     "experiment",
