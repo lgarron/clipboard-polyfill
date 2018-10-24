@@ -27,6 +27,11 @@ test: build
 		-node test/import/ts-default-import/index.js
 	-node --experimental-modules test/import/node-default-experimental-modules/index.mjs
 
+.PHONY: test-browser
+test-browser: build
+	open "http://localhost:8000/test/import/browser-star/"
+	python -m SimpleHTTPServer
+
 .PHONY: build-for-git
 build-for-git: prod
 	git stage -f build/*.js build/*d.ts
