@@ -109,6 +109,45 @@ export async function readText(): Promise<string> {
   throw "Read is not supported in your browser.";
 }
 
+var useStarShown = false;
+function useStar(): void {
+  if (useStarShown) {
+    return;
+  }
+  if (showWarnings) {
+    warn("You are using the deprecated default object of `clipboard-polyfill`. Please switch to `import * as clipboard from \"clipboard-polyfill\"` and see https://github.com/lgarron/clipboard-polyfill/issues/101 for more info.");
+  }
+  useStarShown = true;
+}
+
+export default class ClipboardPolyfillDefault {
+  public static readonly DT = DT;
+  public static setDebugLog(f: (s: string) => void): void {
+    useStar();
+    return setDebugLog(f);
+  }
+  public static suppressWarnings() {
+    useStar();
+    return suppressWarnings();
+  }
+  public static async write(data: DT): Promise<void> {
+    useStar();
+    return write(data);
+  }
+  public static async writeText(s: string): Promise<void> {
+    useStar();
+    return writeText(s);
+  }
+  public static async read(): Promise<DT> {
+    useStar();
+    return read();
+  }
+  public static async readText(): Promise<string> {
+    useStar();
+    return readText();
+  }
+}
+
 /******** Implementations ********/
 
 class FallbackTracker {
