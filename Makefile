@@ -21,6 +21,8 @@ test: build
 	-node test/import/node-require/index.js
 	-${NODE_BIN}/tsc test/import/ts-star-import/index.ts
 		-node test/import/ts-star-import/index.js
+	-${NODE_BIN}/tsc test/import/ts-require/index.ts
+		-node test/import/ts-require/index.js
 	-node --experimental-modules test/import/node-star-experimental-modules/index.mjs
 
 	-${NODE_BIN}/tsc test/import/ts-default-import/index.ts
