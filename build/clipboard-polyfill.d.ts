@@ -14,3 +14,12 @@ export declare function write(data: DT): Promise<void>;
 export declare function writeText(s: string): Promise<void>;
 export declare function read(): Promise<DT>;
 export declare function readText(): Promise<string>;
+export default class ClipboardPolyfillDefault {
+    static readonly DT: typeof DT;
+    static setDebugLog(f: (s: string) => void): void;
+    static suppressWarnings(): void;
+    static write(data: DT): Promise<void>;
+    static writeText(s: string): Promise<void>;
+    static read(): Promise<DT>;
+    static readText(): Promise<string>;
+}
