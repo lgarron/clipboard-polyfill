@@ -115,7 +115,7 @@ function useStar(): void {
     return;
   }
   if (showWarnings) {
-    warn("You are using the deprecated default object of `clipboard-polyfill`. Please switch to `import * as clipboard from \"clipboard-polyfill\"` and see https://github.com/lgarron/clipboard-polyfill/issues/101 for more info.");
+    warn("The deprecated default object of `clipboard-polyfill` was called. Please switch to `import * as clipboard from \"clipboard-polyfill\"` and see https://github.com/lgarron/clipboard-polyfill/issues/101 for more info.");
   }
   useStarShown = true;
 }
