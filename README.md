@@ -121,7 +121,7 @@ Try [this gist](https://gist.github.com/lgarron/d1dee380f4ed9d825ca7) for a simp
 - Internet Explorer 9+ (text only)
 - Edge
 - Desktop Safari 10+
-- iOS Safari 10+ (text only)
+- iOS Safari 10+ (text only in some versions)
 
 `clipboard-polyfill` uses a variety of heuristics to get around compatibility bugs. Please [let us know](https://github.com/lgarron/clipboard-polyfill/issues/new) if you are running into compatibility issues with any of the browsers listed above.
 
