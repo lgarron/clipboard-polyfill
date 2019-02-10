@@ -34,5 +34,6 @@
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/lgarron/clipboard-polyfill/issues"
-  }
+  },
+  "files": ["/build"]
 }

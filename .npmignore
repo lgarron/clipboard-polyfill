@@ -1,6 +1,0 @@
-# Including this file prevents `npm`/`yarn` from excluding everything in
-# `.gitignore, and only ignores files specified here.
-/node_modules
-
-# Workaround for https://github.com/lgarron/clipboard-polyfill/issues/90
-/.git
