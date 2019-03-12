@@ -1,6 +1,6 @@
 import {DT, suppressDTWarnings} from "./DT";
 
-// Debug log strings should be short, since they are copmiled into the production build.
+// Debug log strings should be short, since they are compiled into the production build.
 // TODO: Compile debug logging code out of production builds?
 var debugLog: (s: string) => void = function(s: string) {};
 var showWarnings = true;
