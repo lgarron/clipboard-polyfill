@@ -14,14 +14,14 @@ var warn = warnOrLog.bind("[clipboard-polyfill]");
 
 var TEXT_PLAIN = "text/plain";
 
-declare global {
-  interface Navigator {
-    clipboard: {
-      writeText?: (s: string) => Promise<void>;
-      readText?: () => Promise<string>;
-    };
-  }
-}
+// declare global {
+//   interface Navigator {
+//     clipboard: {
+//       writeText?: (s: string) => Promise<void>;
+//       readText?: () => Promise<string>;
+//     };
+//   }
+// }
 
 export {DT};
 
@@ -158,8 +158,9 @@ function copyListener(tracker: FallbackTracker, data: DT, e: ClipboardEvent): vo
   debugLog("listener called");
   tracker.success = true;
   data.forEach((value: string, key: string) => {
-    e.clipboardData.setData(key, value);
-    if (key === TEXT_PLAIN && e.clipboardData.getData(key) != value) {
+    const clipboardData = e.clipboardData!;
+    clipboardData.setData(key, value);
+    if (key === TEXT_PLAIN && clipboardData.getData(key) != value) {
       debugLog("setting text/plain failed");
       tracker.success = false;
     }
