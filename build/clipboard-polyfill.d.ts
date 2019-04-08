@@ -1,12 +1,4 @@
 import { DT } from "./DT";
-declare global {
-    interface Navigator {
-        clipboard: {
-            writeText?: (s: string) => Promise<void>;
-            readText?: () => Promise<string>;
-        };
-    }
-}
 export { DT };
 export declare function setDebugLog(f: (s: string) => void): void;
 export declare function suppressWarnings(): void;
