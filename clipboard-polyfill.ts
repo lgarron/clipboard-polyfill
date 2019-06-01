@@ -106,9 +106,41 @@ export async function readText(): Promise<string> {
     debugLog("Reading text using IE strategy.");
     return readIE();
   }
-  throw "Read is not supported in your browser.";
+  return readTextForAllBrowsers();
 }
 
+export async function readTextForAllBrowsers(): Promise<string> {
+  return new Promise(resolve =>
+    execOnTempElement(
+      (textArea: HTMLTextAreaElement) => textArea.focus(),
+      (element: HTMLTextAreaElement) => resolve(element.value)
+    )
+  );
+}
+
+function execOnTempElement(
+  callbackNow: (textArea: HTMLTextAreaElement) => void,
+  callbackAfter: (textArea: HTMLTextAreaElement) => void
+) {
+  const eTempInput = document.createElement("textarea");
+  eTempInput.style.width = "1px";
+  eTempInput.style.height = "1px";
+  eTempInput.style.top = "0px";
+  eTempInput.style.left = "0px";
+  eTempInput.style.position = "absolute";
+  eTempInput.style.opacity = "0.0";
+  document.body.appendChild(eTempInput);
+  callbackNow(eTempInput);
+  // It needs 100 otherwise OS X seemed to not always be able to paste... Go figure...
+  if (callbackAfter) {
+    window.setTimeout(() => {
+      callbackAfter(eTempInput);
+      document.body.removeChild(eTempInput);
+    }, 100);
+  } else {
+    document.body.removeChild(eTempInput);
+  }
+}
 var useStarShown = false;
 function useStar(): void {
   if (useStarShown) {
