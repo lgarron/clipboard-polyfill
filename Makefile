@@ -35,7 +35,7 @@ test-browser: build
 	python -m SimpleHTTPServer
 
 .PHONY: build-for-git
-build-for-git: prod
+build-for-git: build
 	git stage -f build/*.js build/*d.ts
 
 .PHONY: deploy
