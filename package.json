@@ -35,5 +35,5 @@
   "bugs": {
     "url": "https://github.com/lgarron/clipboard-polyfill/issues"
   },
-  "files": ["/build"]
+  "files": ["/build", "*.ts", "README.md"]
 }
