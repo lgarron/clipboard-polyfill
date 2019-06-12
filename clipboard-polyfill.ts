@@ -14,15 +14,6 @@ var warn = warnOrLog.bind("[clipboard-polyfill]");
 
 var TEXT_PLAIN = "text/plain";
 
-// declare global {
-//   interface Navigator {
-//     clipboard: {
-//       writeText?: (s: string) => Promise<void>;
-//       readText?: () => Promise<string>;
-//     };
-//   }
-// }
-
 export {DT};
 
 export function setDebugLog(f: (s: string) => void): void {
