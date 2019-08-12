@@ -102,44 +102,46 @@ export async function readText(): Promise<string> {
   throw new Error("Read is not supported in your browser.");
 }
 
-// let useStarShown = false;
-// function useStar(): void {
-//   if (useStarShown) {
-//     return;
-//   }
-//   if (showWarnings) {
-//     warn("The deprecated default object of `clipboard-polyfill` was called. Please switch to `import * as clipboard from \"clipboard-polyfill\"` and see https://github.com/lgarron/clipboard-polyfill/issues/101 for more info.");
-//   }
-//   useStarShown = true;
-// }
+let useStarShown = false;
+function useStar(): void {
+  if (useStarShown) {
+    return;
+  }
+  if (showWarnings) {
+    warn("The deprecated default object of `clipboard-polyfill` was called. Please switch to `import * as clipboard from \"clipboard-polyfill\"` and see https://github.com/lgarron/clipboard-polyfill/issues/101 for more info.");
+  }
+  useStarShown = true;
+}
 
-// export default class ClipboardPolyfillDefault {
-//   public static readonly DT = DT;
-//   public static setDebugLog(f: (s: string) => void): void {
-//     useStar();
-//     return setDebugLog(f);
-//   }
-//   public static suppressWarnings() {
-//     useStar();
-//     return suppressWarnings();
-//   }
-//   public static async write(data: DT): Promise<void> {
-//     useStar();
-//     return write(data);
-//   }
-//   public static async writeText(s: string): Promise<void> {
-//     useStar();
-//     return writeText(s);
-//   }
-//   public static async read(): Promise<DT> {
-//     useStar();
-//     return read();
-//   }
-//   public static async readText(): Promise<string> {
-//     useStar();
-//     return readText();
-//   }
-// }
+const ClipboardPolyfillDefault = {
+  DT,
+  setDebugLog(f: (s: string) => void): void {
+    useStar();
+    return setDebugLog(f);
+  },
+  suppressWarnings() {
+    useStar();
+    return suppressWarnings();
+  },
+  async write(data: DT): Promise<void> {
+    useStar();
+    return write(data);
+  },
+  async writeText(s: string): Promise<void> {
+    useStar();
+    return writeText(s);
+  },
+  async read(): Promise<DT> {
+    useStar();
+    return read();
+  },
+  async readText(): Promise<string> {
+    useStar();
+    return readText();
+  },
+};
+
+export default ClipboardPolyfillDefault;
 
 /******** Implementations ********/
 
