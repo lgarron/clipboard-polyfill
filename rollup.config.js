@@ -39,7 +39,7 @@ export default [
     plugins,
   },
   {
-    input: "clipboard-polyfill.promise.ts",
+    input: "clipboard-polyfill.ts",
     output: [
       {
         banner: promisePolyfill,
