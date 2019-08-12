@@ -1,17 +1,16 @@
 import babel from "rollup-plugin-babel";
 import {terser} from "rollup-plugin-terser";
 import * as typescript from "typescript";
-import resolve from "rollup-plugin-node-resolve";
 import typescript2 from "rollup-plugin-typescript2";
 import tslint from "rollup-plugin-tslint";
 import { readFileSync } from "fs";
 
 const plugins = [
-  // tslint({
-  //   exclude: [
-  //     "node_modules/**",
-  //   ],
-  // }),
+  tslint({
+    exclude: [
+      "node_modules/**",
+    ],
+  }),
   typescript2({
     typescript: typescript,
   }),
@@ -33,6 +32,17 @@ export default [
         dir: "dist",
         format: "umd",
         name: "clipboard",
+        sourcemap: true,
+      },
+    ],
+    plugins,
+  },
+  {
+    input: "clipboard-polyfill.ts",
+    output: [
+      {
+        file: "dist/clipboard-polyfill.esm.js",
+        format: "esm",
         sourcemap: true,
       },
     ],

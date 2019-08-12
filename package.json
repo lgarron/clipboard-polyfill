@@ -3,6 +3,7 @@
   "version": "2.8.1",
   "description": "A polyfill for the asynchronous clipboard API",
   "main": "dist/clipboard-polyfill.js",
+  "module": "dist/clipboard-polyfill.esm.js",
   "types": "dist/clipboard-polyfill.d.ts",
   "dependencies": {},
   "devDependencies": {
@@ -18,7 +19,6 @@
     "promise-polyfill": "^8.1.3",
     "rollup": "^1.19.4",
     "rollup-plugin-babel": "^4.3.3",
-    "rollup-plugin-node-resolve": "^5.2.0",
     "rollup-plugin-terser": "^5.0.0",
     "rollup-plugin-tslint": "^0.2.2",
     "rollup-plugin-typescript2": "^0.21.2",
