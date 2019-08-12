@@ -26,7 +26,7 @@ const promisePolyfill = readFileSync("node_modules/promise-polyfill/dist/polyfil
 
 export default [
   {
-    input: "clipboard-polyfill.ts",
+    input: "./src/index.ts",
     output: [
       {
         dir: "dist",
@@ -38,7 +38,7 @@ export default [
     plugins,
   },
   {
-    input: "clipboard-polyfill.ts",
+    input: "./src/index.ts",
     output: [
       {
         file: "dist/clipboard-polyfill.esm.js",
@@ -49,7 +49,7 @@ export default [
     plugins,
   },
   {
-    input: "clipboard-polyfill.ts",
+    input: "./src/index.ts",
     output: [
       {
         banner: promisePolyfill,

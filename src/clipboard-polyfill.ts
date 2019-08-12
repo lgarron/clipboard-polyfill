@@ -16,8 +16,6 @@ const warn = warnOrLog.bind("[clipboard-polyfill]");
 
 const TEXT_PLAIN = "text/plain";
 
-export {DT};
-
 export function setDebugLog(f: (s: string) => void): void {
   debugLog = f;
 }
