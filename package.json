@@ -25,11 +25,7 @@
     "ts-jest": "^24.0.2",
     "ts-loader": "^5.2.2",
     "tslint": "^5.18.0",
-    "typescript": "^3.5.3",
-    "uglifyjs-webpack-plugin": "^2.2.0",
-    "webpack": "^4.39.1",
-    "webpack-cli": "^3.3.6",
-    "webpack-notifier": "^1.8.0"
+    "typescript": "^3.5.3"
   },
   "repository": {
     "type": "git",
