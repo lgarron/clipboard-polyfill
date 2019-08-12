@@ -1,5 +1,7 @@
+import { TEXT_PLAIN } from "./data-types";
+
 const dataTypes = [
-  "text/plain",
+  TEXT_PLAIN,
   "text/html",
 ];
 
