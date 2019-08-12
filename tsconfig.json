@@ -5,11 +5,11 @@
     "noImplicitReturns": true,
     "sourceMap": true,
     "strictNullChecks": true,
-    "lib": ["es6", "DOM"],
+    "lib": ["es6", "dom"],
     "target": "es5",
     "declaration": true,
     "noUnusedLocals": true,
-    "outDir": "build"
+    "outDir": "dist"
   },
   "exclude": [
     "experiment",

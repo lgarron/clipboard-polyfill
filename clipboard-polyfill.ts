@@ -2,17 +2,19 @@ import {DT, suppressDTWarnings} from "./DT";
 
 // Debug log strings should be short, since they are compiled into the production build.
 // TODO: Compile debug logging code out of production builds?
-var debugLog: (s: string) => void = function(s: string) {};
-var showWarnings = true;
+// tslint:disable-next-line: no-empty
+let debugLog: (s: string) => void = (s: string) => {};
+let showWarnings = true;
 // Workaround for:
 // - IE9 (can't bind console functions directly), and
 // - Edge Issue #14495220 (referencing `console` without F12 Developer Tools can cause an exception)
-var warnOrLog = function() {
+function warnOrLog() {
+  // tslint:disable-next-line: no-console
   (console.warn || console.log).apply(console, arguments);
-};
-var warn = warnOrLog.bind("[clipboard-polyfill]");
+}
+const warn = warnOrLog.bind("[clipboard-polyfill]");
 
-var TEXT_PLAIN = "text/plain";
+const TEXT_PLAIN = "text/plain";
 
 export {DT};
 
@@ -27,9 +29,9 @@ export function suppressWarnings() {
 
 export async function write(data: DT): Promise<void> {
   if (showWarnings && !data.getData(TEXT_PLAIN)) {
-    warn("clipboard.write() was called without a "+
-      "`text/plain` data type. On some platforms, this may result in an "+
-      "empty clipboard. Call clipboard.suppressWarnings() "+
+    warn("clipboard.write() was called without a " +
+      "`text/plain` data type. On some platforms, this may result in an " +
+      "empty clipboard. Call clipboard.suppressWarnings() " +
       "to suppress this warning.");
   }
 
@@ -38,7 +40,7 @@ export async function write(data: DT): Promise<void> {
     if (writeIE(data)) {
       return;
     } else {
-      throw "Copying failed, possibly because the user rejected it.";
+      throw new Error("Copying failed, possibly because the user rejected it.");
     }
   }
 
@@ -67,13 +69,13 @@ export async function write(data: DT): Promise<void> {
   }
 
   // Fallback for iOS Safari.
-  var text = data.getData(TEXT_PLAIN);
+  const text = data.getData(TEXT_PLAIN);
   if (text !== undefined && copyTextUsingDOM(text)) {
     debugLog("copyTextUsingDOM worked");
     return;
   }
 
-  throw "Copy command failed.";
+  throw new Error("Copy command failed.");
 }
 
 export async function writeText(s: string): Promise<void> {
@@ -97,47 +99,47 @@ export async function readText(): Promise<string> {
     debugLog("Reading text using IE strategy.");
     return readIE();
   }
-  throw "Read is not supported in your browser.";
+  throw new Error("Read is not supported in your browser.");
 }
 
-var useStarShown = false;
-function useStar(): void {
-  if (useStarShown) {
-    return;
-  }
-  if (showWarnings) {
-    warn("The deprecated default object of `clipboard-polyfill` was called. Please switch to `import * as clipboard from \"clipboard-polyfill\"` and see https://github.com/lgarron/clipboard-polyfill/issues/101 for more info.");
-  }
-  useStarShown = true;
-}
+// let useStarShown = false;
+// function useStar(): void {
+//   if (useStarShown) {
+//     return;
+//   }
+//   if (showWarnings) {
+//     warn("The deprecated default object of `clipboard-polyfill` was called. Please switch to `import * as clipboard from \"clipboard-polyfill\"` and see https://github.com/lgarron/clipboard-polyfill/issues/101 for more info.");
+//   }
+//   useStarShown = true;
+// }
 
-export default class ClipboardPolyfillDefault {
-  public static readonly DT = DT;
-  public static setDebugLog(f: (s: string) => void): void {
-    useStar();
-    return setDebugLog(f);
-  }
-  public static suppressWarnings() {
-    useStar();
-    return suppressWarnings();
-  }
-  public static async write(data: DT): Promise<void> {
-    useStar();
-    return write(data);
-  }
-  public static async writeText(s: string): Promise<void> {
-    useStar();
-    return writeText(s);
-  }
-  public static async read(): Promise<DT> {
-    useStar();
-    return read();
-  }
-  public static async readText(): Promise<string> {
-    useStar();
-    return readText();
-  }
-}
+// export default class ClipboardPolyfillDefault {
+//   public static readonly DT = DT;
+//   public static setDebugLog(f: (s: string) => void): void {
+//     useStar();
+//     return setDebugLog(f);
+//   }
+//   public static suppressWarnings() {
+//     useStar();
+//     return suppressWarnings();
+//   }
+//   public static async write(data: DT): Promise<void> {
+//     useStar();
+//     return write(data);
+//   }
+//   public static async writeText(s: string): Promise<void> {
+//     useStar();
+//     return writeText(s);
+//   }
+//   public static async read(): Promise<DT> {
+//     useStar();
+//     return read();
+//   }
+//   public static async readText(): Promise<string> {
+//     useStar();
+//     return readText();
+//   }
+// }
 
 /******** Implementations ********/
 
@@ -151,7 +153,7 @@ function copyListener(tracker: FallbackTracker, data: DT, e: ClipboardEvent): vo
   data.forEach((value: string, key: string) => {
     const clipboardData = e.clipboardData!;
     clipboardData.setData(key, value);
-    if (key === TEXT_PLAIN && clipboardData.getData(key) != value) {
+    if (key === TEXT_PLAIN && clipboardData.getData(key) !== value) {
       debugLog("setting text/plain failed");
       tracker.success = false;
     }
@@ -160,8 +162,8 @@ function copyListener(tracker: FallbackTracker, data: DT, e: ClipboardEvent): vo
 }
 
 function execCopy(data: DT): boolean {
-  var tracker = new FallbackTracker();
-  var listener = copyListener.bind(this, tracker, data);
+  const tracker = new FallbackTracker();
+  const listener = copyListener.bind(this, tracker, data);
 
   document.addEventListener("copy", listener);
   try {
@@ -178,7 +180,7 @@ function execCopy(data: DT): boolean {
 // Temporarily select a DOM element, so that `execCommand()` is not rejected.
 function copyUsingTempSelection(e: HTMLElement, data: DT): boolean {
   selectionSet(e);
-  var success = execCopy(data);
+  const success = execCopy(data);
   selectionClear();
   return success;
 }
@@ -186,7 +188,7 @@ function copyUsingTempSelection(e: HTMLElement, data: DT): boolean {
 // Create a temporary DOM element to select, so that `execCommand()` is not
 // rejected.
 function copyUsingTempElem(data: DT): boolean {
-  var tempElem = document.createElement("div");
+  const tempElem = document.createElement("div");
   // Setting an individual property does not support `!important`, so we set the
   // whole style instead of just the `-webkit-user-select` property.
   tempElem.setAttribute("style", "-webkit-user-select: text !important");
@@ -194,7 +196,7 @@ function copyUsingTempElem(data: DT): boolean {
   tempElem.textContent = "temporary element";
   document.body.appendChild(tempElem);
 
-  var success = copyUsingTempSelection(tempElem, data);
+  const success = copyUsingTempSelection(tempElem, data);
 
   document.body.removeChild(tempElem);
   return success;
@@ -204,25 +206,25 @@ function copyUsingTempElem(data: DT): boolean {
 function copyTextUsingDOM(str: string): boolean {
   debugLog("copyTextUsingDOM");
 
-  var tempElem = document.createElement("div");
+  const tempElem = document.createElement("div");
   // Setting an individual property does not support `!important`, so we set the
   // whole style instead of just the `-webkit-user-select` property.
   tempElem.setAttribute("style", "-webkit-user-select: text !important");
   // Use shadow DOM if available.
-  var spanParent: Node = tempElem;
+  let spanParent: Node = tempElem;
   if (tempElem.attachShadow) {
     debugLog("Using shadow DOM.");
     spanParent = tempElem.attachShadow({mode: "open"});
   }
 
-  var span = document.createElement("span");
+  const span = document.createElement("span");
   span.innerText = str;
 
   spanParent.appendChild(span);
   document.body.appendChild(tempElem);
   selectionSet(span);
 
-  var result = document.execCommand("copy");
+  const result = document.execCommand("copy");
 
   selectionClear();
   document.body.removeChild(tempElem);
@@ -233,9 +235,9 @@ function copyTextUsingDOM(str: string): boolean {
 /******** Selection ********/
 
 function selectionSet(elem: Element): void {
-  var sel = document.getSelection();
+  const sel = document.getSelection();
   if (sel) {
-    var range = document.createRange();
+    const range = document.createRange();
     range.selectNodeContents(elem);
     sel.removeAllRanges();
     sel.addRange(range);
@@ -243,7 +245,7 @@ function selectionSet(elem: Element): void {
 }
 
 function selectionClear(): void {
-  var sel = document.getSelection();
+  const sel = document.getSelection();
   if (sel) {
     sel.removeAllRanges();
   }
@@ -252,7 +254,7 @@ function selectionClear(): void {
 /******** Convenience ********/
 
 function DTFromText(s: string): DT {
-  var dt = new DT();
+  const dt = new DT();
   dt.setData(TEXT_PLAIN, s);
   return dt;
 }
@@ -264,7 +266,7 @@ interface IEWindow extends Window {
     setData: (key: string, value: string) => boolean;
     // Always results in a string: https://msdn.microsoft.com/en-us/library/ms536436(v=vs.85).aspx
     getData: (key: string) => string;
-  }
+  };
 }
 
 function seemToBeInIE(): boolean {
@@ -276,19 +278,19 @@ function seemToBeInIE(): boolean {
 function writeIE(data: DT): boolean {
   // IE supports text or URL, but not HTML: https://msdn.microsoft.com/en-us/library/ms536744(v=vs.85).aspx
   // TODO: Write URLs to `text/uri-list`? https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API/Recommended_drag_types
-  var text = data.getData(TEXT_PLAIN);
+  const text = data.getData(TEXT_PLAIN);
   if (text !== undefined) {
     return (window as IEWindow).clipboardData.setData("Text", text);
   }
 
-  throw ("No `text/plain` value was specified.");
+  throw new Error(("No `text/plain` value was specified."));
 }
 
 // Returns "" if the read failed, e.g. because the user rejected the permission.
 async function readIE(): Promise<string> {
-  var text = (window as IEWindow).clipboardData.getData("Text");
+  const text = (window as IEWindow).clipboardData.getData("Text");
   if (text === "") {
-    throw "Empty clipboard or could not read plain text from clipboard";
+    throw new Error("Empty clipboard or could not read plain text from clipboard");
   }
   return text;
 }
