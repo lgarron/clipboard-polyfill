@@ -13,7 +13,7 @@
   },
   "exclude": [
     "experiment",
-    "build",
+    "dist",
     "test"
   ]
 }
