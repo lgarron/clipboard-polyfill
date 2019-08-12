@@ -1,26 +1,16 @@
 import { TEXT_PLAIN } from "./data-types";
+import {shouldShowWarnings, warn} from "./debug";
 
 const dataTypes = [
   TEXT_PLAIN,
   "text/html",
 ];
 
-// TODO: Dedup with main file?
-function warnOrLog() {
-  // tslint:disable-next-line: no-console
-  (console.warn || console.log).call(arguments);
-} // IE9 workaround (can't bind console functions).
-const warn = warnOrLog.bind(console, "[clipboard-polyfill]");
-let showWarnings = true;
-export function suppressDTWarnings() {
-  showWarnings = false;
-}
-
 export class DT {
   private m: {[key: string]: string} = {};
 
   public setData(type: string, value: string): void {
-    if (showWarnings && dataTypes.indexOf(type) === -1) {
+    if (shouldShowWarnings && dataTypes.indexOf(type) === -1) {
       warn("Unknown data type: " + type, "Call clipboard.suppressWarnings() " +
         "to suppress this warning.");
     }
@@ -39,4 +29,12 @@ export class DT {
       f(this.m[k], k);
     }
   }
+}
+
+/******** Convenience ********/
+
+export function DTFromText(s: string): DT {
+  const dt = new DT();
+  dt.setData(TEXT_PLAIN, s);
+  return dt;
 }
