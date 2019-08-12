@@ -53,7 +53,7 @@ export default [
     output: [
       {
         banner: promisePolyfill,
-        dir: "dist",
+        file: "dist/clipboard-polyfill.promise.js",
         format: "umd",
         name: "clipboard",
         sourcemap: true,
