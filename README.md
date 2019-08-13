@@ -29,7 +29,7 @@ This version is smaller, but does not work in Internet Explorer unless you add y
 
 ## With Promise Polyfill
 
-This version works "out of the box" in all browsers that support copying to the clipboard, but is about 2.5x as large.
+This version works "out of the box" in all browsers that support copying to the clipboard, but is larger.
 
 - Download [`dist/clipboard-polyfill.promise.js`](https://github.com/lgarron/clipboard-polyfill/releases/latest/download/clipboard-polyfill.promise.js) and include it using a `<script>` tag.
 - `npm install clipboard-polyfill` and one of:
