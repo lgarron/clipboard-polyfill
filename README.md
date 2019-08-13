@@ -6,7 +6,8 @@ Make copying on the web as easy as:
 
     clipboard.writeText("hello world");
 
-As of October 2017, this library is a polyfill for the modern `Promise`-based [asynchronous clipboard API](https://www.w3.org/TR/clipboard-apis/#async-clipboard-api).
+As of October 2017, this library is a polyfill for the modern `Promise`-based [asynchronous clipboard API](https://www.w3.org/TR/clipboard-apis/#async-clipboard-api).  
+(Note: the core library doesn't modify global objects, so it's actually a [*ponyfill*](https://ponyfill.com/).)
 
 ## Why `clipboard-polyfill`?
 
@@ -35,6 +36,8 @@ This version works "out of the box" in all browsers that support copying to the 
 - `npm install clipboard-polyfill` and one of:
   - `import * as clipboard from "clipboard-polyfill/dist/clipboard-polyfill.promise"`
   - `const clipboard = require("clipboard-polyfill/dist/clipboard-polyfill.promise");`
+
+Note: the Promise polyfill in this build version *will* modify the global object.
 
 ## Which One?
 
