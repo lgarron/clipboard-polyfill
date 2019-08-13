@@ -49,6 +49,7 @@
     "url": "https://github.com/lgarron/clipboard-polyfill/issues"
   },
   "files": [
+    "/build",
     "/dist",
     "*.ts",
     "README.md"
