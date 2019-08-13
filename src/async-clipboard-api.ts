@@ -1,4 +1,4 @@
-import {ClipboardItemObject} from "./clipboard-item";
+import {ClipboardItem, ClipboardItemObject} from "./clipboard-item";
 
 declare class GlobalClipboardItem {
   constructor(items: ClipboardItemObject);
@@ -6,12 +6,16 @@ declare class GlobalClipboardItem {
 
 declare global {
   interface Window {
-      ClipboardItem: GlobalClipboardItem | undefined;
+      ClipboardItem: typeof GlobalClipboardItem | undefined;
+  }
+  interface Clipboard {
+      read(): Promise<ClipboardItem>;
+      write(data: ClipboardItem): Promise<void>;
   }
 }
 
 export async function writeText(item: string) {
-  const globalClipboardItem: GlobalClipboardItem | undefined = window.ClipboardItem;
+  const globalClipboardItem = window.ClipboardItem;
   if (!globalClipboardItem) {
     throw new Error("could not construct `ClipboardItem`");
   }

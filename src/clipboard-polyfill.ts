@@ -1,27 +1,38 @@
+import { ClipboardItem, ClipboardItemAsResolvedText, getTypeAsText, resolveItemsToText, textToClipboardItem } from "./clipboard-item";
 import { TEXT_PLAIN } from "./data-types";
 import {debugLog, shouldShowWarnings} from "./debug";
 import {copyTextUsingDOM, copyUsingTempElem, copyUsingTempSelection, execCopy} from "./dom";
-import {DT, DTFromText} from "./DT";
-import { readIE, seemToBeInIE, writeIE } from "./internet-explorer";
+import { readTextIE, seemToBeInIE, writeTextIE } from "./internet-explorer";
 
-export async function write(data: DT): Promise<void> {
-  if (shouldShowWarnings && !data.getData(TEXT_PLAIN)) {
+export async function write(data: ClipboardItem): Promise<void> {
+  const hasTextPlain = data.types.indexOf(TEXT_PLAIN) !== -1;
+  if (shouldShowWarnings && !hasTextPlain) {
     debugLog("clipboard.write() was called without a " +
       "`text/plain` data type. On some platforms, this may result in an " +
       "empty clipboard. Call clipboard.suppressWarnings() " +
       "to suppress this warning.");
   }
 
+  // Use the browser implementation if it exists.
+  if (navigator.clipboard && navigator.clipboard.write) {
+    debugLog("Using `navigator.clipboard.write()`.");
+    return navigator.clipboard.write(data);
+  }
+
   // Internet Explorer
   if (seemToBeInIE()) {
-    if (writeIE(data)) {
+    if (!hasTextPlain) {
+      throw new Error(("No `text/plain` value was specified."));
+    }
+    if (writeTextIE(await getTypeAsText(data, TEXT_PLAIN))) {
       return;
     } else {
       throw new Error("Copying failed, possibly because the user rejected it.");
     }
   }
 
-  if (execCopy(data)) {
+  const resolved: ClipboardItemAsResolvedText = await resolveItemsToText(data);
+  if (execCopy(resolved)) {
     debugLog("regular execCopy worked");
     return;
   }
@@ -34,20 +45,19 @@ export async function write(data: DT): Promise<void> {
   }
 
   // Fallback 1 for desktop Safari.
-  if (copyUsingTempSelection(document.body, data)) {
+  if (copyUsingTempSelection(document.body, resolved)) {
     debugLog("copyUsingTempSelection worked");
     return;
   }
 
   // Fallback 2 for desktop Safari.
-  if (copyUsingTempElem(data)) {
+  if (copyUsingTempElem(resolved)) {
     debugLog("copyUsingTempElem worked");
     return;
   }
 
   // Fallback for iOS Safari.
-  const text = data.getData(TEXT_PLAIN);
-  if (text !== undefined && copyTextUsingDOM(text)) {
+  if (copyTextUsingDOM(await getTypeAsText(data, TEXT_PLAIN))) {
     debugLog("copyTextUsingDOM worked");
     return;
   }
@@ -56,25 +66,39 @@ export async function write(data: DT): Promise<void> {
 }
 
 export async function writeText(s: string): Promise<void> {
+  // Use the browser implementation if it exists.
   if (navigator.clipboard && navigator.clipboard.writeText) {
     debugLog("Using `navigator.clipboard.writeText()`.");
     return navigator.clipboard.writeText(s);
   }
-  return write(DTFromText(s));
+
+  // Fall back to the general writing strategy.
+  return write(textToClipboardItem(s));
 }
 
-export async function read(): Promise<DT> {
-  return DTFromText(await readText());
+export async function read(): Promise<ClipboardItem> {
+  // Use the browser implementation if it exists.
+  if (navigator.clipboard && navigator.clipboard.readText) {
+    debugLog("Using `navigator.clipboard.read()`.");
+    return navigator.clipboard.read();
+  }
+
+  // Fallback to reading text only.
+  return textToClipboardItem(await readText());
 }
 
 export async function readText(): Promise<string> {
+  // Use the browser implementation if it exists.
   if (navigator.clipboard && navigator.clipboard.readText) {
     debugLog("Using `navigator.clipboard.readText()`.");
     return navigator.clipboard.readText();
   }
+
+  // Fallback for IE.
   if (seemToBeInIE()) {
     debugLog("Reading text using IE strategy.");
-    return readIE();
+    return readTextIE();
   }
+
   throw new Error("Read is not supported in your browser.");
 }

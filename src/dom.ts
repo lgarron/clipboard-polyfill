@@ -1,6 +1,6 @@
+import { ClipboardItemAsResolvedText } from "./clipboard-item";
 import { TEXT_PLAIN } from "./data-types";
 import { debugLog } from "./debug";
-import { DT } from "./DT";
 
 /******** Implementations ********/
 
@@ -8,21 +8,23 @@ class FallbackTracker {
   public success: boolean = false;
 }
 
-function copyListener(tracker: FallbackTracker, data: DT, e: ClipboardEvent): void {
+function copyListener(tracker: FallbackTracker, data: ClipboardItemAsResolvedText, e: ClipboardEvent): void {
   debugLog("listener called");
   tracker.success = true;
-  data.forEach((value: string, key: string) => {
+  // tslint:disable-next-line: forin
+  for (const type in data) {
+    const value = data[type];
     const clipboardData = e.clipboardData!;
-    clipboardData.setData(key, value);
-    if (key === TEXT_PLAIN && clipboardData.getData(key) !== value) {
+    clipboardData.setData(type, value);
+    if (type === TEXT_PLAIN && clipboardData.getData(type) !== value) {
       debugLog("setting text/plain failed");
       tracker.success = false;
     }
-  });
+  }
   e.preventDefault();
 }
 
-export function execCopy(data: DT): boolean {
+export function execCopy(data: ClipboardItemAsResolvedText): boolean {
   const tracker = new FallbackTracker();
   const listener = copyListener.bind(this, tracker, data);
 
@@ -39,7 +41,7 @@ export function execCopy(data: DT): boolean {
 }
 
 // Temporarily select a DOM element, so that `execCommand()` is not rejected.
-export function copyUsingTempSelection(e: HTMLElement, data: DT): boolean {
+export function copyUsingTempSelection(e: HTMLElement, data: ClipboardItemAsResolvedText): boolean {
   selectionSet(e);
   const success = execCopy(data);
   selectionClear();
@@ -48,7 +50,7 @@ export function copyUsingTempSelection(e: HTMLElement, data: DT): boolean {
 
 // Create a temporary DOM element to select, so that `execCommand()` is not
 // rejected.
-export function copyUsingTempElem(data: DT): boolean {
+export function copyUsingTempElem(data: ClipboardItemAsResolvedText): boolean {
   const tempElem = document.createElement("div");
   // Setting an individual property does not support `!important`, so we set the
   // whole style instead of just the `-webkit-user-select` property.
