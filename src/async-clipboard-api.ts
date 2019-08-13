@@ -1,7 +1,9 @@
-import {ClipboardItem, ClipboardItemObject} from "./clipboard-item";
+import {ClipboardItemInterface, ClipboardItemObject} from "./clipboard-item";
 
-declare class GlobalClipboardItem {
+export declare class GlobalClipboardItem implements ClipboardItemInterface {
+  public readonly types: string[];
   constructor(items: ClipboardItemObject);
+  public getType(type: string): Promise<Blob>;
 }
 
 declare global {
@@ -9,16 +11,17 @@ declare global {
       ClipboardItem: typeof GlobalClipboardItem | undefined;
   }
   interface Clipboard {
-      read(): Promise<ClipboardItem>;
-      write(data: ClipboardItem): Promise<void>;
+      read(): Promise<GlobalClipboardItem>;
+      write(data: GlobalClipboardItem[]): Promise<void>;
   }
 }
 
-export async function writeText(item: string) {
-  const globalClipboardItem = window.ClipboardItem;
-  if (!globalClipboardItem) {
-    throw new Error("could not construct `ClipboardItem`");
+export async function clipboardItemToGlobalClipboardItem(data: ClipboardItemInterface): Promise<GlobalClipboardItem>  {
+  const items: ClipboardItemObject = {};
+  for (const type of data.types) {
+    items[type] = await data.getType(type);
   }
   // tslint:disable-next-line: no-console
-  console.log(new globalClipboardItem({}));
+  console.log(items);
+  return new window.ClipboardItem!(items);
 }

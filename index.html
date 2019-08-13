@@ -13,6 +13,12 @@
       (console.info || console.log).apply(console, arguments);
     };
     clipboard.setDebugLog(infoOrLog);
+
+    function stringToBlob(type, str) {
+      return new Blob([str], {
+        type: type,
+      });
+    }
   </script>
   <style>
     .editable {
@@ -54,10 +60,11 @@
   document.getElementById("markup-copy").addEventListener("click", function() {
     var resultField = document.getElementById("markup-copy-result");
 
-    var dt = new clipboard.DT();
-    dt.setData("text/html", "<i>Markup</i> <b>text</b>. Paste me into a rich text editor.");
-    dt.setData("text/plain", "Fallback markup text. Paste me into a rich text editor.");
-    clipboard.write(dt).then(function(){
+    var item = new clipboard.ClipboardItem({
+      "text/html": stringToBlob("text/html", "<i>Markup</i> <b>text</b>. Paste me into a rich text editor."),
+      "text/plain": stringToBlob("text/plain", "Fallback markup text. Paste me into a rich text editor.")
+    });
+    clipboard.write(item).then(function(){
       resultField.textContent = "success";
     }, function(err){
       resultField.textContent = err;

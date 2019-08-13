@@ -1,3 +1,3 @@
 export {write, writeText, read, readText} from "./clipboard-polyfill";
 export {setDebugLog, suppressWarnings} from "./debug";
-export {ClipboardItem} from "./clipboard-item";
+export {PolyfillClipboardItem as ClipboardItem} from "./clipboard-item";

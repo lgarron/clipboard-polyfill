@@ -1,8 +1,7 @@
-import { TEXT_PLAIN } from "./data-types";
 
-export function stringToBlob(str: string): Blob {
+export function stringToBlob(type: string, str: string): Blob {
   return new Blob([str], {
-    type: TEXT_PLAIN,
+    type,
   });
 }
 

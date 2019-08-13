@@ -1,10 +1,11 @@
-import { ClipboardItem, ClipboardItemAsResolvedText, getTypeAsText, resolveItemsToText, textToClipboardItem } from "./clipboard-item";
+import { clipboardItemToGlobalClipboardItem, GlobalClipboardItem } from "./async-clipboard-api";
+import { ClipboardItemAsResolvedText, ClipboardItemInterface, getTypeAsText, resolveItemsToText, textToClipboardItem } from "./clipboard-item";
 import { TEXT_PLAIN } from "./data-types";
 import {debugLog, shouldShowWarnings} from "./debug";
 import {copyTextUsingDOM, copyUsingTempElem, copyUsingTempSelection, execCopy} from "./dom";
 import { readTextIE, seemToBeInIE, writeTextIE } from "./internet-explorer";
 
-export async function write(data: ClipboardItem): Promise<void> {
+export async function write(data: ClipboardItemInterface): Promise<void> {
   const hasTextPlain = data.types.indexOf(TEXT_PLAIN) !== -1;
   if (shouldShowWarnings && !hasTextPlain) {
     debugLog("clipboard.write() was called without a " +
@@ -16,7 +17,8 @@ export async function write(data: ClipboardItem): Promise<void> {
   // Use the browser implementation if it exists.
   if (navigator.clipboard && navigator.clipboard.write) {
     debugLog("Using `navigator.clipboard.write()`.");
-    return navigator.clipboard.write(data);
+    const globalClipboardItem: GlobalClipboardItem = await clipboardItemToGlobalClipboardItem(data);
+    return navigator.clipboard.write([globalClipboardItem]);
   }
 
   // Internet Explorer
@@ -76,7 +78,7 @@ export async function writeText(s: string): Promise<void> {
   return write(textToClipboardItem(s));
 }
 
-export async function read(): Promise<ClipboardItem> {
+export async function read(): Promise<ClipboardItemInterface> {
   // Use the browser implementation if it exists.
   if (navigator.clipboard && navigator.clipboard.readText) {
     debugLog("Using `navigator.clipboard.read()`.");
