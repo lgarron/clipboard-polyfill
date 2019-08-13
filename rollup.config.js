@@ -29,7 +29,7 @@ export default [
     input: "./src/index.ts",
     output: [
       {
-        dir: "dist",
+        file: "dist/clipboard-polyfill.js",
         format: "umd",
         name: "clipboard",
         sourcemap: true,
