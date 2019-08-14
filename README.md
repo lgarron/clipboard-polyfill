@@ -13,6 +13,8 @@ As of October 2017, this library is a polyfill for the modern `Promise`-based [a
 
 Browsers have implemented several clipboard APIs over time, and writing to the clipboard without [triggering bugs in various old and current browsers](https://github.com/lgarron/clipboard-polyfill/blob/master/experiment/Conclusions.md) is fairly tricky. In every browser that supports copying to the clipboard in some way, `clipboard-polyfill` attempts to act as close as possible to the async clipboard API. (Read to the end of this document for all the limitations.)
 
+See [this presentation](https://docs.google.com/presentation/d/1Ix2rYi67hbZoIQsd85kspkUPLi8Q-PZopy_AtfafHW0) for for a longer history of clipboard access on the web.
+
 Note: If you only need to copy text and want a super simple polyfill that gets you 80% of the way, consider using [this gist](https://gist.github.com/lgarron/d1dee380f4ed9d825ca7).
 
 # Get the Code
