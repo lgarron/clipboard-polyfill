@@ -5,8 +5,16 @@ import {debugLog, shouldShowWarnings} from "./debug";
 import {copyTextUsingDOM, copyUsingTempElem, copyUsingTempSelection, execCopy} from "./dom";
 import { readTextIE, seemToBeInIE, writeTextIE } from "./internet-explorer";
 
-export async function write(data: ClipboardItemInterface): Promise<void> {
-  const hasTextPlain = data.types.indexOf(TEXT_PLAIN) !== -1;
+export async function write(data: ClipboardItemInterface[]): Promise<void> {
+  // Use the browser implementation if it exists.
+  // TODO: detect `text/html`.
+  if (navigator.clipboard && navigator.clipboard.write) {
+    debugLog("Using `navigator.clipboard.write()`.");
+    const globalClipboardItem: GlobalClipboardItem[] = await Promise.all(data.map(clipboardItemToGlobalClipboardItem));
+    return navigator.clipboard.write(globalClipboardItem);
+  }
+
+  const hasTextPlain = data[0].types.indexOf(TEXT_PLAIN) !== -1;
   if (shouldShowWarnings && !hasTextPlain) {
     debugLog("clipboard.write() was called without a " +
       "`text/plain` data type. On some platforms, this may result in an " +
@@ -14,26 +22,19 @@ export async function write(data: ClipboardItemInterface): Promise<void> {
       "to suppress this warning.");
   }
 
-  // Use the browser implementation if it exists.
-  if (navigator.clipboard && navigator.clipboard.write) {
-    debugLog("Using `navigator.clipboard.write()`.");
-    const globalClipboardItem: GlobalClipboardItem = await clipboardItemToGlobalClipboardItem(data);
-    return navigator.clipboard.write([globalClipboardItem]);
-  }
-
   // Internet Explorer
   if (seemToBeInIE()) {
     if (!hasTextPlain) {
       throw new Error(("No `text/plain` value was specified."));
     }
-    if (writeTextIE(await getTypeAsText(data, TEXT_PLAIN))) {
+    if (writeTextIE(await getTypeAsText(data[0], TEXT_PLAIN))) {
       return;
     } else {
       throw new Error("Copying failed, possibly because the user rejected it.");
     }
   }
 
-  const resolved: ClipboardItemAsResolvedText = await resolveItemsToText(data);
+  const resolved: ClipboardItemAsResolvedText = await resolveItemsToText(data[0]);
   if (execCopy(resolved)) {
     debugLog("regular execCopy worked");
     return;

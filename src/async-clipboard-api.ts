@@ -21,7 +21,5 @@ export async function clipboardItemToGlobalClipboardItem(data: ClipboardItemInte
   for (const type of data.types) {
     items[type] = await data.getType(type);
   }
-  // tslint:disable-next-line: no-console
-  console.log(items);
   return new window.ClipboardItem!(items);
 }
