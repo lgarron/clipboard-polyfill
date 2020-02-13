@@ -55,10 +55,12 @@ export async function write(data: DT): Promise<void> {
   throw new Error("Copy command failed.");
 }
 
+const cachedClipboard = navigator.clipboard;
+
 export async function writeText(s: string): Promise<void> {
-  if (navigator.clipboard && navigator.clipboard.writeText) {
+  if (cachedClipboard && cachedClipboard.writeText && cachedClipboard !== this) {
     debugLog("Using `navigator.clipboard.writeText()`.");
-    return navigator.clipboard.writeText(s);
+    return cachedClipboard.writeText(s);
   }
   return write(DTFromText(s));
 }
@@ -68,9 +70,9 @@ export async function read(): Promise<DT> {
 }
 
 export async function readText(): Promise<string> {
-  if (navigator.clipboard && navigator.clipboard.readText) {
+  if (cachedClipboard && cachedClipboard.readText && cachedClipboard !== this) {
     debugLog("Using `navigator.clipboard.readText()`.");
-    return navigator.clipboard.readText();
+    return cachedClipboard.readText();
   }
   if (seemToBeInIE()) {
     debugLog("Reading text using IE strategy.");
