@@ -1,8 +1,8 @@
 import { clipboardItemToGlobalClipboardItem, GlobalClipboardItem } from "./async-clipboard-api";
 import { ClipboardItemAsResolvedText, ClipboardItemInterface, getTypeAsText, resolveItemsToText, textToClipboardItem } from "./clipboard-item";
 import { TEXT_PLAIN } from "./data-types";
-import {debugLog, shouldShowWarnings} from "./debug";
-import {copyTextUsingDOM, copyUsingTempElem, copyUsingTempSelection, execCopy} from "./dom";
+import { debugLog, shouldShowWarnings } from "./debug";
+import { copyTextUsingDOM, copyUsingTempElem, copyUsingTempSelection, execCopy } from "./dom";
 import { readTextIE, seemToBeInIE, writeTextIE } from "./internet-explorer";
 
 export async function write(data: ClipboardItemInterface[]): Promise<void> {
@@ -60,7 +60,7 @@ export async function write(data: ClipboardItemInterface[]): Promise<void> {
   }
 
   // Fallback for iOS Safari.
-  if (copyTextUsingDOM(await getTypeAsText(data, TEXT_PLAIN))) {
+  if (copyTextUsingDOM(await getTypeAsText(data[0], TEXT_PLAIN))) {
     debugLog("copyTextUsingDOM worked");
     return;
   }
@@ -76,7 +76,7 @@ export async function writeText(s: string): Promise<void> {
   }
 
   // Fall back to the general writing strategy.
-  return write(textToClipboardItem(s));
+  return write([textToClipboardItem(s)]);
 }
 
 export async function read(): Promise<ClipboardItemInterface> {
