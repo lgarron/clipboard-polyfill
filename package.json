@@ -4,7 +4,7 @@
   "description": "A polyfill for the asynchronous clipboard API",
   "main": "dist/clipboard-polyfill.js",
   "module": "dist/clipboard-polyfill.esm.js",
-  "types": "dist/clipboard-polyfill.d.ts",
+  "types": "dist/index.d.ts",
   "dependencies": {},
   "devDependencies": {
     "@babel/core": "^7.10.3",
