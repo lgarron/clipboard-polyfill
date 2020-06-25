@@ -4,6 +4,7 @@
         "tslint:recommended"
     ],
     "rules": {
-      "max-line-length": false
+      "max-line-length": false,
+      "interface-name": false
     }
 }
