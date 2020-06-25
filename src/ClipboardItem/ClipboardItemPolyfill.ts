@@ -1,6 +1,4 @@
-import { blobToString, stringToBlob } from "./blob";
-import { TEXT_PLAIN } from "./data-types";
-import { ClipboardItemInterface, ClipboardItemObject, ClipboardItemAsResolvedText } from "./ClipboardItemInterface";
+import { ClipboardItemInterface, ClipboardItemObject } from "./ClipboardItemInterface";
 
 export class ClipboardItemPolyfill implements ClipboardItemInterface {
   public readonly types: string[];
@@ -16,30 +14,6 @@ export class ClipboardItemPolyfill implements ClipboardItemInterface {
   // public readonly lastModified: number;
   // public readonly delayed: boolean;
   // public createDelayed(items: {[type: string]: ClipboardItemData}, options?: ClipboardItemOptions) {}
-}
-
-export function textToClipboardItem(text: string): ClipboardItemInterface {
-  const items: ClipboardItemObject = {};
-  items[TEXT_PLAIN] = stringToBlob(text, TEXT_PLAIN);
-  return new ClipboardItemPolyfill(items);
-}
-
-export async function getTypeAsText(clipboardItem: ClipboardItemInterface, type: string): Promise<string> {
-  const text: Blob = await clipboardItem.getType(type);
-  return await blobToString(text);
-}
-
-export async function resolveItemsToText(data: ClipboardItemInterface): Promise<ClipboardItemAsResolvedText> {
-  const items: ClipboardItemAsResolvedText = {};
-  for (const type of data.types) {
-    items[type] = await getTypeAsText(data, type);
-    // Object.defineProperty(items, type, {
-    //   value: data.getType(type),
-    //   // tslint:disable-next-line: object-literal-sort-keys
-    //   enumerable: true,
-    // });
-  }
-  return items;
 }
 
 export function hasItemWithType(clipboardItems: ClipboardItemInterface[], typeName: string): boolean {
