@@ -10,8 +10,8 @@ import { TEXT_PLAIN } from "./data-types";
 //   presentationStyle: PresentationStyle;
 // }
 
-export interface ClipboardItemObject {[type: string]: Blob; }
-export interface ClipboardItemAsResolvedText {[type: string]: string; }
+export interface ClipboardItemObject { [type: string]: Blob; }
+export interface ClipboardItemAsResolvedText { [type: string]: string; }
 
 export interface ClipboardItemInterface {
   readonly types: string[];
@@ -45,7 +45,7 @@ export async function getTypeAsText(clipboardItem: ClipboardItemInterface, type:
   return await blobToString(text);
 }
 
-export async function resolveItemsToText(data: ClipboardItemInterface): Promise<ClipboardItemAsResolvedText>  {
+export async function resolveItemsToText(data: ClipboardItemInterface): Promise<ClipboardItemAsResolvedText> {
   const items: ClipboardItemAsResolvedText = {};
   for (const type of data.types) {
     items[type] = await getTypeAsText(data, type);
@@ -56,4 +56,13 @@ export async function resolveItemsToText(data: ClipboardItemInterface): Promise<
     // });
   }
   return items;
+}
+
+export function hasItemWithType(clipboardItems: ClipboardItemInterface[], typeName: string): boolean {
+  for (const item of clipboardItems) {
+    if (item.types.indexOf(typeName) !== -1) {
+      return true;
+    }
+  }
+  return false;
 }

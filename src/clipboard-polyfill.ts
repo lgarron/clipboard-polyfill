@@ -1,6 +1,6 @@
 import { clipboardItemToGlobalClipboardItem, GlobalClipboardItem } from "./async-clipboard-api";
-import { ClipboardItemAsResolvedText, ClipboardItemInterface, getTypeAsText, resolveItemsToText, textToClipboardItem } from "./clipboard-item";
-import { TEXT_PLAIN } from "./data-types";
+import { ClipboardItemAsResolvedText, ClipboardItemInterface, getTypeAsText, hasItemWithType, resolveItemsToText, textToClipboardItem } from "./clipboard-item";
+import { TEXT_HTML, TEXT_PLAIN } from "./data-types";
 import { debugLog, shouldShowWarnings } from "./debug";
 import { copyTextUsingDOM, copyUsingTempElem, copyUsingTempSelection, execCopy } from "./dom";
 import { readTextIE, seemToBeInIE, writeTextIE } from "./internet-explorer";
@@ -8,7 +8,7 @@ import { readTextIE, seemToBeInIE, writeTextIE } from "./internet-explorer";
 export async function write(data: ClipboardItemInterface[]): Promise<void> {
   // Use the browser implementation if it exists.
   // TODO: detect `text/html`.
-  if (navigator.clipboard && navigator.clipboard.write) {
+  if (!hasItemWithType(data, TEXT_HTML) && navigator.clipboard && navigator.clipboard.write) {
     debugLog("Using `navigator.clipboard.write()`.");
     const globalClipboardItem: GlobalClipboardItem[] = await Promise.all(data.map(clipboardItemToGlobalClipboardItem));
     return navigator.clipboard.write(globalClipboardItem);
