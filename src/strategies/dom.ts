@@ -1,6 +1,6 @@
 import { TEXT_PLAIN } from "../ClipboardItem/data-types";
 import { debugLog } from "../debug";
-import { ClipboardItemAsResolvedText } from "../ClipboardItem/ClipboardItemInterface";
+import { ClipboardItemAsResolvedText } from "../ClipboardItem/convert";
 
 /******** Implementations ********/
 
@@ -8,7 +8,11 @@ class FallbackTracker {
   public success: boolean = false;
 }
 
-function copyListener(tracker: FallbackTracker, data: ClipboardItemAsResolvedText, e: ClipboardEvent): void {
+function copyListener(
+  tracker: FallbackTracker,
+  data: ClipboardItemAsResolvedText,
+  e: ClipboardEvent
+): void {
   debugLog("listener called");
   tracker.success = true;
   // tslint:disable-next-line: forin
@@ -41,7 +45,10 @@ export function execCopy(data: ClipboardItemAsResolvedText): boolean {
 }
 
 // Temporarily select a DOM element, so that `execCommand()` is not rejected.
-export function copyUsingTempSelection(e: HTMLElement, data: ClipboardItemAsResolvedText): boolean {
+export function copyUsingTempSelection(
+  e: HTMLElement,
+  data: ClipboardItemAsResolvedText
+): boolean {
   selectionSet(e);
   const success = execCopy(data);
   selectionClear();
@@ -77,7 +84,7 @@ export function copyTextUsingDOM(str: string): boolean {
   let spanParent: Node = tempElem;
   if (tempElem.attachShadow) {
     debugLog("Using shadow DOM.");
-    spanParent = tempElem.attachShadow({mode: "open"});
+    spanParent = tempElem.attachShadow({ mode: "open" });
   }
 
   const span = document.createElement("span");

@@ -1,7 +1,3 @@
-import {
-  ClipboardItemAsResolvedText,
-  ClipboardItemInterface,
-} from "./ClipboardItem/ClipboardItemInterface";
 import { hasItemWithType } from "./ClipboardItem/ClipboardItemPolyfill";
 import { TEXT_HTML, TEXT_PLAIN } from "./ClipboardItem/data-types";
 import { debugLog, shouldShowWarnings } from "./debug";
@@ -21,9 +17,11 @@ import {
   getTypeAsText,
   resolveItemsToText,
   textToClipboardItem,
+  ClipboardItemAsResolvedText,
 } from "./ClipboardItem/convert";
+import { ClipboardItem } from "./ClipboardItem/spec";
 
-export async function write(data: ClipboardItemInterface[]): Promise<void> {
+export async function write(data: ClipboardItem[]): Promise<void> {
   // Use the browser implementation if it exists.
   // TODO: detect `text/html`.
   if (
@@ -32,7 +30,7 @@ export async function write(data: ClipboardItemInterface[]): Promise<void> {
     navigator.clipboard.write
   ) {
     debugLog("Using `navigator.clipboard.write()`.");
-    const globalClipboardItems: ClipboardItemInterface[] = await Promise.all(
+    const globalClipboardItems: ClipboardItem[] = await Promise.all(
       data.map(clipboardItemToGlobalClipboardItem)
     );
     return navigator.clipboard.write(globalClipboardItems);
@@ -107,7 +105,7 @@ export async function writeText(s: string): Promise<void> {
   return write([textToClipboardItem(s)]);
 }
 
-export async function read(): Promise<ClipboardItemInterface> {
+export async function read(): Promise<ClipboardItem> {
   // Use the browser implementation if it exists.
   if (navigator.clipboard && navigator.clipboard.readText) {
     debugLog("Using `navigator.clipboard.read()`.");

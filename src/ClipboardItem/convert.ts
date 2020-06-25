@@ -1,11 +1,10 @@
-import {
-  ClipboardItemDataMap,
-  ClipboardItemInterface,
-  ClipboardItemAsResolvedText,
-  ClipboardItemOptions,
-} from "./ClipboardItemInterface";
 import { ClipboardItemPolyfill } from "./ClipboardItemPolyfill";
 import { TEXT_PLAIN } from "./data-types";
+import { ClipboardItem, ClipboardItemOptions } from "./spec";
+
+export interface ClipboardItemAsResolvedText {
+  [type: string]: string;
+}
 
 export function stringToBlob(type: string, str: string): Blob {
   return new Blob([str], {
@@ -29,9 +28,12 @@ export async function blobToString(blob: Blob): Promise<string> {
 }
 
 export async function clipboardItemToGlobalClipboardItem(
-  clipboardItem: ClipboardItemInterface
-): Promise<ClipboardItemInterface> {
-  const items: ClipboardItemDataMap = {};
+  clipboardItem: ClipboardItem
+): Promise<ClipboardItem> {
+  // Note that we use `Blob` instead of `ClipboardItemDataType`. This is because
+  // Chrome 83 can only accept `Blob` (not `string`). The return value of
+  // `getType()` is already `Blob` per the spec, so this is simple for us.
+  const items: { [type: string]: Blob } = {};
   for (const type of clipboardItem.types) {
     items[type] = await clipboardItem.getType(type);
   }
@@ -42,14 +44,14 @@ export async function clipboardItemToGlobalClipboardItem(
   return new window.ClipboardItem!(items, options);
 }
 
-export function textToClipboardItem(text: string): ClipboardItemInterface {
-  const items: ClipboardItemDataMap = {};
+export function textToClipboardItem(text: string): ClipboardItem {
+  const items: { [type: string]: Blob } = {};
   items[TEXT_PLAIN] = stringToBlob(text, TEXT_PLAIN);
   return new ClipboardItemPolyfill(items);
 }
 
 export async function getTypeAsText(
-  clipboardItem: ClipboardItemInterface,
+  clipboardItem: ClipboardItem,
   type: string
 ): Promise<string> {
   const text: Blob = await clipboardItem.getType(type);
@@ -57,7 +59,7 @@ export async function getTypeAsText(
 }
 
 export async function resolveItemsToText(
-  data: ClipboardItemInterface
+  data: ClipboardItem
 ): Promise<ClipboardItemAsResolvedText> {
   const items: ClipboardItemAsResolvedText = {};
   for (const type of data.types) {
