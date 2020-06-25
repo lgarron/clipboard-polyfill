@@ -1,5 +1,6 @@
 import { clipboardItemToGlobalClipboardItem, GlobalClipboardItem } from "./strategies/async-clipboard";
-import { ClipboardItemAsResolvedText, ClipboardItemInterface, getTypeAsText, hasItemWithType, resolveItemsToText, textToClipboardItem } from "./ClipboardItem/clipboard-item";
+import { getTypeAsText, hasItemWithType, resolveItemsToText, textToClipboardItem } from "./ClipboardItem/PolyfillClipboardItem";
+import { ClipboardItemInterface, ClipboardItemAsResolvedText } from "./ClipboardItem/ClipboardItemInterface";
 import { TEXT_HTML, TEXT_PLAIN } from "./ClipboardItem/data-types";
 import { debugLog, shouldShowWarnings } from "./debug";
 import { copyTextUsingDOM, copyUsingTempElem, copyUsingTempSelection, execCopy } from "./strategies/dom";

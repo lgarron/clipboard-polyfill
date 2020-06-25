@@ -1,4 +1,4 @@
-import {ClipboardItemInterface, ClipboardItemObject} from "../ClipboardItem/clipboard-item";
+import { ClipboardItemInterface, ClipboardItemObject } from "../ClipboardItem/ClipboardItemInterface";
 
 export declare class GlobalClipboardItem implements ClipboardItemInterface {
   public readonly types: string[];

@@ -1,6 +1,6 @@
-import { ClipboardItemAsResolvedText } from "../ClipboardItem/clipboard-item";
 import { TEXT_PLAIN } from "../ClipboardItem/data-types";
 import { debugLog } from "../debug";
+import { ClipboardItemAsResolvedText } from "../ClipboardItem/ClipboardItemInterface";
 
 /******** Implementations ********/
 
