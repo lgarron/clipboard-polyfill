@@ -1,32 +1,57 @@
-import { clipboardItemToGlobalClipboardItem, GlobalClipboardItem } from "./strategies/async-clipboard";
-import { getTypeAsText, hasItemWithType, resolveItemsToText, textToClipboardItem } from "./ClipboardItem/ClipboardItemPolyfill";
-import { ClipboardItemInterface, ClipboardItemAsResolvedText } from "./ClipboardItem/ClipboardItemInterface";
+import {
+  ClipboardItemAsResolvedText,
+  ClipboardItemInterface,
+} from "./ClipboardItem/ClipboardItemInterface";
+import { hasItemWithType } from "./ClipboardItem/ClipboardItemPolyfill";
 import { TEXT_HTML, TEXT_PLAIN } from "./ClipboardItem/data-types";
 import { debugLog, shouldShowWarnings } from "./debug";
-import { copyTextUsingDOM, copyUsingTempElem, copyUsingTempSelection, execCopy } from "./strategies/dom";
-import { readTextIE, seemToBeInIE, writeTextIE } from "./strategies/internet-explorer";
+import {
+  copyTextUsingDOM,
+  copyUsingTempElem,
+  copyUsingTempSelection,
+  execCopy,
+} from "./strategies/dom";
+import {
+  readTextIE,
+  seemToBeInIE,
+  writeTextIE,
+} from "./strategies/internet-explorer";
+import {
+  clipboardItemToGlobalClipboardItem,
+  getTypeAsText,
+  resolveItemsToText,
+  textToClipboardItem,
+} from "./ClipboardItem/convert";
 
 export async function write(data: ClipboardItemInterface[]): Promise<void> {
   // Use the browser implementation if it exists.
   // TODO: detect `text/html`.
-  if (!hasItemWithType(data, TEXT_HTML) && navigator.clipboard && navigator.clipboard.write) {
+  if (
+    !hasItemWithType(data, TEXT_HTML) &&
+    navigator.clipboard &&
+    navigator.clipboard.write
+  ) {
     debugLog("Using `navigator.clipboard.write()`.");
-    const globalClipboardItem: GlobalClipboardItem[] = await Promise.all(data.map(clipboardItemToGlobalClipboardItem));
-    return navigator.clipboard.write(globalClipboardItem);
+    const globalClipboardItems: ClipboardItemInterface[] = await Promise.all(
+      data.map(clipboardItemToGlobalClipboardItem)
+    );
+    return navigator.clipboard.write(globalClipboardItems);
   }
 
   const hasTextPlain = hasItemWithType(data, TEXT_PLAIN);
   if (shouldShowWarnings && !hasTextPlain) {
-    debugLog("clipboard.write() was called without a " +
-      "`text/plain` data type. On some platforms, this may result in an " +
-      "empty clipboard. Call clipboard.suppressWarnings() " +
-      "to suppress this warning.");
+    debugLog(
+      "clipboard.write() was called without a " +
+        "`text/plain` data type. On some platforms, this may result in an " +
+        "empty clipboard. Call clipboard.suppressWarnings() " +
+        "to suppress this warning."
+    );
   }
 
   // Internet Explorer
   if (seemToBeInIE()) {
     if (!hasTextPlain) {
-      throw new Error(("No `text/plain` value was specified."));
+      throw new Error("No `text/plain` value was specified.");
     }
     if (writeTextIE(await getTypeAsText(data[0], TEXT_PLAIN))) {
       return;
@@ -35,7 +60,9 @@ export async function write(data: ClipboardItemInterface[]): Promise<void> {
     }
   }
 
-  const resolved: ClipboardItemAsResolvedText = await resolveItemsToText(data[0]);
+  const resolved: ClipboardItemAsResolvedText = await resolveItemsToText(
+    data[0]
+  );
   if (execCopy(resolved)) {
     debugLog("regular execCopy worked");
     return;
@@ -44,7 +71,7 @@ export async function write(data: ClipboardItemInterface[]): Promise<void> {
   // Success detection on Edge is not possible, due to bugs in all 4
   // detection mechanisms we could try to use. Assume success.
   if (navigator.userAgent.indexOf("Edge") > -1) {
-    debugLog("UA \"Edge\" => assuming success");
+    debugLog('UA "Edge" => assuming success');
     return;
   }
 

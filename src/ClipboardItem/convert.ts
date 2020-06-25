@@ -1,4 +1,9 @@
-import { ClipboardItemObject, ClipboardItemInterface, ClipboardItemAsResolvedText } from "./ClipboardItemInterface";
+import {
+  ClipboardItemDataMap,
+  ClipboardItemInterface,
+  ClipboardItemAsResolvedText,
+  ClipboardItemOptions,
+} from "./ClipboardItemInterface";
 import { ClipboardItemPolyfill } from "./ClipboardItemPolyfill";
 import { TEXT_PLAIN } from "./data-types";
 
@@ -23,18 +28,37 @@ export async function blobToString(blob: Blob): Promise<string> {
   });
 }
 
+export async function clipboardItemToGlobalClipboardItem(
+  clipboardItem: ClipboardItemInterface
+): Promise<ClipboardItemInterface> {
+  const items: ClipboardItemDataMap = {};
+  for (const type of clipboardItem.types) {
+    items[type] = await clipboardItem.getType(type);
+  }
+  const options: ClipboardItemOptions = {};
+  if (clipboardItem.presentationStyle) {
+    options.presentationStyle = clipboardItem.presentationStyle;
+  }
+  return new window.ClipboardItem!(items, options);
+}
+
 export function textToClipboardItem(text: string): ClipboardItemInterface {
-  const items: ClipboardItemObject = {};
+  const items: ClipboardItemDataMap = {};
   items[TEXT_PLAIN] = stringToBlob(text, TEXT_PLAIN);
   return new ClipboardItemPolyfill(items);
 }
 
-export async function getTypeAsText(clipboardItem: ClipboardItemInterface, type: string): Promise<string> {
+export async function getTypeAsText(
+  clipboardItem: ClipboardItemInterface,
+  type: string
+): Promise<string> {
   const text: Blob = await clipboardItem.getType(type);
   return await blobToString(text);
 }
 
-export async function resolveItemsToText(data: ClipboardItemInterface): Promise<ClipboardItemAsResolvedText> {
+export async function resolveItemsToText(
+  data: ClipboardItemInterface
+): Promise<ClipboardItemAsResolvedText> {
   const items: ClipboardItemAsResolvedText = {};
   for (const type of data.types) {
     items[type] = await getTypeAsText(data, type);
