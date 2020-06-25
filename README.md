@@ -56,7 +56,7 @@ The async clipboard API design uses ES6 [`Promise`](https://developer.mozilla.or
 
 Copy text to the clipboard (all modern browsers):
 
-    clipboard.writeText("This text is plain.");
+    await clipboard.writeText("This text is plain.");
 
 Read text from the clipboard (IE 9-11 and Chrome 65+):
 
@@ -71,10 +71,11 @@ Caveats:
 
 Write (all modern browsers):
 
-    var dt = new clipboard.DT();
-    dt.setData("text/plain", "Fallback markup text.");
-    dt.setData("text/html", "<i>Markup</i> <b>text</b>.");
-    clipboard.write(dt);
+    const item = new clipboard.ClipboardItem({
+      "text/html": new Blob(["<i>Markup</i> <b>text</b>. Paste me into a rich text editor."], { type: "text/html" }),
+      "text/plain": new Blob(["Fallback markup text. Paste me into a rich text editor."], { type: "text/plain" })
+    });
+    await clipboard.write([item]);
 
 Read (IE 9-11, Chrome 65+):
 
