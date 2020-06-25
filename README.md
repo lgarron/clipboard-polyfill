@@ -41,7 +41,7 @@ This version works "out of the box" in all browsers that support copying to the 
 
 # Note: the Promise polyfill in this build version _will_ modify the global object.
 
-- Download [`dist/clipboard-polyfill.promise.js`](https://raw.githubusercontent.com/lgarron/clipboard-polyfill/master/dist/clipboard-polyfill.promise.js) and include it using a `<script>` tag.
+- Download [`dist/clipboard-polyfill.promise.js`](https://raw.githubusercontent.com/lgarron/clipboard-polyfill/main/dist/clipboard-polyfill.promise.js) and include it using a `<script>` tag.
 - `npm install clipboard-polyfill` and one of:
   - `import * as clipboard from "clipboard-polyfill/dist/clipboard-polyfill.promise"`
   - `const clipboard = require("clipboard-polyfill/dist/clipboard-polyfill.promise");`
