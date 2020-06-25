@@ -1,9 +1,9 @@
-import { clipboardItemToGlobalClipboardItem, GlobalClipboardItem } from "./async-clipboard-api";
-import { ClipboardItemAsResolvedText, ClipboardItemInterface, getTypeAsText, hasItemWithType, resolveItemsToText, textToClipboardItem } from "./clipboard-item";
-import { TEXT_HTML, TEXT_PLAIN } from "./data-types";
+import { clipboardItemToGlobalClipboardItem, GlobalClipboardItem } from "./strategies/async-clipboard";
+import { ClipboardItemAsResolvedText, ClipboardItemInterface, getTypeAsText, hasItemWithType, resolveItemsToText, textToClipboardItem } from "./ClipboardItem/clipboard-item";
+import { TEXT_HTML, TEXT_PLAIN } from "./ClipboardItem/data-types";
 import { debugLog, shouldShowWarnings } from "./debug";
-import { copyTextUsingDOM, copyUsingTempElem, copyUsingTempSelection, execCopy } from "./dom";
-import { readTextIE, seemToBeInIE, writeTextIE } from "./internet-explorer";
+import { copyTextUsingDOM, copyUsingTempElem, copyUsingTempSelection, execCopy } from "./strategies/dom";
+import { readTextIE, seemToBeInIE, writeTextIE } from "./strategies/internet-explorer";
 
 export async function write(data: ClipboardItemInterface[]): Promise<void> {
   // Use the browser implementation if it exists.
