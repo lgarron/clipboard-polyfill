@@ -1,8 +1,12 @@
-import { ClipboardItemInterface, ClipboardItemObject } from "./ClipboardItemInterface";
+import {
+  ClipboardItemInterface,
+  ClipboardItemDataMap,
+  ClipboardItemConstructor,
+} from "./ClipboardItemInterface";
 
-export class ClipboardItemPolyfill implements ClipboardItemInterface {
+export class ClipboardItemPolyfillImpl implements ClipboardItemInterface {
   public readonly types: string[];
-  public constructor(private items: ClipboardItemObject) {
+  public constructor(private items: ClipboardItemDataMap) {
     this.types = Object.keys(items);
   }
 
@@ -16,7 +20,12 @@ export class ClipboardItemPolyfill implements ClipboardItemInterface {
   // public createDelayed(items: {[type: string]: ClipboardItemData}, options?: ClipboardItemOptions) {}
 }
 
-export function hasItemWithType(clipboardItems: ClipboardItemInterface[], typeName: string): boolean {
+export const ClipboardItemPolyfill: ClipboardItemConstructor = ClipboardItemPolyfillImpl;
+
+export function hasItemWithType(
+  clipboardItems: ClipboardItemInterface[],
+  typeName: string
+): boolean {
   for (const item of clipboardItems) {
     if (item.types.indexOf(typeName) !== -1) {
       return true;

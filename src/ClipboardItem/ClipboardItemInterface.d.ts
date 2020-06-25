@@ -8,10 +8,14 @@
 //   presentationStyle: PresentationStyle;
 // }
 
-export interface ClipboardItemObject { [type: string]: Blob; }
+export interface ClipboardItemDataMap { [type: string]: Blob; }
 export interface ClipboardItemAsResolvedText { [type: string]: string; }
 
 export interface ClipboardItemInterface {
   readonly types: string[];
   getType(type: string): Promise<Blob>;
+}
+
+export interface ClipboardItemConstructor {
+  new(items: ClipboardItemDataMap): ClipboardItemInterface;
 }
