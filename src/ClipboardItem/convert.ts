@@ -28,7 +28,7 @@ export async function blobToString(blob: Blob): Promise<string> {
 }
 
 export async function clipboardItemToGlobalClipboardItem(
-  clipboardItem: ClipboardItemInterface
+  clipboardItem: ClipboardItemInterface,
 ): Promise<ClipboardItemInterface> {
   // Note that we use `Blob` instead of `ClipboardItemDataType`. This is because
   // Chrome 83 can only accept `Blob` (not `string`). The return value of
@@ -52,14 +52,14 @@ export function textToClipboardItem(text: string): ClipboardItemInterface {
 
 export async function getTypeAsText(
   clipboardItem: ClipboardItemInterface,
-  type: string
+  type: string,
 ): Promise<string> {
   const text: Blob = await clipboardItem.getType(type);
   return await blobToString(text);
 }
 
 export async function resolveItemsToText(
-  data: ClipboardItemInterface
+  data: ClipboardItemInterface,
 ): Promise<ClipboardItemAsResolvedText> {
   const items: ClipboardItemAsResolvedText = {};
   for (const type of data.types) {

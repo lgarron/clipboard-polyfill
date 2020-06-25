@@ -1,6 +1,6 @@
+import { ClipboardItemAsResolvedText } from "../ClipboardItem/convert";
 import { TEXT_PLAIN } from "../ClipboardItem/data-types";
 import { debugLog } from "../debug";
-import { ClipboardItemAsResolvedText } from "../ClipboardItem/convert";
 
 /******** Implementations ********/
 
@@ -11,7 +11,7 @@ class FallbackTracker {
 function copyListener(
   tracker: FallbackTracker,
   data: ClipboardItemAsResolvedText,
-  e: ClipboardEvent
+  e: ClipboardEvent,
 ): void {
   debugLog("listener called");
   tracker.success = true;
@@ -47,7 +47,7 @@ export function execCopy(data: ClipboardItemAsResolvedText): boolean {
 // Temporarily select a DOM element, so that `execCommand()` is not rejected.
 export function copyUsingTempSelection(
   e: HTMLElement,
-  data: ClipboardItemAsResolvedText
+  data: ClipboardItemAsResolvedText,
 ): boolean {
   selectionSet(e);
   const success = execCopy(data);
