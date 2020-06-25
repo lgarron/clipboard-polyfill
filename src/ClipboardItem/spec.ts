@@ -1,3 +1,5 @@
+// This should be a `.d.ts` file, but we need to make it `.ts` (or Rollup won't include it in the output).
+
 // This file is a representation of the Clipboard Interface from the async
 // clipboard API spec. We match the order and spacing of the spec as much as
 // possible, for easy comparison.
