@@ -77,7 +77,7 @@
           "text/html": stringToBlob("text/html", "<i>Markup</i> <b>text</b>. Paste me into a rich text editor."),
           "text/plain": stringToBlob("text/plain", "Fallback markup text. Paste me into a rich text editor.")
         });
-        navigator.clipboard.write([item]).then(function () {
+        clipboard.write([item]).then(function () {
           resultField.textContent = "success";
         }, function (err) {
           resultField.textContent = err;
@@ -96,13 +96,34 @@
       document.getElementById("markup-dom-copy").addEventListener("click", function () {
         var resultField = document.getElementById("markup-dom-copy-result");
 
-        const blob = new Blob([new Uint8Array(imgBytes)], { type: "image/png" });//stringToBlob("text/plain", document.getElementById("markup-dom-copy-source").innerText);
+        const blob = new Blob([new XMLSerializer().serializeToString(document.getElementById("markup-dom-copy-source"))], { type: "text/html" });//stringToBlob("text/plain", document.getElementById("markup-dom-copy-source").innerText);
         const items = [new clipboard.ClipboardItem({
-          "image/png": blob
+          "text/html": blob
         })];
         // var dt = new clipboard.DT();
         // dt.setData("text/html", new XMLSerializer().serializeToString(document.getElementById("markup-dom-copy-source")));
         // dt.setData("text/plain", document.getElementById("markup-dom-copy-source").innerText);
+        clipboard.write(items).then(function () {
+          resultField.textContent = "success";
+        }, function (err) {
+          resultField.textContent = err;
+        });
+      });
+    </script>
+
+    <h2>Image (PNG)</h2>
+
+    <button id="image-png-copy">Copy image (PNG)</button>
+    <span id="image-png-copy-result"></span>
+    <br>
+    <script>
+      document.getElementById("image-png-copy").addEventListener("click", function () {
+        var resultField = document.getElementById("image-png-copy-result");
+
+        const blob = new Blob([new Uint8Array(imgBytes)], { type: "image/png" });//stringToBlob("text/plain", document.getElementById("markup-dom-copy-source").innerText);
+        const items = [new clipboard.ClipboardItem({
+          "image/png": blob
+        })];
         clipboard.write(items).then(function () {
           resultField.textContent = "success";
         }, function (err) {
