@@ -1,6 +1,6 @@
 import { ClipboardItemPolyfill } from "./ClipboardItemPolyfill";
 import { TEXT_PLAIN } from "./data-types";
-import { ClipboardItem, ClipboardItemOptions } from "./spec";
+import { ClipboardItemInterface, ClipboardItemOptions } from "./spec";
 
 export interface ClipboardItemAsResolvedText {
   [type: string]: string;
@@ -28,8 +28,8 @@ export async function blobToString(blob: Blob): Promise<string> {
 }
 
 export async function clipboardItemToGlobalClipboardItem(
-  clipboardItem: ClipboardItem
-): Promise<ClipboardItem> {
+  clipboardItem: ClipboardItemInterface
+): Promise<ClipboardItemInterface> {
   // Note that we use `Blob` instead of `ClipboardItemDataType`. This is because
   // Chrome 83 can only accept `Blob` (not `string`). The return value of
   // `getType()` is already `Blob` per the spec, so this is simple for us.
@@ -44,14 +44,14 @@ export async function clipboardItemToGlobalClipboardItem(
   return new window.ClipboardItem!(items, options);
 }
 
-export function textToClipboardItem(text: string): ClipboardItem {
+export function textToClipboardItem(text: string): ClipboardItemInterface {
   const items: { [type: string]: Blob } = {};
   items[TEXT_PLAIN] = stringToBlob(text, TEXT_PLAIN);
   return new ClipboardItemPolyfill(items);
 }
 
 export async function getTypeAsText(
-  clipboardItem: ClipboardItem,
+  clipboardItem: ClipboardItemInterface,
   type: string
 ): Promise<string> {
   const text: Blob = await clipboardItem.getType(type);
@@ -59,7 +59,7 @@ export async function getTypeAsText(
 }
 
 export async function resolveItemsToText(
-  data: ClipboardItem
+  data: ClipboardItemInterface
 ): Promise<ClipboardItemAsResolvedText> {
   const items: ClipboardItemAsResolvedText = {};
   for (const type of data.types) {

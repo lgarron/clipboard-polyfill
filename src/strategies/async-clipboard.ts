@@ -1,11 +1,14 @@
-import { ClipboardItemConstructor, ClipboardItem } from "../ClipboardItem/spec";
+import {
+  ClipboardItemConstructor,
+  ClipboardItemInterface,
+} from "../ClipboardItem/spec";
 
 declare global {
   interface Window {
     ClipboardItem: ClipboardItemConstructor | undefined;
   }
   interface Clipboard {
-    read(): Promise<ClipboardItem>;
-    write(data: ClipboardItem[]): Promise<void>;
+    read(): Promise<ClipboardItemInterface>;
+    write(data: ClipboardItemInterface[]): Promise<void>;
   }
 }

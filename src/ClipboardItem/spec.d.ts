@@ -7,7 +7,7 @@
 // may not have them. We don't rely on their existence in this library, and we
 // mark them as optional with [optional here, non-optional in spec].
 
-export type ClipboardItems = ClipboardItem[];
+export type ClipboardItems = ClipboardItemInterface[];
 
 export interface Clipboard extends EventTarget {
   read(): Promise<ClipboardItems>;
@@ -33,15 +33,17 @@ export interface ClipboardItemConstructor {
     // values. https://github.com/w3c/clipboard-apis/pull/126
     items: { [type: string]: ClipboardItemDataType },
     options?: ClipboardItemOptions
-  ): ClipboardItem;
+  ): ClipboardItemInterface;
 
   createDelayed?( // [optional here, non-optional in spec]
     items: { [type: string]: () => ClipboardItemDelayedCallback },
     options?: ClipboardItemOptions
-  ): ClipboardItem;
+  ): ClipboardItemInterface;
 }
 
-export interface ClipboardItem {
+// We name this `ClipboardItemInterface` instead of `ClipboardItem` because we
+// implement our polyfill from the library as `ClipboardItem`.
+export interface ClipboardItemInterface {
   // Safari 13.1 implements `presentationStyle`:
   // https://webkit.org/blog/10855/async-clipboard-api/
   readonly presentationStyle?: PresentationStyle; // [optional here, non-optional in spec]

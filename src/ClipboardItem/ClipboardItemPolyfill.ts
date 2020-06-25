@@ -1,13 +1,13 @@
 import { stringToBlob } from "./convert";
 import {
-  ClipboardItem,
+  ClipboardItemInterface,
   ClipboardItemConstructor,
   ClipboardItemDataType,
   ClipboardItemOptions,
   PresentationStyle,
 } from "./spec";
 
-export class ClipboardItemPolyfillImpl implements ClipboardItem {
+export class ClipboardItemPolyfillImpl implements ClipboardItemInterface {
   public readonly types: string[];
   public readonly presentationStyle: PresentationStyle;
   // We use an underscore to suggest that this field is private. We could
@@ -46,7 +46,7 @@ export class ClipboardItemPolyfillImpl implements ClipboardItem {
 export const ClipboardItemPolyfill: ClipboardItemConstructor = ClipboardItemPolyfillImpl;
 
 export function hasItemWithType(
-  clipboardItems: ClipboardItem[],
+  clipboardItems: ClipboardItemInterface[],
   typeName: string
 ): boolean {
   for (const item of clipboardItems) {
