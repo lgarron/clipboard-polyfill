@@ -1,4 +1,3 @@
-
 interface IEWindow extends Window {
   clipboardData: {
     setData: (key: string, value: string) => boolean;
@@ -7,12 +6,14 @@ interface IEWindow extends Window {
   };
 }
 
-const ieWindow = window as unknown as IEWindow;
+const ieWindow = (window as unknown) as IEWindow;
 
 export function seemToBeInIE(): boolean {
-  return typeof ClipboardEvent === "undefined" &&
+  return (
+    typeof ClipboardEvent === "undefined" &&
     typeof ieWindow.clipboardData !== "undefined" &&
-    typeof ieWindow.clipboardData.setData !== "undefined";
+    typeof ieWindow.clipboardData.setData !== "undefined"
+  );
 }
 
 export function writeTextIE(text: string): boolean {
@@ -25,7 +26,9 @@ export function writeTextIE(text: string): boolean {
 export async function readTextIE(): Promise<string> {
   const text = ieWindow.clipboardData.getData("Text");
   if (text === "") {
-    throw new Error("Empty clipboard or could not read plain text from clipboard");
+    throw new Error(
+      "Empty clipboard or could not read plain text from clipboard"
+    );
   }
   return text;
 }

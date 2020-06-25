@@ -1,4 +1,4 @@
-import { hasItemWithType } from "./ClipboardItem/ClipboardItemPolyfill";
+import { hasItemWithType } from "./ClipboardItem/check";
 import {
   ClipboardItemAsResolvedText,
   clipboardItemToGlobalClipboardItem,
@@ -31,7 +31,7 @@ export async function write(data: ClipboardItemInterface[]): Promise<void> {
   ) {
     debugLog("Using `navigator.clipboard.write()`.");
     const globalClipboardItems: ClipboardItemInterface[] = await Promise.all(
-      data.map(clipboardItemToGlobalClipboardItem),
+      data.map(clipboardItemToGlobalClipboardItem)
     );
     return navigator.clipboard.write(globalClipboardItems);
   }
@@ -42,7 +42,7 @@ export async function write(data: ClipboardItemInterface[]): Promise<void> {
       "clipboard.write() was called without a " +
         "`text/plain` data type. On some platforms, this may result in an " +
         "empty clipboard. Call clipboard.suppressWarnings() " +
-        "to suppress this warning.",
+        "to suppress this warning."
     );
   }
 
@@ -59,7 +59,7 @@ export async function write(data: ClipboardItemInterface[]): Promise<void> {
   }
 
   const resolved: ClipboardItemAsResolvedText = await resolveItemsToText(
-    data[0],
+    data[0]
   );
   if (execCopy(resolved)) {
     debugLog("regular execCopy worked");
