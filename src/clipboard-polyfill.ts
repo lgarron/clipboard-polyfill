@@ -14,7 +14,7 @@ export async function write(data: ClipboardItemInterface[]): Promise<void> {
     return navigator.clipboard.write(globalClipboardItem);
   }
 
-  const hasTextPlain = data[0].types.indexOf(TEXT_PLAIN) !== -1;
+  const hasTextPlain = hasItemWithType(data, TEXT_PLAIN);
   if (shouldShowWarnings && !hasTextPlain) {
     debugLog("clipboard.write() was called without a " +
       "`text/plain` data type. On some platforms, this may result in an " +

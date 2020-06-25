@@ -65,13 +65,19 @@
     <span id="markup-copy-result"></span>
     <script>
       document.getElementById("markup-copy").addEventListener("click", function () {
+        // var data = [new ClipboardItem({ "text/plain": new Blob(["Text data"], { type: "text/plain" }) })];
+        // clipboard.write(data).then(function () {
+        //   console.log("Copied to clipboard successfully!");
+        // }, function () {
+        //   console.error("Unable to write to clipboard. :-(");
+        // });
         var resultField = document.getElementById("markup-copy-result");
 
-        var item = new clipboard.ClipboardItem({
+        var item = new ClipboardItem({
           "text/html": stringToBlob("text/html", "<i>Markup</i> <b>text</b>. Paste me into a rich text editor."),
           "text/plain": stringToBlob("text/plain", "Fallback markup text. Paste me into a rich text editor.")
         });
-        clipboard.write(item).then(function () {
+        navigator.clipboard.write([item]).then(function () {
           resultField.textContent = "success";
         }, function (err) {
           resultField.textContent = err;
