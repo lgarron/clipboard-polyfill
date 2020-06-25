@@ -41,7 +41,7 @@ export async function write(data: ClipboardItemInterface[]): Promise<void> {
     debugLog(
       "clipboard.write() was called without a " +
         "`text/plain` data type. On some platforms, this may result in an " +
-        "empty clipboard. Call clipboard.suppressWarnings() " +
+        "empty clipboard. Call suppressWarnings() " +
         "to suppress this warning."
     );
   }
