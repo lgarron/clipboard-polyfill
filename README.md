@@ -45,7 +45,6 @@ This version works "out of the box" in all browsers that support copying to the 
 - `npm install clipboard-polyfill` and one of:
   - `import * as clipboard from "clipboard-polyfill/dist/clipboard-polyfill.promise"`
   - `const clipboard = require("clipboard-polyfill/dist/clipboard-polyfill.promise");`
-    > > > > > > > v2
 
 ## Which One?
 
