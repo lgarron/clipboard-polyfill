@@ -1,5 +1,5 @@
 import { clipboardItemToGlobalClipboardItem, GlobalClipboardItem } from "./strategies/async-clipboard";
-import { getTypeAsText, hasItemWithType, resolveItemsToText, textToClipboardItem } from "./ClipboardItem/PolyfillClipboardItem";
+import { getTypeAsText, hasItemWithType, resolveItemsToText, textToClipboardItem } from "./ClipboardItem/ClipboardItemPolyfill";
 import { ClipboardItemInterface, ClipboardItemAsResolvedText } from "./ClipboardItem/ClipboardItemInterface";
 import { TEXT_HTML, TEXT_PLAIN } from "./ClipboardItem/data-types";
 import { debugLog, shouldShowWarnings } from "./debug";

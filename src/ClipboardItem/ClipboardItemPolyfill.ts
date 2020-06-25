@@ -2,7 +2,7 @@ import { blobToString, stringToBlob } from "./blob";
 import { TEXT_PLAIN } from "./data-types";
 import { ClipboardItemInterface, ClipboardItemObject, ClipboardItemAsResolvedText } from "./ClipboardItemInterface";
 
-export class PolyfillClipboardItem implements ClipboardItemInterface {
+export class ClipboardItemPolyfill implements ClipboardItemInterface {
   public readonly types: string[];
   public constructor(private items: ClipboardItemObject) {
     this.types = Object.keys(items);
@@ -21,7 +21,7 @@ export class PolyfillClipboardItem implements ClipboardItemInterface {
 export function textToClipboardItem(text: string): ClipboardItemInterface {
   const items: ClipboardItemObject = {};
   items[TEXT_PLAIN] = stringToBlob(text, TEXT_PLAIN);
-  return new PolyfillClipboardItem(items);
+  return new ClipboardItemPolyfill(items);
 }
 
 export async function getTypeAsText(clipboardItem: ClipboardItemInterface, type: string): Promise<string> {
