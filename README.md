@@ -7,7 +7,7 @@ Make copying on the web as easy as:
     clipboard.writeText("hello world");
 
 As of October 2017, this library is a polyfill for the modern `Promise`-based [asynchronous clipboard API](https://www.w3.org/TR/clipboard-apis/#async-clipboard-api).  
-(Note: the core library doesn't modify global objects, so it's actually a [*ponyfill*](https://ponyfill.com/).)
+(Note: the core library doesn't modify global objects, so it's actually a [_ponyfill_](https://ponyfill.com/).)
 
 ## Why `clipboard-polyfill`?
 
@@ -39,7 +39,13 @@ This version works "out of the box" in all browsers that support copying to the 
   - `import * as clipboard from "clipboard-polyfill/dist/clipboard-polyfill.promise"`
   - `const clipboard = require("clipboard-polyfill/dist/clipboard-polyfill.promise");`
 
-Note: the Promise polyfill in this build version *will* modify the global object.
+# Note: the Promise polyfill in this build version _will_ modify the global object.
+
+- Download [`dist/clipboard-polyfill.promise.js`](https://raw.githubusercontent.com/lgarron/clipboard-polyfill/master/dist/clipboard-polyfill.promise.js) and include it using a `<script>` tag.
+- `npm install clipboard-polyfill` and one of:
+  - `import * as clipboard from "clipboard-polyfill/dist/clipboard-polyfill.promise"`
+  - `const clipboard = require("clipboard-polyfill/dist/clipboard-polyfill.promise");`
+    > > > > > > > v2
 
 ## Which One?
 
@@ -107,12 +113,11 @@ The asynchronous clipboard API works like this:
     dt.setData("text/plain", "plain text");
     navigator.clipboard.write(dt);
 
-Ideally, `clipboard-polyfill` would take a `DataTransfer`, so that the code above works verbatim when you replace `navigator.clipboard` with `clipboard`. However, *the `DataTransfer` constructor cannot be called* in most browsers. Thus, this library uses a light-weight alternative to `DataTransfer`, exposed as `clipboard.DT`:
+Ideally, `clipboard-polyfill` would take a `DataTransfer`, so that the code above works verbatim when you replace `navigator.clipboard` with `clipboard`. However, _the `DataTransfer` constructor cannot be called_ in most browsers. Thus, this library uses a light-weight alternative to `DataTransfer`, exposed as `clipboard.DT`:
 
     var dt = new clipboard.DT();
     dt.setData("text/plain", "plain text");
     clipboard.write(dt);
-
 
 ## This is way too complicated!
 
@@ -133,16 +138,16 @@ Try [this gist](https://gist.github.com/lgarron/d1dee380f4ed9d825ca7) for a simp
 ### Limitations
 
 - In Microsoft Edge, it seems to be impossible to detect whether the copy action actually succeeded ([Edge Bug #14110451](https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/14110451/), [Edge Bug #14080262](https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/14080262/)). `clipboard-polyfill` will always call `resolve()` in Edge.
-- In Microsoft Edge, only the *last* data type you specify is copied to the clipboard ([Edge Bug #14080506](https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/14080506/)).
+- In Microsoft Edge, only the _last_ data type you specify is copied to the clipboard ([Edge Bug #14080506](https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/14080506/)).
   - `DataTransfer` and `clipboard.DT` keep track of the order in which you set items. If you care which data type Edge copies, call `setData()` with that data type last.
 - On iOS Safari ([WebKit Bug #177715](https://bugs.webkit.org/show_bug.cgi?id=177715)) and Internet Explorer, only text copying works.
   - On iOS Safari, `clipboard-polyfill` needs to use the DOM to copy, so the text will be copied as rich text. `clipboard-polyfill` attempts to use shadow DOM in order to avoid some of the page formatting (e.g. background color) from affecting the copied text. However, such formatting might be copied if shadow DOM is not available.
-  - In other browsers, writing copy data that does *not* include the `text/plain` data type will succeed, but also show a console warning:
+  - In other browsers, writing copy data that does _not_ include the `text/plain` data type will succeed, but also show a console warning:
 
 > clipboard.write() was called without a `text/plain` data type. On some platforms, this may result in an empty clipboard. Call `clipboard.suppressWarnings()` to suppress this warning.
 
 - `clipboard-polyfill` attemps to avoid changing the document selection or modifying the DOM. However, `clipboard-polyfill` will automatically fall back to using such techniques if needed:
-  - On iOS Safari, the user's current selection will be cleared. This *should* not happen on other platforms unless there are unanticipated bugs. (Please [file an issue](https://github.com/lgarron/clipboard-polyfill/issues/new) if you observe this!)
+  - On iOS Safari, the user's current selection will be cleared. This _should_ not happen on other platforms unless there are unanticipated bugs. (Please [file an issue](https://github.com/lgarron/clipboard-polyfill/issues/new) if you observe this!)
   - On iOS Safari and under certain conditions on desktop Safari ([WebKit Bug #177715](https://bugs.webkit.org/show_bug.cgi?id=156529)), `clipboard-polyfill` needs to add a temporary element to the DOM. This will trigger a [mutation observer](https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver) if you have attached one to `document.body`. Please [file an issue](https://github.com/lgarron/clipboard-polyfill/issues/new) if you'd like to discuss how to detect temporary elements added by `clipboard-polyfill`.
 - `read()` currently only works in Internet Explorer.
   - Internet Explorer can only read `text/plain` values from the clipboard.
