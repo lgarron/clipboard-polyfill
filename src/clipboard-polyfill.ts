@@ -26,7 +26,6 @@ export async function write(data: ClipboardItemInterface[]): Promise<void> {
   // Use the browser implementation if it exists.
   // TODO: detect `text/html`.
   if (
-    !hasItemWithType(data, TEXT_HTML) &&
     originalNavigatorClipboardWrite &&
     originalWindowClipboardItem
   ) {
@@ -34,7 +33,16 @@ export async function write(data: ClipboardItemInterface[]): Promise<void> {
     const globalClipboardItems: ClipboardItemInterface[] = await Promise.all(
       data.map(clipboardItemToGlobalClipboardItem)
     );
-    return originalNavigatorClipboardWrite(globalClipboardItems);
+    try {
+      return await originalNavigatorClipboardWrite(globalClipboardItems);
+    } catch (e) {
+      // Chrome 83 will throw a DOMException or NotAllowedError because it doesn't support e.g. `text/html`.
+      // We want to fall back to the other strategies in a situation like this.
+      // See https://github.com/w3c/clipboard-apis/issues/128 and https://github.com/w3c/clipboard-apis/issues/67
+      if (!hasItemWithType(data, TEXT_PLAIN) && !hasItemWithType(data, TEXT_HTML)) {
+        throw e;
+      }
+    }
   }
 
   const hasTextPlain = hasItemWithType(data, TEXT_PLAIN);
