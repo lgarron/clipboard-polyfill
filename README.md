@@ -61,8 +61,10 @@ Notes:
 Some [compatibility caveats](https://github.com/lgarron/clipboard-polyfill/blob/main/experiment/Conclusions.md) for older browsers:
 
 - In Internet Explorer, you will need to polyfill `window.Promise` if you want the library to work.
-- In older versions of Edge (Spartan), it may not be possible to tell if a copy operation succeeded ([Edge Bug #14110451](https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/14110451/), [Edge Bug #14080262](https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/14080262/)). `clipboard-polyfill` will always report success in this case.
-- In older versions of Edge (Spartan), only the _last_ data type you specify is copied to the clipboard ([Edge Bug #14080506](https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/14080506/)). Consider placing the most important data type last in the object that you pass to the `ClipoardItem` constructor.
+- In older versions of Edge (Spartan):
+  - It may not be possible to tell if a copy operation succeeded ([Edge Bug #14110451](https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/14110451/), [Edge Bug #14080262](https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/14080262/)). `clipboard-polyfill` will always report success in this case.
+  - Only the _last_ data type you specify is copied to the clipboard ([Edge Bug #14080506](https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/14080506/)). Consider placing the most important data type last in the object that you pass to the `ClipoardItem` constructor.
+  - The `text/html` data type is not written using the expected `CF_HTML` format. `clipboard-polyfill` does *not* try to work around this, since 1) it would require fragile browser version sniffing, 2) users of Edge are not generally stuck on version < 17, and 3) the failure mode for other browsers would be that invalid clipboard HTML is copied. ([Edge Bug #14372529](https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/14372529/), [#73](https://github.com/lgarron/clipboard-polyfill/issues/73))
 
 ### `overwrite-globals` version
 
