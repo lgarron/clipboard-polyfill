@@ -46,11 +46,12 @@ $(NPM_COMMANDS):
 # build-for-git: build
 # 	git stage -f build/*.js build/*d.ts
 
-# .PHONY: deploy
-# deploy:
-# 	rsync -avz ./ garron.net:~/garron.net/code/clipboard-polyfill/ \
-# 		--exclude .git \
-# 		--exclude node_modules
+.PHONY: deploy
+deploy:
+	rsync -avz ./ garron.net:~/garron.net/code/clipboard-polyfill/ \
+		--exclude .git \
+		--exclude node_modules \
+		--exclude .rpt2_cache
 
 # .PHONY: publish
 # publish: deploy
