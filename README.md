@@ -58,7 +58,7 @@ Notes:
 - If you try to copy unsupported data types, they may be silently dropped (e.g. Safari 13.1) or the call may throw an error (e.g. Chrome 83). In general, it is not possible to tell when data types are dropped.
 - In some current browsers, `read()` may only return a subset of supported data types, even if the clipboard contains more data types. There is no way to tell if there were more data types.
 
-And some compatibility caveats for older browsers:
+Some [compatibility caveats](https://github.com/lgarron/clipboard-polyfill/blob/main/experiment/Conclusions.md) for older browsers:
 
 - In Internet Explorer, you will need to polyfill `window.Promise` if you want the library to work.
 - In older versions of Edge (Spartan), it may not be possible to tell if a copy operation succeeded ([Edge Bug #14110451](https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/14110451/), [Edge Bug #14080262](https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/14080262/)). `clipboard-polyfill` will always report success in this case.
