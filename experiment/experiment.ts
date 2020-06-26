@@ -230,7 +230,7 @@ export class WindowClipboardData extends Test {
   private tempElem: Element;
  run() {
     this.results["start.enabled"] = document.queryCommandEnabled("copy");
-    (<IEWindow>(window)).clipboardData.setData("Text", "WindowClipboardData");
+    (window as any as IEWindow).clipboardData.setData("Text", "WindowClipboardData");
     this.results["end.enabled"] = document.queryCommandEnabled("copy");
 
   }
