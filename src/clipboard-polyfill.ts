@@ -20,20 +20,23 @@ import {
   seemToBeInIE,
   writeTextIE,
 } from "./strategies/internet-explorer";
+import { Clipboard } from "./ClipboardItem/spec";
+
+const cachedClipboard: Clipboard | undefined = navigator.clipboard;
 
 export async function write(data: ClipboardItemInterface[]): Promise<void> {
   // Use the browser implementation if it exists.
   // TODO: detect `text/html`.
   if (
     !hasItemWithType(data, TEXT_HTML) &&
-    navigator.clipboard &&
-    navigator.clipboard.write
+    cachedClipboard &&
+    cachedClipboard.write
   ) {
     debugLog("Using `navigator.clipboard.write()`.");
     const globalClipboardItems: ClipboardItemInterface[] = await Promise.all(
       data.map(clipboardItemToGlobalClipboardItem)
     );
-    return navigator.clipboard.write(globalClipboardItems);
+    return cachedClipboard.write(globalClipboardItems);
   }
 
   const hasTextPlain = hasItemWithType(data, TEXT_PLAIN);
@@ -96,9 +99,9 @@ export async function write(data: ClipboardItemInterface[]): Promise<void> {
 
 export async function writeText(s: string): Promise<void> {
   // Use the browser implementation if it exists.
-  if (navigator.clipboard && navigator.clipboard.writeText) {
+  if (cachedClipboard && cachedClipboard.writeText) {
     debugLog("Using `navigator.clipboard.writeText()`.");
-    return navigator.clipboard.writeText(s);
+    return cachedClipboard.writeText(s);
   }
 
   // Fall back to the general writing strategy.
