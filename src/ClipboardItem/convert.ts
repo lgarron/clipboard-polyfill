@@ -1,6 +1,7 @@
 import { ClipboardItemPolyfill } from "./ClipboardItemPolyfill";
 import { TEXT_PLAIN } from "./data-types";
 import { ClipboardItemInterface, ClipboardItemOptions } from "./spec";
+import { originalWindowClipboardItem } from "../globals";
 
 export interface ClipboardItemAsResolvedText {
   [type: string]: string;
@@ -41,7 +42,7 @@ export async function clipboardItemToGlobalClipboardItem(
   if (clipboardItem.presentationStyle) {
     options.presentationStyle = clipboardItem.presentationStyle;
   }
-  return new window.ClipboardItem!(items, options);
+  return new originalWindowClipboardItem!(items, options);
 }
 
 export function textToClipboardItem(text: string): ClipboardItemInterface {

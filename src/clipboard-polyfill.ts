@@ -1,10 +1,11 @@
+import { originalNavigatorClipboard, originalWindowClipboardItem } from "./globals";
 import { hasItemWithType } from "./ClipboardItem/check";
 import {
   ClipboardItemAsResolvedText,
   clipboardItemToGlobalClipboardItem,
   getTypeAsText,
   resolveItemsToText,
-  textToClipboardItem,
+  textToClipboardItem
 } from "./ClipboardItem/convert";
 import { TEXT_HTML, TEXT_PLAIN } from "./ClipboardItem/data-types";
 import { ClipboardItemInterface } from "./ClipboardItem/spec";
@@ -13,30 +14,28 @@ import {
   copyTextUsingDOM,
   copyUsingTempElem,
   copyUsingTempSelection,
-  execCopy,
+  execCopy
 } from "./strategies/dom";
 import {
   readTextIE,
   seemToBeInIE,
-  writeTextIE,
+  writeTextIE
 } from "./strategies/internet-explorer";
-import { Clipboard } from "./ClipboardItem/spec";
-
-const cachedClipboard: Clipboard | undefined = navigator.clipboard;
 
 export async function write(data: ClipboardItemInterface[]): Promise<void> {
   // Use the browser implementation if it exists.
   // TODO: detect `text/html`.
   if (
     !hasItemWithType(data, TEXT_HTML) &&
-    cachedClipboard &&
-    cachedClipboard.write
+    originalNavigatorClipboard &&
+    originalNavigatorClipboard.write &&
+    originalWindowClipboardItem
   ) {
     debugLog("Using `navigator.clipboard.write()`.");
     const globalClipboardItems: ClipboardItemInterface[] = await Promise.all(
       data.map(clipboardItemToGlobalClipboardItem)
     );
-    return cachedClipboard.write(globalClipboardItems);
+    return originalNavigatorClipboard.write(globalClipboardItems);
   }
 
   const hasTextPlain = hasItemWithType(data, TEXT_PLAIN);
@@ -99,9 +98,9 @@ export async function write(data: ClipboardItemInterface[]): Promise<void> {
 
 export async function writeText(s: string): Promise<void> {
   // Use the browser implementation if it exists.
-  if (cachedClipboard && cachedClipboard.writeText) {
+  if (originalNavigatorClipboard && originalNavigatorClipboard.writeText) {
     debugLog("Using `navigator.clipboard.writeText()`.");
-    return cachedClipboard.writeText(s);
+    return originalNavigatorClipboard.writeText(s);
   }
 
   // Fall back to the general writing strategy.
