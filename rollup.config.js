@@ -29,7 +29,7 @@ export default [
     input: "./src/index.ts",
     output: [
       {
-        file: "dist/clipboard-polyfill.js",
+        file: "dist/main/clipboard-polyfill.js",
         format: "umd",
         name: "clipboard",
         sourcemap: true,
@@ -41,7 +41,29 @@ export default [
     input: "./src/index.ts",
     output: [
       {
-        file: "dist/clipboard-polyfill.esm.js",
+        file: "dist/main/clipboard-polyfill.esm.js",
+        format: "esm",
+        sourcemap: true,
+      },
+    ],
+    plugins,
+  },
+  {
+    input: "./src/index.overwrite-globals.ts",
+    output: [
+      {
+        file: "dist/overwrite-globals/clipboard-polyfill.overwrite-globals.js",
+        format: "umd",
+        sourcemap: true,
+      },
+    ],
+    plugins,
+  },
+  {
+    input: "./src/index.overwrite-globals.ts",
+    output: [
+      {
+        file: "dist/overwrite-globals/clipboard-polyfill.overwrite-globals.esm.js",
         format: "esm",
         sourcemap: true,
       },
@@ -53,7 +75,7 @@ export default [
     output: [
       {
         banner: promisePolyfill,
-        file: "dist/clipboard-polyfill.promise.js",
+        file: "dist/promise/clipboard-polyfill.promise.js",
         format: "umd",
         name: "clipboard",
         sourcemap: true,

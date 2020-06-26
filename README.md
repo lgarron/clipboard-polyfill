@@ -60,6 +60,22 @@ And some compatibility caveats for older browsers:
 - In older versions of Edge (Spartan), it may not be possible to tell if a copy operation succeeded ([Edge Bug #14110451](https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/14110451/), [Edge Bug #14080262](https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/14080262/)). `clipboard-polyfill` will always report success in this case.
 - In older versions of Edge (Spartan), only the _last_ data type you specify is copied to the clipboard ([Edge Bug #14080506](https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/14080506/)). Consider placing the most important data type last in the object that you pass to the `ClipoardItem` constructor.
 
+### `overwrite-globals` version
+
+If you want the library to overwrite the global clipboard API with its implementations, do this:
+
+    import "clipboard-polyfill/overwrite-globals";
+
+This will turn the library from a ponyfill into a proper polyfill, so you can write code as if the async clipboard API were already implemented in your browser:
+
+    const item = new window.ClipboardItem({
+      "text/html": new Blob(["<i>Markup</i> <b>text</b>. Paste me into a rich text editor."], { type: "text/html" }),
+      "text/plain": new Blob(["Fallback markup text. Paste me into a rich text editor."], { type: "text/plain" })
+    });
+    navigator.clipboard.write([item])
+
+This approach is not recommended, because it may break any other code that interacts with the clipboard API globals, and may be incompatible with future browser implementations.
+
 ### Flat-file version with `Promise` included
 
 If you need to grab a version that "just works", download [`dist/clipboard-polyfill.promise.js`](https://raw.githubusercontent.com/lgarron/clipboard-polyfill/main/dist/clipboard-polyfill.promise.js) and include it using a `<script>` tag:

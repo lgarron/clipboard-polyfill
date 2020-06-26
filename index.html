@@ -5,7 +5,7 @@
   <meta charset="utf-8" />
   <title>clipboard-polyfill</title>
   <link rel="stylesheet" href="index.css">
-  <script src="dist/clipboard-polyfill.promise.js"></script>
+  <script src="dist/overwrite-globals/clipboard-polyfill.overwrite-globals.js"></script>
   <script>
     // Workaround for:
     // - IE9 (can't bind console functions directly), and
@@ -13,7 +13,7 @@
     var infoOrLog = function () {
       (console.info || console.log).apply(console, arguments);
     };
-    clipboard.setDebugLog(infoOrLog);
+    // clipboard.setDebugLog(infoOrLog);
 
     const imgBytes = [0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A, 0x00, 0x00, 0x00, 0x0D, 0x49, 0x48, 0x44, 0x52, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00, 0x0A, 0x08, 0x04, 0x00, 0x00, 0x00, 0x3D, 0x07, 0xE7,
       0xB8, 0x00, 0x00, 0x00, 0x01, 0x73, 0x52, 0x47, 0x42, 0x00, 0xAE, 0xCE, 0x1C, 0xE9, 0x00, 0x00, 0x00, 0x02, 0x62, 0x4B, 0x47, 0x44, 0x00, 0xFF, 0x87, 0x8F, 0xCC, 0xBF, 0x00, 0x00, 0x00, 0x09,
@@ -121,10 +121,11 @@
         var resultField = document.getElementById("image-png-copy-result");
 
         const blob = new Blob([new Uint8Array(imgBytes)], { type: "image/png" });//stringToBlob("text/plain", document.getElementById("markup-dom-copy-source").innerText);
-        const items = [new clipboard.ClipboardItem({
+        const items = [new ClipboardItem({
           "image/png": blob
         })];
-        clipboard.write(items).then(function () {
+        console.log(navigator.clipboard.write);
+        navigator.clipboard.write(items).then(function () {
           resultField.textContent = "success";
         }, function (err) {
           resultField.textContent = err;

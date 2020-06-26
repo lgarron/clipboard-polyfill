@@ -19,17 +19,6 @@
 
 import { ClipboardItemConstructor, Clipboard, ClipboardItems } from "./ClipboardItem/spec";
 
-
-declare global {
-  interface Window {
-    ClipboardItem: ClipboardItemConstructor | undefined;
-  }
-  // This doesn't work, because TypeScript already has a contradictory definition (missing `read()` and `write()`).
-  // interface navigator {
-  //   clipboard: Clipboard | undefined;
-  // }
-}
-
 const originalNavigatorClipboard: Clipboard | undefined = navigator.clipboard as any;
 export const originalNavigatorClipboardRead: (() => Promise<ClipboardItems>) | undefined = originalNavigatorClipboard?.read.bind(originalNavigatorClipboard);
 export const originalNavigatorClipboardReadText: (() => Promise<string>) | undefined = originalNavigatorClipboard?.readText.bind(originalNavigatorClipboard);
