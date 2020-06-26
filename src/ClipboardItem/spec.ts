@@ -15,7 +15,7 @@ export interface Clipboard extends EventTarget {
   read(): Promise<ClipboardItems>;
   readText(): Promise<string>;
   write(data: ClipboardItems): Promise<void>;
-  write(data: string): Promise<void>;
+  writeText(data: string): Promise<void>;
 }
 
 export type ClipboardItemDataType = string | Blob;

@@ -1,4 +1,4 @@
-import { originalNavigatorClipboard, originalWindowClipboardItem } from "./globals";
+import { originalWindowClipboardItem, originalNavigatorClipboardWrite, originalNavigatorClipboardWriteText, originalNavigatorClipboardRead, originalNavigatorClipboardReadText } from "./globals";
 import { hasItemWithType } from "./ClipboardItem/check";
 import {
   ClipboardItemAsResolvedText,
@@ -8,7 +8,7 @@ import {
   textToClipboardItem
 } from "./ClipboardItem/convert";
 import { TEXT_HTML, TEXT_PLAIN } from "./ClipboardItem/data-types";
-import { ClipboardItemInterface } from "./ClipboardItem/spec";
+import { ClipboardItemInterface, ClipboardItems } from "./ClipboardItem/spec";
 import { debugLog, shouldShowWarnings } from "./debug";
 import {
   copyTextUsingDOM,
@@ -27,15 +27,14 @@ export async function write(data: ClipboardItemInterface[]): Promise<void> {
   // TODO: detect `text/html`.
   if (
     !hasItemWithType(data, TEXT_HTML) &&
-    originalNavigatorClipboard &&
-    originalNavigatorClipboard.write &&
+    originalNavigatorClipboardWrite &&
     originalWindowClipboardItem
   ) {
     debugLog("Using `navigator.clipboard.write()`.");
     const globalClipboardItems: ClipboardItemInterface[] = await Promise.all(
       data.map(clipboardItemToGlobalClipboardItem)
     );
-    return originalNavigatorClipboard.write(globalClipboardItems);
+    return originalNavigatorClipboardWrite(globalClipboardItems);
   }
 
   const hasTextPlain = hasItemWithType(data, TEXT_PLAIN);
@@ -98,31 +97,31 @@ export async function write(data: ClipboardItemInterface[]): Promise<void> {
 
 export async function writeText(s: string): Promise<void> {
   // Use the browser implementation if it exists.
-  if (originalNavigatorClipboard && originalNavigatorClipboard.writeText) {
+  if (originalNavigatorClipboardWriteText) {
     debugLog("Using `navigator.clipboard.writeText()`.");
-    return originalNavigatorClipboard.writeText(s);
+    return originalNavigatorClipboardWriteText(s);
   }
 
   // Fall back to the general writing strategy.
   return write([textToClipboardItem(s)]);
 }
 
-export async function read(): Promise<ClipboardItemInterface> {
+export async function read(): Promise<ClipboardItems> {
   // Use the browser implementation if it exists.
-  if (navigator.clipboard && navigator.clipboard.readText) {
+  if (originalNavigatorClipboardRead) {
     debugLog("Using `navigator.clipboard.read()`.");
-    return navigator.clipboard.read();
+    return originalNavigatorClipboardRead();
   }
 
   // Fallback to reading text only.
-  return textToClipboardItem(await readText());
+  return [textToClipboardItem(await readText())];
 }
 
 export async function readText(): Promise<string> {
   // Use the browser implementation if it exists.
-  if (navigator.clipboard && navigator.clipboard.readText) {
+  if (originalNavigatorClipboardReadText) {
     debugLog("Using `navigator.clipboard.readText()`.");
-    return navigator.clipboard.readText();
+    return originalNavigatorClipboardReadText();
   }
 
   // Fallback for IE.

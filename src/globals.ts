@@ -17,9 +17,24 @@
 // it probably saves code), and 2) just in case an unknown/future implementation
 // allows overwriting `navigator.clipboard` like this.
 
-import { ClipboardItemConstructor } from "./ClipboardItem/spec";
+import { ClipboardItemConstructor, Clipboard, ClipboardItems } from "./ClipboardItem/spec";
 
-export const originalNavigatorClipboard: Clipboard | undefined = navigator.clipboard;
 
-// The spec specifies that this goes on `window`, not e.g. `globalThis`. It's not (currently) available in workers.s
+declare global {
+  interface Window {
+    ClipboardItem: ClipboardItemConstructor | undefined;
+  }
+  // This doesn't work, because TypeScript already has a contradictory definition (missing `read()` and `write()`).
+  // interface navigator {
+  //   clipboard: Clipboard | undefined;
+  // }
+}
+
+const originalNavigatorClipboard: Clipboard | undefined = navigator.clipboard as any;
+export const originalNavigatorClipboardRead: (() => Promise<ClipboardItems>) | undefined = originalNavigatorClipboard?.read.bind(originalNavigatorClipboard);
+export const originalNavigatorClipboardReadText: (() => Promise<string>) | undefined = originalNavigatorClipboard?.readText.bind(originalNavigatorClipboard);
+export const originalNavigatorClipboardWrite: ((data: ClipboardItems) => Promise<void>) | undefined = originalNavigatorClipboard?.write.bind(originalNavigatorClipboard);
+export const originalNavigatorClipboardWriteText: ((data: string) => Promise<void>) | undefined = originalNavigatorClipboard?.writeText.bind(originalNavigatorClipboard);
+
+// The spec specifies that this goes on `window`, not e.g. `globalThis`. It's not (currently) available in workers.
 export const originalWindowClipboardItem: ClipboardItemConstructor | undefined = window.ClipboardItem;
