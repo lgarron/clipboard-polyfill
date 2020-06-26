@@ -17,7 +17,7 @@ If you use `npm`, install:
 npm install clipboard-pollyfill
 ```
 
-Use:
+Simple use:
 
 ```js
 import { ClipboardItem }, * as clipboard from "clipboard-polyfill";
@@ -27,8 +27,12 @@ clipboard.writeText("This text is plain.").then(console.log, console.error);
 
 // Async/await syntax.
 await clipboard.writeText("This text is plain.");
+```
 
-// Advanced use (non-text data types.)
+Advances use:
+
+```js
+// Non-text data types.
 const item = new clipboard.ClipboardItem({
   "text/html": new Blob(["<i>Markup</i> <b>text</b>. Paste me into a rich text editor."], { type: "text/html" }),
   "text/plain": new Blob(["Fallback markup text. Paste me into a rich text editor."], { type: "text/plain" })
