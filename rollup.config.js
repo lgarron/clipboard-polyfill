@@ -24,6 +24,22 @@ if (!process.env.ROLLUP_WATCH) {
 
 const promisePolyfill = readFileSync("node_modules/promise-polyfill/dist/polyfill.min.js").toString();
 
+const promisePlugins = [
+  ...plugins,
+  babel({
+    extensions: [".js", ".ts"],
+    presets: [
+      ["@babel/preset-typescript", {
+        modules: false,
+          targets: {
+            browsers: "last 2 versions",
+              ie: 11,
+          },
+      }],
+    ],
+  }),
+];
+
 export default [
   {
     input: "./src/index.ts",
@@ -81,20 +97,19 @@ export default [
         sourcemap: true,
       },
     ],
-    plugins: [
-      ...plugins,
-      babel({
-        extensions: [".js", ".ts"],
-        presets: [
-          ["@babel/preset-typescript", {
-            modules: false,
-              targets: {
-                browsers: "last 2 versions",
-                  ie: 11,
-              },
-          }],
-        ],
-      }),
+    plugins: promisePlugins
+  },
+  {
+    input: "./src/index.overwrite-globals.ts",
+    output: [
+      {
+        banner: promisePolyfill,
+        file: "dist/overwrite-globals.promise/clipboard-polyfill.overwrite-globals.promise.js",
+        format: "umd",
+        name: "clipboard",
+        sourcemap: true,
+      },
     ],
+    plugins: promisePlugins
   },
 ];
