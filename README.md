@@ -29,7 +29,7 @@ clipboard.writeText("This text is plain.").then(console.log, console.error);
 await clipboard.writeText("This text is plain.");
 ```
 
-Advances use:
+Advanced use:
 
 ```js
 // Non-text data types.
@@ -48,7 +48,7 @@ await clipboard.readText();
 await clipboard.read();
 ```
 
-Check [the Clipoard API specification](https://www.w3.org/TR/clipboard-apis/#clipboard-interface) for more details.
+Check [the Clipboard API specification](https://www.w3.org/TR/clipboard-apis/#clipboard-interface) for more details.
 
 Notes:
 
@@ -70,28 +70,32 @@ Some [compatibility caveats](https://github.com/lgarron/clipboard-polyfill/blob/
 
 If you want the library to overwrite the global clipboard API with its implementations, do this:
 
-    import "clipboard-polyfill/overwrite-globals";
+```js
+import "clipboard-polyfill/overwrite-globals";
+```
 
 This will turn the library from a ponyfill into a proper polyfill, so you can write code as if the async clipboard API were already implemented in your browser:
 
-    const item = new window.ClipboardItem({
-      "text/html": new Blob(["<i>Markup</i> <b>text</b>. Paste me into a rich text editor."], { type: "text/html" }),
-      "text/plain": new Blob(["Fallback markup text. Paste me into a rich text editor."], { type: "text/plain" })
-    });
-    navigator.clipboard.write([item])
+```js
+const item = new window.ClipboardItem({
+  "text/html": new Blob(["<i>Markup</i> <b>text</b>. Paste me into a rich text editor."], { type: "text/html" }),
+  "text/plain": new Blob(["Fallback markup text. Paste me into a rich text editor."], { type: "text/plain" })
+});
+navigator.clipboard.write([item])
+```
 
 This approach is not recommended, because it may break any other code that interacts with the clipboard API globals, and may be incompatible with future browser implementations.
 
 ### Flat-file version with `Promise` included
 
-If you need to grab a version that "just works", download [`dist/clipboard-polyfill.promise.js`](https://raw.githubusercontent.com/lgarron/clipboard-polyfill/main/dist/clipboard-polyfill.promise.js) and include it using a `<script>` tag:
+If you need to grab a version that "just works", download [`clipboard-polyfill.promise.js`](https://github.com/lgarron/clipboard-polyfill/releases/latest/download/clipboard-polyfill.promise.js) and include it using a `<script>` tag:
 
 ```html
 <script src="./clipboard-polyfill.promise.js"></script>
 <button onclick="copy()">Copy text!</button>
 <script>
   function copy() {
-    clipboard.writeText("hello world!")
+    clipboard.writeText("hello world!");
   }
 </script>
 ```
@@ -102,7 +106,7 @@ Browsers have implemented several clipboard APIs over time, and writing to the c
 
 See [this presentation](https://docs.google.com/presentation/d/1Ix2rYi67hbZoIQsd85kspkUPLi8Q-PZopy_AtfafHW0) for for a longer history of clipboard access on the web.
 
-Note: If you only need to copy text and want a super simple polyfill that gets you 80% of the way, consider using [this gist](https://gist.github.com/lgarron/d1dee380f4ed9d825ca7).s
+Note: If you only need to copy text and want a super simple polyfill that gets you 80% of the way, consider using [this gist](https://gist.github.com/lgarron/d1dee380f4ed9d825ca7).
 
 ## This is way too complicated!
 
