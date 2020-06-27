@@ -31,7 +31,7 @@ function handler() {
   );
 }
 
-window.addEventListener("DOMContentLoaded", function() { const button = document.createElement("button"); button.textContent = "Copy text"; button.addEventListener("click", handler); document.body.appendChild(button); });
+window.addEventListener("DOMContentLoaded", function() { const button = document.createElement("button"); button.textContent = "Copy"; button.addEventListener("click", handler); document.body.appendChild(button); });
 ```
 
 Notes:
@@ -53,7 +53,7 @@ async function handler() {
   await clipboard.writeText("This text is plain.");
 }
 
-window.addEventListener("DOMContentLoaded", function() { const button = document.createElement("button"); button.textContent = "Copy text"; button.addEventListener("click", handler); document.body.appendChild(button); });
+window.addEventListener("DOMContentLoaded", function() { const button = document.createElement("button"); button.textContent = "Copy"; button.addEventListener("click", handler); document.body.appendChild(button); });
 ```
 
 ## More MIME types (data types)
@@ -75,7 +75,7 @@ async function handler() {
   await clipboard.write([item]);
 }
 
-window.addEventListener("DOMContentLoaded", function() { const button = document.createElement("button"); button.textContent = "Copy text"; button.addEventListener("click", handler); document.body.appendChild(button); });
+window.addEventListener("DOMContentLoaded", function() { const button = document.createElement("button"); button.textContent = "Copy"; button.addEventListener("click", handler); document.body.appendChild(button); });
 ```
 
 Check [the Clipboard API specification](https://www.w3.org/TR/clipboard-apis/#clipboard-interface) for more details.
@@ -103,7 +103,7 @@ async function handler() {
   navigator.clipboard.write([item]);
 }
 
-window.addEventListener("DOMContentLoaded", function() { const button = document.createElement("button"); button.textContent = "Copy text"; button.addEventListener("click", handler); document.body.appendChild(button); });
+window.addEventListener("DOMContentLoaded", function() { const button = document.createElement("button"); button.textContent = "Copy"; button.addEventListener("click", handler); document.body.appendChild(button); });
 ```
 
 This approach is not recommended, because it may break any other code that interacts with the clipboard API globals, and may be incompatible with future browser implementations.
