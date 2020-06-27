@@ -1,4 +1,4 @@
-import { ClipboardItemAsResolvedText } from "../ClipboardItem/convert";
+import { StringItem } from "../ClipboardItem/convert";
 import { TEXT_PLAIN } from "../ClipboardItem/data-types";
 import { debugLog } from "../debug";
 
@@ -10,7 +10,7 @@ class FallbackTracker {
 
 function copyListener(
   tracker: FallbackTracker,
-  data: ClipboardItemAsResolvedText,
+  data: StringItem,
   e: ClipboardEvent,
 ): void {
   debugLog("listener called");
@@ -28,7 +28,7 @@ function copyListener(
   e.preventDefault();
 }
 
-export function execCopy(data: ClipboardItemAsResolvedText): boolean {
+export function execCopy(data: StringItem): boolean {
   const tracker = new FallbackTracker();
   const listener = copyListener.bind(this, tracker, data);
 
@@ -47,7 +47,7 @@ export function execCopy(data: ClipboardItemAsResolvedText): boolean {
 // Temporarily select a DOM element, so that `execCommand()` is not rejected.
 export function copyUsingTempSelection(
   e: HTMLElement,
-  data: ClipboardItemAsResolvedText,
+  data: StringItem,
 ): boolean {
   selectionSet(e);
   const success = execCopy(data);
@@ -57,7 +57,7 @@ export function copyUsingTempSelection(
 
 // Create a temporary DOM element to select, so that `execCommand()` is not
 // rejected.
-export function copyUsingTempElem(data: ClipboardItemAsResolvedText): boolean {
+export function copyUsingTempElem(data: StringItem): boolean {
   const tempElem = document.createElement("div");
   // Setting an individual property does not support `!important`, so we set the
   // whole style instead of just the `-webkit-user-select` property.

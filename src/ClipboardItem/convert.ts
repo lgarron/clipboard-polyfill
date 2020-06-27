@@ -3,10 +3,6 @@ import { TEXT_PLAIN } from "./data-types";
 import { ClipboardItemInterface, ClipboardItemOptions } from "./spec";
 import { originalWindowClipboardItem } from "../globals";
 
-export interface ClipboardItemAsResolvedText {
-  [type: string]: string;
-}
-
 export function stringToBlob(type: string, str: string): Blob {
   return new Blob([str], {
     type,
@@ -51,7 +47,7 @@ export function textToClipboardItem(text: string): ClipboardItemInterface {
   return new ClipboardItemPolyfill(items);
 }
 
-export async function getTypeAsText(
+export async function getTypeAsString(
   clipboardItem: ClipboardItemInterface,
   type: string
 ): Promise<string> {
@@ -59,12 +55,16 @@ export async function getTypeAsText(
   return await blobToString(text);
 }
 
-export async function resolveItemsToText(
+export interface StringItem {
+  [type: string]: string;
+}
+
+export async function toStringItem(
   data: ClipboardItemInterface
-): Promise<ClipboardItemAsResolvedText> {
-  const items: ClipboardItemAsResolvedText = {};
+): Promise<StringItem> {
+  const items: StringItem = {};
   for (const type of data.types) {
-    items[type] = await getTypeAsText(data, type);
+    items[type] = await getTypeAsString(data, type);
     // Object.defineProperty(items, type, {
     //   value: data.getType(type),
     //   // tslint:disable-next-line: object-literal-sort-keys

@@ -1,5 +1,6 @@
 // Import `./globals` that the globals are cached before this runs.
-import { read, readText, write, writeText } from "../implementations/clipboard-polyfill";
+import { readText, writeText } from "../implementations/text";
+import { read, write } from "../implementations/blob";
 import { ClipboardItemPolyfill } from "../ClipboardItem/ClipboardItemPolyfill";
 import { Clipboard as ClipboardInterface, ClipboardItemConstructor } from "../ClipboardItem/spec";
 import "../globals";
