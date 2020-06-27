@@ -38,15 +38,12 @@ Notes:
 - You need to call a clipboard operation in response to a user gesture (e.g. the event handler for a button click).
   - Some browsers may only allow one clipboard operation per button click.
 
-## Async syntax
+## `async`/`await` syntax
 
 ```js
 import * as clipboard from "clipboard-polyfill/text";
 
-// Async/await syntax.
 async function handler() {
-  // Read text from the clipboard, if present.
-  // Works in: IE 9-11, Chrome 65+, Safari 13.1+
   console.log("Previous clipboard text:", await clipboard.readText());
 
   await clipboard.writeText("This text is plain.");
@@ -61,12 +58,8 @@ window.addEventListener("DOMContentLoaded", function() { const button = document
 import * as clipboard from "clipboard-polyfill";
 
 async function handler() {
-  // Read a list of `ClipboardItem`s.
-  // Works in: IE 9-11, Chrome 65+, Safari 13.1+
   console.log("Previous clipboard contents:", await clipboard.read());
 
-  // Chrome 83 supports: `text/plain`, `image/png`
-  // Sfari 13.1 supports: `text/plain`, `text/html`, `text-uri-list`, `image/png`
   const item = new clipboard.ClipboardItem({
     "text/html": new Blob(["<i>Markup</i> <b>text</b>. Paste me into a rich text editor."], { type: "text/html" }),
     "text/plain": new Blob(["Fallback markup text. Paste me into a rich text editor."], { type: "text/plain" })
