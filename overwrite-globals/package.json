@@ -1,5 +1,5 @@
 {
   "main": "../dist/overwrite-globals/clipboard-polyfill.overwrite-globals.js",
   "module": "../dist/overwrite-globals/clipboard-polyfill.overwrite-globals.esm.js",
-  "types": "../dist/overwrite-globals/index.overwrite-globals.d.ts"
+  "types": "../dist/overwrite-globals/targets/overwrite-globals.d.ts"
 }
