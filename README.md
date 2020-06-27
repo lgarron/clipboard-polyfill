@@ -16,7 +16,7 @@ If you use `npm`, install:
 npm install clipboard-pollyfill
 ```
 
-Sample app that writes text:
+Sample app that copies text to the clipboard:
 
 ```js
 // Using the `clipboard/text` build saves code size.
