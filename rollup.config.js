@@ -42,7 +42,7 @@ const promisePlugins = [
 
 export default [
   {
-    input: "./src/index.ts",
+    input: "./src/targets/main.ts",
     output: [
       {
         file: "dist/main/clipboard-polyfill.js",
@@ -54,7 +54,7 @@ export default [
     plugins,
   },
   {
-    input: "./src/index.ts",
+    input: "./src/targets/main.ts",
     output: [
       {
         file: "dist/main/clipboard-polyfill.esm.js",
@@ -65,7 +65,30 @@ export default [
     plugins,
   },
   {
-    input: "./src/index.overwrite-globals.ts",
+    input: "./src/targets/text.ts",
+    output: [
+      {
+        file: "dist/text/clipboard-polyfill.text.js",
+        format: "umd",
+        name: "clipboard",
+        sourcemap: true,
+      },
+    ],
+    plugins,
+  },
+  {
+    input: "./src/targets/text.ts",
+    output: [
+      {
+        file: "dist/text/clipboard-polyfill.text.esm.js",
+        format: "esm",
+        sourcemap: true,
+      },
+    ],
+    plugins,
+  },
+  {
+    input: "./src/targets/overwrite-globals.ts",
     output: [
       {
         file: "dist/overwrite-globals/clipboard-polyfill.overwrite-globals.js",
@@ -76,7 +99,7 @@ export default [
     plugins,
   },
   {
-    input: "./src/index.overwrite-globals.ts",
+    input: "./src/targets/overwrite-globals.ts",
     output: [
       {
         file: "dist/overwrite-globals/clipboard-polyfill.overwrite-globals.esm.js",
@@ -87,7 +110,7 @@ export default [
     plugins,
   },
   {
-    input: "./src/index.ts",
+    input: "./src/targets/main.ts",
     output: [
       {
         banner: promisePolyfill,
@@ -100,7 +123,7 @@ export default [
     plugins: promisePlugins
   },
   {
-    input: "./src/index.overwrite-globals.ts",
+    input: "./src/targets/overwrite-globals.ts",
     output: [
       {
         banner: promisePolyfill,

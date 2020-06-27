@@ -1,8 +1,8 @@
 // Import `./globals` that the globals are cached before this runs.
-import { read, readText, write, writeText } from "./clipboard-polyfill";
-import { ClipboardItemPolyfill } from "./ClipboardItem/ClipboardItemPolyfill";
-import { Clipboard as ClipboardInterface, ClipboardItemConstructor } from "./ClipboardItem/spec";
-import "./globals";
+import { read, readText, write, writeText } from "../implementations/clipboard-polyfill";
+import { ClipboardItemPolyfill } from "../ClipboardItem/ClipboardItemPolyfill";
+import { Clipboard as ClipboardInterface, ClipboardItemConstructor } from "../ClipboardItem/spec";
+import "../globals";
 
 declare global {
   const ClipboardItem: ClipboardItemConstructor;

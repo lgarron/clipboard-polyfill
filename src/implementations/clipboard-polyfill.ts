@@ -1,26 +1,26 @@
-import { originalWindowClipboardItem, originalNavigatorClipboardWrite, originalNavigatorClipboardWriteText, originalNavigatorClipboardRead, originalNavigatorClipboardReadText } from "./globals";
-import { hasItemWithType } from "./ClipboardItem/check";
+import { originalWindowClipboardItem, originalNavigatorClipboardWrite, originalNavigatorClipboardWriteText, originalNavigatorClipboardRead, originalNavigatorClipboardReadText } from "../globals";
+import { hasItemWithType } from "../ClipboardItem/check";
 import {
   ClipboardItemAsResolvedText,
   clipboardItemToGlobalClipboardItem,
   getTypeAsText,
   resolveItemsToText,
   textToClipboardItem
-} from "./ClipboardItem/convert";
-import { TEXT_HTML, TEXT_PLAIN } from "./ClipboardItem/data-types";
-import { ClipboardItemInterface, ClipboardItems } from "./ClipboardItem/spec";
-import { debugLog, shouldShowWarnings } from "./debug";
+} from "../ClipboardItem/convert";
+import { TEXT_HTML, TEXT_PLAIN } from "../ClipboardItem/data-types";
+import { ClipboardItemInterface, ClipboardItems } from "../ClipboardItem/spec";
+import { debugLog, shouldShowWarnings } from "../debug";
 import {
   copyTextUsingDOM,
   copyUsingTempElem,
   copyUsingTempSelection,
   execCopy
-} from "./strategies/dom";
+} from "../strategies/dom";
 import {
   readTextIE,
   seemToBeInIE,
   writeTextIE
-} from "./strategies/internet-explorer";
+} from "../strategies/internet-explorer";
 
 export async function write(data: ClipboardItemInterface[]): Promise<void> {
   // Use the browser implementation if it exists.
