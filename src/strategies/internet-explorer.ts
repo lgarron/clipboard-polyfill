@@ -1,3 +1,5 @@
+import { originalWindow } from "../globals";
+
 interface IEWindow extends Window {
   clipboardData: {
     setData: (key: string, value: string) => boolean;
@@ -6,7 +8,7 @@ interface IEWindow extends Window {
   };
 }
 
-const ieWindow = (window as unknown) as IEWindow;
+const ieWindow = (originalWindow as unknown) as IEWindow;
 
 export function seemToBeInIE(): boolean {
   return (

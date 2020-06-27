@@ -19,11 +19,13 @@
 
 import { ClipboardItemConstructor, Clipboard, ClipboardItems } from "./ClipboardItem/spec";
 
-const originalNavigatorClipboard: Clipboard | undefined = navigator.clipboard as any;
-export const originalNavigatorClipboardRead: (() => Promise<ClipboardItems>) | undefined = originalNavigatorClipboard?.read.bind(originalNavigatorClipboard);
-export const originalNavigatorClipboardReadText: (() => Promise<string>) | undefined = originalNavigatorClipboard?.readText.bind(originalNavigatorClipboard);
-export const originalNavigatorClipboardWrite: ((data: ClipboardItems) => Promise<void>) | undefined = originalNavigatorClipboard?.write.bind(originalNavigatorClipboard);
-export const originalNavigatorClipboardWriteText: ((data: string) => Promise<void>) | undefined = originalNavigatorClipboard?.writeText.bind(originalNavigatorClipboard);
+const originalNavigator = (typeof navigator === "undefined" ? undefined : navigator);
+const originalNavigatorClipboard: Clipboard | undefined = originalNavigator?.clipboard as any;
+export const originalNavigatorClipboardRead: (() => Promise<ClipboardItems>) | undefined = originalNavigatorClipboard?.read?.bind(originalNavigatorClipboard);
+export const originalNavigatorClipboardReadText: (() => Promise<string>) | undefined = originalNavigatorClipboard?.readText?.bind(originalNavigatorClipboard);
+export const originalNavigatorClipboardWrite: ((data: ClipboardItems) => Promise<void>) | undefined = originalNavigatorClipboard?.write?.bind(originalNavigatorClipboard);
+export const originalNavigatorClipboardWriteText: ((data: string) => Promise<void>) | undefined = originalNavigatorClipboard?.writeText?.bind(originalNavigatorClipboard);
 
 // The spec specifies that this goes on `window`, not e.g. `globalThis`. It's not (currently) available in workers.
-export const originalWindowClipboardItem: ClipboardItemConstructor | undefined = window.ClipboardItem;
+export const originalWindow = (typeof window === "undefined" ? undefined : window);
+export const originalWindowClipboardItem: ClipboardItemConstructor | undefined = originalWindow?.ClipboardItem;

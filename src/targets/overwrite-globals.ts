@@ -12,17 +12,13 @@ declare global {
   interface Clipboard extends ClipboardInterface {}
 }
 
-if (navigator) {
-  // Create the `navigator.clipboard` object if it doesn't exist.
-  (navigator as any).clipboard = navigator.clipboard ?? {};
+// Create the `navigator.clipboard` object if it doesn't exist.
+(navigator as any).clipboard = navigator.clipboard ?? {};
 
-  // Set/replace the implementations.
-  navigator.clipboard.read = read;
-  navigator.clipboard.readText = readText;
-  navigator.clipboard.write = write;
-  navigator.clipboard.writeText = writeText;
-}
+// Set/replace the implementations.
+navigator.clipboard.read = read;
+navigator.clipboard.readText = readText;
+navigator.clipboard.write = write;
+navigator.clipboard.writeText = writeText;
 
-if (window) {
-  window.ClipboardItem = ClipboardItemPolyfill;
-}
+window.ClipboardItem = ClipboardItemPolyfill;
