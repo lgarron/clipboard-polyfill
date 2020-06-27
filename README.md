@@ -128,28 +128,45 @@ Browsers have implemented several clipboard APIs over time, and writing to the c
 
 See [this presentation](https://docs.google.com/presentation/d/1Ix2rYi67hbZoIQsd85kspkUPLi8Q-PZopy_AtfafHW0) for for a longer history of clipboard access on the web.
 
+## Compatibility
+
+- ☑️: Browser has native async clipboard support.
+- ✅: `clipboard-polyfill` provides support.
+- ❌: Support is not possible.
+- **Bold** browser names indicate the latest functionality changes for stable versions of modern browsers.
+
+Write support by earliest browser version:
+
+| Browser | `writeText()` | `write()` (HTML) | `write()` (other formats) |
+|-|-|-|-|
+| Safari 13.1 | ☑️ | ☑️ | ☑️ (`image/uri-list`, `image/png`) |
+| **Chrome 76**ᵃ / **Edge 79** | ☑️ | ✅ | ☑️ (`image/png`) |
+| Chrome 66ᵃ / **Firefox 63** | ☑️ | ✅ | ❌ |
+| **Safari 10** / Chrome 42ᵃ / Edgeᵈ / Firefox 41 | ✅ | ✅ᵇ | ❌ |
+| IE 9 | ✅ᶜ | ❌ | ❌ |
+
+Read support:
+
+| Browser | `readText()` | `read()` (HTML) | `read()` (other formats) |
+|-|-|-|-|
+| Safari 13.1 | ☑️ | ☑️ | ☑️ (`image/uri-list`, `image/png`) |
+| **Chrome [76](https://web.dev/image-support-for-async-clipboard/)** ᵃ / Edge 79 | ☑️ | ❌ | ☑️ (`image/png`) |
+| Chrome [66](https://developers.google.com/web/updates/2018/03/clipboardapi)ᵃ / **Edge 79** | ☑️ | ❌ | ❌ |
+| IE 9 | ✅ᶜ | ❌ | ❌ |
+| **Firefox**, **stable Safari** | ❌ | ❌ | ❌ |
+
+- ᵃ Also includes versions of Edge, Opera, Brave, Vivaldi, etc. based on the corresponding version of Chrome.
+- ᵇ HTML did not work properly on mobile Safari in the first few releases of version 10.
+- ᶜ In Internet Explorer, you will need to polyfill `window.Promise` if you want the library to work.
+- ᵈ In older versions of Edge (Spartan):
+  - It may not be possible to tell if a copy operation succeeded ([Edge Bug #14110451](https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/14110451/), [Edge Bug #14080262](https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/14080262/)). `clipboard-polyfill` will always report success in this case.
+  - Only the _last_ data type you specify is copied to the clipboard ([Edge Bug #14080506](https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/14080506/)). Consider placing the most important data type last in the object that you pass to the `ClipboardItem` constructor.
+  - The `text/html` data type is not written using the expected `CF_HTML` format. `clipboard-polyfill` does *not* try to work around this, since 1) it would require fragile browser version sniffing, 2) users of Edge are not generally stuck on version < 17, and 3) the failure mode for other browsers would be that invalid clipboard HTML is copied. ([Edge Bug #14372529](https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/14372529/), [#73](https://github.com/lgarron/clipboard-polyfill/issues/73))
+
+`clipboard-polyfill` uses a variety of heuristics to work around compatibility bugs. Please [let us know](https://github.com/lgarron/clipboard-polyfill/issues/new) if you are running into compatibility issues with any of the browsers listed above.
+
 ## This is way too complicated!
 
 If you only need to copy text, try [this gist](https://gist.github.com/lgarron/d1dee380f4ed9d825ca7) for a simpler solution.
 
-## Compatibility Caveats
-
-Some [compatibility caveats](https://github.com/lgarron/clipboard-polyfill/blob/main/experiment/Conclusions.md) for older browsers:
-
-- In Internet Explorer, you will need to polyfill `window.Promise` if you want the library to work.
-- In older versions of Edge (Spartan):
-  - It may not be possible to tell if a copy operation succeeded ([Edge Bug #14110451](https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/14110451/), [Edge Bug #14080262](https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/14080262/)). `clipboard-polyfill` will always report success in this case.
-  - Only the _last_ data type you specify is copied to the clipboard ([Edge Bug #14080506](https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/14080506/)). Consider placing the most important data type last in the object that you pass to the `ClipoardItem` constructor.
-  - The `text/html` data type is not written using the expected `CF_HTML` format. `clipboard-polyfill` does *not* try to work around this, since 1) it would require fragile browser version sniffing, 2) users of Edge are not generally stuck on version < 17, and 3) the failure mode for other browsers would be that invalid clipboard HTML is copied. ([Edge Bug #14372529](https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/14372529/), [#73](https://github.com/lgarron/clipboard-polyfill/issues/73))
-
-## [Can I use](http://caniuse.com/#feat=clipboard) it?
-
-- Chrome 42+
-- Firefox 41+
-- Opera 29+
-- Internet Explorer 9+ (text only)
-- Edge
-- Desktop Safari 10+
-- iOS Safari 10+ (text only in some versions)
-
-`clipboard-polyfill` uses a variety of heuristics to work around compatibility bugs. Please [let us know](https://github.com/lgarron/clipboard-polyfill/issues/new) if you are running into compatibility issues with any of the browsers listed above.
+Alternatively, if you wait until iOS 14 / macOS 11, `navigator.clipboard.writeText()` will be supported in the stable versions of all major modern browsers.
