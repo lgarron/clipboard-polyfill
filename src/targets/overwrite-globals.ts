@@ -14,7 +14,9 @@ declare global {
 }
 
 // Create the `navigator.clipboard` object if it doesn't exist.
-(navigator as any).clipboard = navigator.clipboard ?? {};
+if (!navigator.clipboard) {
+  (navigator as any).clipboard = {};
+}
 
 // Set/replace the implementations.
 navigator.clipboard.read = read;
