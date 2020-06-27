@@ -2,12 +2,11 @@
 
 # `clipboard-polyfill`
 
-Make copying on the web as easy as:
+Makes copying on the web as easy as:
 
     clipboard.writeText("hello world");
 
-As of October 2017, this library is a polyfill for the modern `Promise`-based [asynchronous clipboard API](https://www.w3.org/TR/clipboard-apis/#async-clipboard-api).  
-(Note: the core library doesn't modify global objects, so it's actually a [_ponyfill_](https://ponyfill.com/).)
+This library is a polyfill for the modern `Promise`-based [asynchronous clipboard API](https://www.w3.org/TR/clipboard-apis/#async-clipboard-api).
 
 ## Usage
 
@@ -89,7 +88,7 @@ Notes:
 
 ### `overwrite-globals` version
 
-If you want the library to overwrite the global clipboard API with its implementations, import `clipboard-polyfill/overwrite-globals`. This will turn the library from a ponyfill into a proper polyfill, so you can write code as if the async clipboard API were already implemented in your browser:
+If you want the library to overwrite the global clipboard API with its implementations, import `clipboard-polyfill/overwrite-globals`. This will turn the library from a [ponyfill](https://ponyfill.com/) into a proper polyfill, so you can write code as if the async clipboard API were already implemented in your browser:
 
 ```js
 import "clipboard-polyfill/overwrite-globals";
