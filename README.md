@@ -13,7 +13,7 @@ This library is a polyfill for the modern `Promise`-based [asynchronous clipboar
 If you use `npm`, install:
 
 ```shell
-npm install clipboard-pollyfill
+npm install clipboard-polyfill
 ```
 
 Sample app that copies text to the clipboard:
