@@ -132,21 +132,21 @@ Write support by earliest browser version:
 
 | Browser | `writeText()` | `write()` (HTML) | `write()` (other formats) |
 |-|-|-|-|
-| Safari 13.1 | ☑️ | ☑️ | ☑️ (`image/uri-list`, `image/png`) |
+| **Safari 13.1** | ☑️ | ☑️ | ☑️ (`image/uri-list`, `image/png`) |
 | **Chrome 76**ᵃ / **Edge 79** | ☑️ | ✅ | ☑️ (`image/png`) |
 | Chrome 66ᵃ / **Firefox 63** | ☑️ | ✅ | ❌ |
-| **Safari 10** / Chrome 42ᵃ / Edgeᵈ / Firefox 41 | ✅ | ✅ᵇ | ❌ |
+| Safari 10 / Chrome 42ᵃ / Edgeᵈ / Firefox 41 | ✅ | ✅ᵇ | ❌ |
 | IE 9 | ✅ᶜ | ❌ | ❌ |
 
 Read support:
 
 | Browser | `readText()` | `read()` (HTML) | `read()` (other formats) |
 |-|-|-|-|
-| Safari 13.1 | ☑️ | ☑️ | ☑️ (`image/uri-list`, `image/png`) |
+| **Safari 13.1** | ☑️ | ☑️ | ☑️ (`image/uri-list`, `image/png`) |
 | **Chrome [76](https://web.dev/image-support-for-async-clipboard/)** ᵃ / **Edge 79** | ☑️ | ❌ | ☑️ (`image/png`) |
 | Chrome [66](https://developers.google.com/web/updates/2018/03/clipboardapi)ᵃ | ☑️ | ❌ | ❌ |
 | IE 9 | ✅ᶜ | ❌ | ❌ |
-| **Firefox**, **stable Safari** | ❌ | ❌ | ❌ |
+| **Firefox** | ❌ | ❌ | ❌ |
 
 - ᵃ Also includes versions of Edge, Opera, Brave, Vivaldi, etc. based on the corresponding version of Chrome.
 - ᵇ HTML did not work properly on mobile Safari in the first few releases of version 10.
