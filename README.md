@@ -8,6 +8,8 @@ Makes copying on the web as easy as:
 
 This library is a polyfill for the modern `Promise`-based [asynchronous clipboard API](https://www.w3.org/TR/clipboard-apis/#async-clipboard-api).
 
+Note: As of mid-2020, all modern browsers support copying text. Use this library only if you need to copy other data types, or need to support older browsers.
+
 ## Usage
 
 If you use `npm`, install:
