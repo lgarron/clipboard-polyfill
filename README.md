@@ -143,8 +143,8 @@ Read support:
 | Browser | `readText()` | `read()` (HTML) | `read()` (other formats) |
 |-|-|-|-|
 | Safari 13.1 | ☑️ | ☑️ | ☑️ (`image/uri-list`, `image/png`) |
-| **Chrome [76](https://web.dev/image-support-for-async-clipboard/)** ᵃ / Edge 79 | ☑️ | ❌ | ☑️ (`image/png`) |
-| Chrome [66](https://developers.google.com/web/updates/2018/03/clipboardapi)ᵃ / **Edge 79** | ☑️ | ❌ | ❌ |
+| **Chrome [76](https://web.dev/image-support-for-async-clipboard/)** ᵃ / **Edge 79** | ☑️ | ❌ | ☑️ (`image/png`) |
+| Chrome [66](https://developers.google.com/web/updates/2018/03/clipboardapi)ᵃ | ☑️ | ❌ | ❌ |
 | IE 9 | ✅ᶜ | ❌ | ❌ |
 | **Firefox**, **stable Safari** | ❌ | ❌ | ❌ |
 
