@@ -35,7 +35,7 @@ window.addEventListener("DOMContentLoaded", function() { const button = document
 
 Notes:
 
-- You need to call a clipboard operation in response to a user gesture (e.g. the event handler for a `button cl`ick).
+- You need to call a clipboard operation in response to a user gesture (e.g. the event handler for a `button` click).
   - Some browsers may only allow one clipboard operation per gesture.
 
 ## `async`/`await` syntax
