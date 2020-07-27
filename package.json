@@ -1,6 +1,6 @@
 {
   "name": "clipboard-polyfill",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "A polyfill for the asynchronous clipboard API",
   "main": "dist/main/clipboard-polyfill.js",
   "module": "dist/main/clipboard-polyfill.esm.js",
