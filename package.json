@@ -52,6 +52,7 @@
     "/build",
     "/dist",
     "/src",
+    "/text",
     "README.md"
   ],
   "scripts": {
