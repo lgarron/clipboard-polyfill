@@ -5,7 +5,7 @@ import {
   copyTextUsingDOM,
   copyUsingTempElem,
   copyUsingTempSelection,
-  execCopy
+  execCopy,
 } from "../strategies/dom";
 import { seemToBeInIE, writeTextIE } from "../strategies/internet-explorer";
 

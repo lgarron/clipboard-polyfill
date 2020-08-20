@@ -11,7 +11,7 @@ class FallbackTracker {
 function copyListener(
   tracker: FallbackTracker,
   data: StringItem,
-  e: ClipboardEvent,
+  e: ClipboardEvent
 ): void {
   debugLog("listener called");
   tracker.success = true;
@@ -47,7 +47,7 @@ export function execCopy(data: StringItem): boolean {
 // Temporarily select a DOM element, so that `execCommand()` is not rejected.
 export function copyUsingTempSelection(
   e: HTMLElement,
-  data: StringItem,
+  data: StringItem
 ): boolean {
   selectionSet(e);
   const success = execCopy(data);

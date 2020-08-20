@@ -1,14 +1,17 @@
 import { StringItem } from "../ClipboardItem/convert";
 import { TEXT_PLAIN } from "../ClipboardItem/data-types";
 import { debugLog } from "../debug";
-import { originalNavigatorClipboardReadText, originalNavigatorClipboardWriteText } from "../globals";
+import {
+  originalNavigatorClipboardReadText,
+  originalNavigatorClipboardWriteText,
+} from "../globals";
 import { readTextIE, seemToBeInIE } from "../strategies/internet-explorer";
 import { writeFallback } from "./write-fallback";
 
 function stringToStringItem(s: string): StringItem {
   const stringItem: StringItem = {};
   stringItem[TEXT_PLAIN] = s;
-  return stringItem
+  return stringItem;
 }
 
 export async function writeText(s: string): Promise<void> {

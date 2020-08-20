@@ -2,7 +2,10 @@
 import { readText, writeText } from "../implementations/text";
 import { read, write } from "../implementations/blob";
 import { ClipboardItemPolyfill } from "../ClipboardItem/ClipboardItemPolyfill";
-import { Clipboard as ClipboardInterface, ClipboardItemConstructor } from "../ClipboardItem/spec";
+import {
+  Clipboard as ClipboardInterface,
+  ClipboardItemConstructor,
+} from "../ClipboardItem/spec";
 import "../globals";
 
 declare global {
