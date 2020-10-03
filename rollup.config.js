@@ -1,5 +1,5 @@
 import babel from "rollup-plugin-babel";
-import {terser} from "rollup-plugin-terser";
+import { terser } from "rollup-plugin-terser";
 import * as typescript from "typescript";
 import typescript2 from "rollup-plugin-typescript2";
 import tslint from "rollup-plugin-tslint";
@@ -7,9 +7,7 @@ import { readFileSync } from "fs";
 
 const plugins = [
   tslint({
-    exclude: [
-      "node_modules/**",
-    ],
+    exclude: ["node_modules/**"],
   }),
   typescript2({
     typescript: typescript,
@@ -17,25 +15,32 @@ const plugins = [
 ];
 
 if (!process.env.ROLLUP_WATCH) {
-  plugins.push(terser({
-    keep_classnames: true,
-  }));
+  plugins.push(
+    terser({
+      keep_classnames: true,
+    })
+  );
 }
 
-const promisePolyfill = readFileSync("node_modules/promise-polyfill/dist/polyfill.min.js").toString();
+const promisePolyfill = readFileSync(
+  "node_modules/promise-polyfill/dist/polyfill.min.js"
+).toString();
 
 const promisePlugins = [
   ...plugins,
   babel({
     extensions: [".js", ".ts"],
     presets: [
-      ["@babel/preset-typescript", {
-        modules: false,
+      [
+        "@babel/preset-typescript",
+        {
+          modules: false,
           targets: {
             browsers: "last 2 versions",
-              ie: 11,
+            ie: 11,
           },
-      }],
+        },
+      ],
     ],
   }),
 ];
@@ -102,7 +107,8 @@ export default [
     input: "./src/targets/overwrite-globals.ts",
     output: [
       {
-        file: "dist/overwrite-globals/clipboard-polyfill.overwrite-globals.esm.js",
+        file:
+          "dist/overwrite-globals/clipboard-polyfill.overwrite-globals.esm.js",
         format: "esm",
         sourcemap: true,
       },
@@ -120,19 +126,20 @@ export default [
         sourcemap: true,
       },
     ],
-    plugins: promisePlugins
+    plugins: promisePlugins,
   },
   {
     input: "./src/targets/overwrite-globals.ts",
     output: [
       {
         banner: promisePolyfill,
-        file: "dist/overwrite-globals.promise/clipboard-polyfill.overwrite-globals.promise.js",
+        file:
+          "dist/overwrite-globals.promise/clipboard-polyfill.overwrite-globals.promise.js",
         format: "umd",
         name: "clipboard",
         sourcemap: true,
       },
     ],
-    plugins: promisePlugins
+    plugins: promisePlugins,
   },
 ];
