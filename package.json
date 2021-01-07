@@ -52,6 +52,7 @@
     "/build",
     "/dist",
     "/src",
+    "/overwrite-globals",
     "/text",
     "README.md"
   ],
