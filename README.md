@@ -37,10 +37,9 @@ function handler() {
 }
 
 window.addEventListener("DOMContentLoaded", function () {
-  const button = document.createElement("button");
+  const button = document.body.appendChild(document.createElement("button"));
   button.textContent = "Copy";
   button.addEventListener("click", handler);
-  document.body.appendChild(button);
 });
 ```
 
@@ -61,10 +60,9 @@ async function handler() {
 }
 
 window.addEventListener("DOMContentLoaded", function () {
-  const button = document.createElement("button");
+  const button = document.body.appendChild(document.createElement("button"));
   button.textContent = "Copy";
   button.addEventListener("click", handler);
-  document.body.appendChild(button);
 });
 ```
 
@@ -90,10 +88,9 @@ async function handler() {
 }
 
 window.addEventListener("DOMContentLoaded", function () {
-  const button = document.createElement("button");
+  const button = document.body.appendChild(document.createElement("button"));
   button.textContent = "Copy";
   button.addEventListener("click", handler);
-  document.body.appendChild(button);
 });
 ```
 
@@ -129,10 +126,9 @@ async function handler() {
 }
 
 window.addEventListener("DOMContentLoaded", function () {
-  const button = document.createElement("button");
+  const button = document.body.appendChild(document.createElement("button"));
   button.textContent = "Copy";
   button.addEventListener("click", handler);
-  document.body.appendChild(button);
 });
 ```
 
