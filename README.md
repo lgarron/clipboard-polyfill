@@ -136,7 +136,7 @@ This approach is not recommended, because it may break any other code that inter
 
 ### Flat-file version with `Promise` included
 
-If you need to grab a version that "just works", download [`clipboard-polyfill.promise.js`](https://github.com/lgarron/clipboard-polyfill/releases/latest/download/clipboard-polyfill.promise.js) and include it using a `<script>` tag:
+If you need to grab a version that "just works", download [`clipboard-polyfill.promise.js`](https://unpkg.com/browse/clipboard-polyfill/dist/overwrite-globals.promise/clipboard-polyfill.overwrite-globals.promise.js) and include it using a `<script>` tag:
 
 ```html
 <script src="./clipboard-polyfill.promise.js"></script>
