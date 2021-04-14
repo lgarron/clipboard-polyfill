@@ -6,7 +6,7 @@ Makes copying on the web as easy as:
 
     clipboard.writeText("hello world");
 
-This library is a polyfill for the modern `Promise`-based [asynchronous clipboard API](https://www.w3.org/TR/clipboard-apis/#async-clipboard-api).
+This library is a [ponyfill](https://github.com/sindresorhus/ponyfill)/polyfill for the modern `Promise`-based [asynchronous clipboard API](https://www.w3.org/TR/clipboard-apis/#async-clipboard-api).
 
 Note: As of late June 2020, you can use `navigator.clipboard.writeText("hello world);` in the stable versions of all major browsers (see below for compatibility). This library will only be useful to you if you 1) need to copy `text/html`, or 2) need to target older browsers.
 
