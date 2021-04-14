@@ -8,7 +8,7 @@ Makes copying on the web as easy as:
 
 This library is a [ponyfill](https://github.com/sindresorhus/ponyfill)/polyfill for the modern `Promise`-based [asynchronous clipboard API](https://www.w3.org/TR/clipboard-apis/#async-clipboard-api).
 
-Note: As of late June 2020, you can use `navigator.clipboard.writeText("hello world);` in the stable versions of all major browsers (see below for compatibility). This library will only be useful to you if you 1) need to copy `text/html`, or 2) need to target older browsers.
+Note: As of late June 2020, you can use `navigator.clipboard.writeText("hello world);` [in the stable versions of all major browsers](https://caniuse.com/mdn-api_clipboard_writetext). This library will only be useful to you if you 1) need to copy `text/html`, or 2) need to target older browsers (see below for compatibility).
 
 ## Usage
 
@@ -194,6 +194,6 @@ Read support:
 
 ## This is way too complicated!
 
-If you only need to copy text, try [this gist](https://gist.github.com/lgarron/d1dee380f4ed9d825ca7) for a simpler solution.
+If you only need to copy text in modern browsers, consider using `navigator.clipboard.writeText()` directly: <https://caniuse.com/mdn-api_clipboard_writetext>
 
-Alternatively, if you wait until iOS 14 / macOS 11, `navigator.clipboard.writeText()` will be supported in the stable versions of all major modern browsers.
+If you need copy text in older browsers as well, you could also try [this gist](https://gist.github.com/lgarron/d1dee380f4ed9d825ca7) for a simple hacky solution.
