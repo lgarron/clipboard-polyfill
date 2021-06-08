@@ -27,12 +27,8 @@ import * as clipboard from "clipboard-polyfill/text";
 
 function handler() {
   clipboard.writeText("This text is plain.").then(
-    function () {
-      console.log("success!");
-    },
-    function () {
-      console.log("error!");
-    }
+    () => { console.log("success!"); },
+    () => { console.log("error!"); }
   );
 }
 
