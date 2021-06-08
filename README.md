@@ -154,7 +154,7 @@ See [this presentation](https://docs.google.com/presentation/d/1Ix2rYi67hbZoIQsd
 ## Compatibility
 
 - ☑️: Browser has native async clipboard support.
-- ✅: `clipboard-polyfill` provides support.
+- ✅: `clipboard-polyfill` adds support.
 - ❌: Support is not possible.
 - **Bold browser names** indicate the latest functionality changes for stable versions of modern browsers.
 
