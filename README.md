@@ -8,7 +8,7 @@ Makes copying on the web as easy as:
 
 This library is a [ponyfill](https://github.com/sindresorhus/ponyfill)/polyfill for the modern `Promise`-based [asynchronous clipboard API](https://www.w3.org/TR/clipboard-apis/#async-clipboard-api).
 
-Note: As of late June 2020, you can use `navigator.clipboard` [in the stable versions of all major browsers](https://caniuse.com/mdn-api_clipboard_writetext). This library will only be useful to you if you need to target older browsers (see below for compatibility).
+Note: As of 2021, you can use `navigator.clipboard` [in the stable versions of all major browsers](https://caniuse.com/mdn-api_clipboard_writetext). This library will only be useful to you if you need to target older browsers (see below for compatibility).
 
 ## Usage
 
