@@ -8,7 +8,7 @@ Makes copying on the web as easy as:
 
 This library is a [ponyfill](https://github.com/sindresorhus/ponyfill)/polyfill for the modern `Promise`-based [asynchronous clipboard API](https://www.w3.org/TR/clipboard-apis/#async-clipboard-api).
 
-Note: As of late June 2020, you can use `navigator.clipboard.writeText("hello world);` [in the stable versions of all major browsers](https://caniuse.com/mdn-api_clipboard_writetext). This library will only be useful to you if you 1) need to copy `text/html`, or 2) need to target older browsers (see below for compatibility).
+Note: As of late June 2020, you can use `navigator.clipboard` [in the stable versions of all major browsers](https://caniuse.com/mdn-api_clipboard_writetext). This library will only be useful to you if you need to target older browsers (see below for compatibility).
 
 ## Usage
 
@@ -163,7 +163,8 @@ Write support by earliest browser version:
 | Browser                                     | `writeText()` | `write()` (HTML) | `write()` (other formats)          |
 | ------------------------------------------- | ------------- | ---------------- | ---------------------------------- |
 | **Safari 13.1**                             | ☑️            | ☑️               | ☑️ (`image/uri-list`, `image/png`) |
-| **Chrome 76**ᵃ / **Edge 79**                | ☑️            | ✅               | ☑️ (`image/png`)                   |
+| **Chrome 86**ᵃ / **Edge 86**                | ☑️            | ☑️               | ☑️ (`image/png`)                   |
+| Chrome 76ᵃ / Edge 79                | ☑️            | ✅               | ☑️ (`image/png`)                   |
 | Chrome 66ᵃ / **Firefox 63**                 | ☑️            | ✅               | ❌                                 |
 | Safari 10 / Chrome 42ᵃ / Edgeᵈ / Firefox 41 | ✅            | ✅ᵇ              | ❌                                 |
 | IE 9                                        | ✅ᶜ           | ❌               | ❌                                 |
