@@ -62,7 +62,7 @@ export default [
     input: "./src/targets/main.ts",
     output: [
       {
-        file: "dist/main/clipboard-polyfill.esm.js",
+        file: "dist/main/clipboard-polyfill.mjs",
         format: "esm",
         sourcemap: true,
       },
@@ -85,7 +85,7 @@ export default [
     input: "./src/targets/text.ts",
     output: [
       {
-        file: "dist/text/clipboard-polyfill.text.esm.js",
+        file: "dist/text/clipboard-polyfill.text.mjs",
         format: "esm",
         sourcemap: true,
       },
@@ -108,7 +108,7 @@ export default [
     output: [
       {
         file:
-          "dist/overwrite-globals/clipboard-polyfill.overwrite-globals.esm.js",
+          "dist/overwrite-globals/clipboard-polyfill.overwrite-globals.mjs",
         format: "esm",
         sourcemap: true,
       },

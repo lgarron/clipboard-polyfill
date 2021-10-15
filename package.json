@@ -3,7 +3,7 @@
   "version": "3.0.3",
   "description": "A polyfill for the asynchronous clipboard API",
   "main": "dist/main/clipboard-polyfill.js",
-  "module": "dist/main/clipboard-polyfill.esm.js",
+  "module": "dist/main/clipboard-polyfill.mjs",
   "types": "dist/main/targets/main.d.ts",
   "devDependencies": {
     "@babel/core": "^7.10.3",
@@ -67,17 +67,17 @@
   "exports": {
     ".": {
       "require": "./dist/main/clipboard-polyfill.js",
-      "import": "./dist/main/clipboard-polyfill.esm.js",
+      "import": "./dist/main/clipboard-polyfill.mjs",
       "types": "./dist/main/targets/main.d.ts"
     },
     "./overwrite-globals": {
       "require": "./dist/overwrite-globals/clipboard-polyfill.overwrite-globals.js",
-      "import": "./dist/overwrite-globals/clipboard-polyfill.overwrite-globals.esm.js",
+      "import": "./dist/overwrite-globals/clipboard-polyfill.overwrite-globals.mjs",
       "types": "./dist/overwrite-globals/targets/overwrite-globals.d.ts"
     },
     "./text": {
       "require": "./dist/text/clipboard-polyfill.text.js",
-      "import": "./dist/text/clipboard-polyfill.text.esm.js",
+      "import": "./dist/text/clipboard-polyfill.text.mjs",
       "types": "./dist/text/targets/text.d.ts"
     }
   }
