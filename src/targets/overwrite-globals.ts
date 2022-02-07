@@ -2,19 +2,7 @@
 import { readText, writeText } from "../implementations/text";
 import { read, write } from "../implementations/blob";
 import { ClipboardItemPolyfill } from "../ClipboardItem/ClipboardItemPolyfill";
-import {
-  Clipboard as ClipboardInterface,
-  ClipboardItemConstructor,
-} from "../ClipboardItem/spec";
 import "../globals";
-
-declare global {
-  const ClipboardItem: ClipboardItemConstructor;
-  interface Window {
-    ClipboardItem: ClipboardItemConstructor;
-  }
-  interface Clipboard extends ClipboardInterface {}
-}
 
 // Create the `navigator.clipboard` object if it doesn't exist.
 if (!navigator.clipboard) {

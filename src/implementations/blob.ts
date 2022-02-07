@@ -1,13 +1,12 @@
 import { hasItemWithType } from "../ClipboardItem/check";
 import { clipboardItemToGlobalClipboardItem, toStringItem, textToClipboardItem } from "../ClipboardItem/convert";
 import { TEXT_HTML, TEXT_PLAIN } from "../ClipboardItem/data-types";
-import { ClipboardItemInterface, ClipboardItems } from "../ClipboardItem/spec";
 import { debugLog, shouldShowWarnings } from "../debug";
 import { originalNavigatorClipboardRead, originalNavigatorClipboardWrite, originalWindowClipboardItem } from "../globals";
 import { readText } from "./text";
 import { writeFallback } from "./write-fallback";
 
-export async function write(data: ClipboardItemInterface[]): Promise<void> {
+export async function write(data: ClipboardItems): Promise<void> {
   // Use the browser implementation if it exists.
   // TODO: detect `text/html`.
   if (
@@ -15,7 +14,7 @@ export async function write(data: ClipboardItemInterface[]): Promise<void> {
     originalWindowClipboardItem
   ) {
     debugLog("Using `navigator.clipboard.write()`.");
-    const globalClipboardItems: ClipboardItemInterface[] = await Promise.all(
+    const globalClipboardItems: ClipboardItems = await Promise.all(
       data.map(clipboardItemToGlobalClipboardItem)
     );
     try {
@@ -31,7 +30,7 @@ export async function write(data: ClipboardItemInterface[]): Promise<void> {
   }
 
   const hasTextPlain = hasItemWithType(data, TEXT_PLAIN);
-  if (shouldShowWarnings && !hasTextPlain) {
+  if (shouldShowWarnings() && !hasTextPlain) {
     debugLog(
       "clipboard.write() was called without a " +
         "`text/plain` data type. On some platforms, this may result in an " +

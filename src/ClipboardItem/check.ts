@@ -1,7 +1,5 @@
-import { ClipboardItemInterface } from "./spec";
-
 export function hasItemWithType(
-  clipboardItems: ClipboardItemInterface[],
+  clipboardItems: ClipboardItems,
   typeName: string
 ): boolean {
   for (const item of clipboardItems) {

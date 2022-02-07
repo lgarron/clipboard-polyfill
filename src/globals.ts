@@ -16,17 +16,9 @@
 // it probably saves code), and 2) just in case an unknown/future implementation
 // allows overwriting `navigator.clipboard` like this.
 
-import {
-  ClipboardItemConstructor,
-  Clipboard,
-  ClipboardItems,
-} from "./ClipboardItem/spec";
-
 const originalNavigator =
   typeof navigator === "undefined" ? undefined : navigator;
-const originalNavigatorClipboard:
-  | Clipboard
-  | undefined = originalNavigator?.clipboard as any;
+const originalNavigatorClipboard = originalNavigator?.clipboard;
 export const originalNavigatorClipboardRead:
   | (() => Promise<ClipboardItems>)
   | undefined = originalNavigatorClipboard?.read?.bind(
@@ -51,5 +43,4 @@ export const originalNavigatorClipboardWriteText:
 // The spec specifies that this goes on `window`, not e.g. `globalThis`. It's not (currently) available in workers.
 export const originalWindow =
   typeof window === "undefined" ? undefined : window;
-export const originalWindowClipboardItem: ClipboardItemConstructor | undefined =
-  originalWindow?.ClipboardItem;
+export const originalWindowClipboardItem = originalWindow?.ClipboardItem;
