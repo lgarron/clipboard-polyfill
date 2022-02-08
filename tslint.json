@@ -1,10 +1,13 @@
 {
-    "defaultSeverity": "error",
-    "extends": [
-        "tslint:recommended"
-    ],
-    "rules": {
-      "max-line-length": false,
-      "interface-name": false
-    }
+  "defaultSeverity": "error",
+  "extends": ["tslint:recommended"],
+  "rules": {
+    "max-line-length": false,
+    "interface-name": false,
+    "trailing-comma": false,
+    "ordered-imports": false,
+    "variable-name": false,
+    "forin": false,
+    "no-empty-interface": false
+  }
 }
