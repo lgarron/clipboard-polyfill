@@ -9,7 +9,6 @@ import {
 import "../globals";
 
 declare global {
-  const ClipboardItem: ClipboardItemConstructor;
   interface Window {
     ClipboardItem: ClipboardItemConstructor;
   }
