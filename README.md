@@ -2,6 +2,29 @@
 
 # `clipboard-polyfill`
 
+## ⚠️⚠️⚠️ TO BE DEPRECATED ⚠️⚠️⚠️
+
+I plan to deprecate `clipboard-polyfill` in the near future, since it has finished serving its purpose of providing a simple, safe clipboard API in lieu of browser support.
+
+If you believe you have a use case that warrants continued maintenance, please [file an issue](https://github.com/lgarron/clipboard-polyfill/issues/new)!
+
+### A brief history
+
+This project dates from a time when clipboard access in JS was barely becoming possible, and [ergonomic clipboard API efforts were stalling](https://lists.w3.org/Archives/Public/public-webapps/2015JulSep/0235.html). (See [this presentation](https://docs.google.com/presentation/d/1Ix2rYi67hbZoIQsd85kspkUPLi8Q-PZopy_AtfafHW0/) for a bit more context.) Fortunately, [an ergonomic API with the same functionality](https://developer.mozilla.org/en-US/docs/Web/API/Clipboard) is now available in all modern browsers since 2020:
+
+- 2015: Browsers [start supporting](https://caniuse.com/mdn-api_document_execcommand_copy) the [defunct](https://w3c.github.io/editing/docs/execCommand/) `document.execCommand("copy")` call (with [many, many issues](./experiment/Conclusions.md)).
+- 2015: Started this project as `clipboard.js` (half a year before @zenorocha picked [the same name](https://github.com/zenorocha/clipboard.js) 😛).
+- 2016: Renewed discussions about an async clipboard API (e.g. [proposal doc](https://docs.google.com/document/d/1QI5rKJSiYeD9ekP2NyCYJuOnivduC9-tqEOn-GsCGS4/edit#), [`crbug.com/593475`](https://bugs.chromium.org/p/chromium/issues/detail?id=593475)).
+- 2017: Renamed this project to `clipboard-polyfill` to reflect a `v2` API overhaul aligned with the draft spec.
+- 2018: Browsers [start supporting](https://caniuse.com/mdn-api_clipboard_writetext) `navigator.clipboard.writeText()`.
+- 2020: Browsers [start supporting](https://caniuse.com/mdn-api_clipboard_write) `navigator.clipboard.write()` (including `text/html` support).
+
+Thanks to Gary Kacmarcik, Hallvord Steen, and others for helping to bring the [async clipboard API](https://w3c.github.io/clipboard-apis/) to life!
+
+---
+
+## Summary
+
 Makes copying on the web as easy as:
 
     clipboard.writeText("hello world");
@@ -27,8 +50,12 @@ import * as clipboard from "clipboard-polyfill/text";
 
 function handler() {
   clipboard.writeText("This text is plain.").then(
-    () => { console.log("success!"); },
-    () => { console.log("error!"); }
+    () => {
+      console.log("success!");
+    },
+    () => {
+      console.log("error!");
+    }
   );
 }
 
@@ -164,7 +191,7 @@ Write support by earliest browser version:
 | ------------------------------------------- | ------------- | ---------------- | ---------------------------------- |
 | **Safari 13.1**                             | ☑️            | ☑️               | ☑️ (`image/uri-list`, `image/png`) |
 | **Chrome 86**ᵃ / **Edge 86**                | ☑️            | ☑️               | ☑️ (`image/png`)                   |
-| Chrome 76ᵃ / Edge 79                | ☑️            | ✅               | ☑️ (`image/png`)                   |
+| Chrome 76ᵃ / Edge 79                        | ☑️            | ✅               | ☑️ (`image/png`)                   |
 | Chrome 66ᵃ / **Firefox 63**                 | ☑️            | ✅               | ❌                                 |
 | Safari 10 / Chrome 42ᵃ / Edgeᵈ / Firefox 41 | ✅            | ✅ᵇ              | ❌                                 |
 | IE 9                                        | ✅ᶜ           | ❌               | ❌                                 |
