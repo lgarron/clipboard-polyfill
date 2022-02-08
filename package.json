@@ -5,6 +5,13 @@
   "main": "dist/main/clipboard-polyfill.js",
   "module": "dist/main/clipboard-polyfill.esm.js",
   "types": "dist/main/targets/main.d.ts",
+  "typesVersions": {
+    "<4.4": {
+      "dist/overwrite-globals/targets/overwrite-globals.d.ts": [
+        "./typesVersions/overwrite-globals-pre4.4.d.ts"
+      ]
+    }
+  },
   "devDependencies": {
     "@babel/core": "^7.10.3",
     "@babel/preset-env": "^7.10.3",
@@ -73,7 +80,14 @@
     "./overwrite-globals": {
       "require": "./dist/overwrite-globals/clipboard-polyfill.overwrite-globals.js",
       "import": "./dist/overwrite-globals/clipboard-polyfill.overwrite-globals.esm.js",
-      "types": "./dist/overwrite-globals/targets/overwrite-globals.d.ts"
+      "types": "./dist/overwrite-globals/targets/overwrite-globals.d.ts",
+      "typesVersions": {
+        "<4.4": {
+          "dist/overwrite-globals/targets/overwrite-globals.d.ts": [
+            "./typesVersions/overwrite-globals-pre4.4.d.ts"
+          ]
+        }
+      }
     },
     "./text": {
       "require": "./dist/text/clipboard-polyfill.text.js",
