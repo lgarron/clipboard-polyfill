@@ -1,4 +1,4 @@
-import * as clipboard from "../src/";
+import * as clipboard from "../src/targets/main";
 
 describe("clipboard-polyfill", () => {
   test("has writeText", () => {

@@ -10,7 +10,7 @@
     "@babel/preset-env": "^7.10.3",
     "@babel/preset-typescript": "^7.10.1",
     "@types/es6-promise": "^3.3.0",
-    "@types/jest": "^24.9.1",
+    "@types/jest": "^27.4.0",
     "@types/promise-polyfill": "^6.0.3",
     "babel-preset-es2015-rollup": "^3.0.0",
     "es6-promise": "^4.2.8",
