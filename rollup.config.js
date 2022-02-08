@@ -18,12 +18,12 @@ if (!process.env.ROLLUP_WATCH) {
   plugins.push(
     terser({
       keep_classnames: true,
-    })
+    }),
   );
 }
 
 const promisePolyfill = readFileSync(
-  "node_modules/promise-polyfill/dist/polyfill.min.js"
+  "node_modules/promise-polyfill/dist/polyfill.min.js",
 ).toString();
 
 const promisePlugins = [
