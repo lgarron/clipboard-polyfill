@@ -6,7 +6,14 @@
 
 I am in the process of deprecating `clipboard-polyfill`, since it has finished serving its purpose of providing a simple, safe clipboard API in lieu of browser support.
 
-If you believe you have a use case that warrants continued maintenance, please [file an issue](https://github.com/lgarron/clipboard-polyfill/issues/new)!
+| Browser | First version supporting<br>`navigator.clipboard.writeText()` | Release Date |
+| ------- | ------------------------------------------------------------- | ------------ |
+| Chrome  | 66+                                                           | April 2018   |
+| Firefox | 53+                                                           | October 2018 |
+| Edge    | 79+ (first Chromium-based release)                            | January 2020 |
+| Safari  | 13.1+                                                         | March 2020   |
+
+See the "Compatibility" sction below for more details. If you believe you have a use case that warrants continued maintenance, please [file an issue](https://github.com/lgarron/clipboard-polyfill/issues/new)!
 
 ### A brief history
 
