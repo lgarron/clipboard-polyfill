@@ -2,9 +2,9 @@
 
 # `clipboard-polyfill`
 
-## ⚠️⚠️⚠️ TO BE DEPRECATED ⚠️⚠️⚠️
+## ⚠️⚠️⚠️ DEPRECATED ⚠️⚠️⚠️
 
-I plan to deprecate `clipboard-polyfill` in the near future, since it has finished serving its purpose of providing a simple, safe clipboard API in lieu of browser support.
+I am in the process of deprecating `clipboard-polyfill`, since it has finished serving its purpose of providing a simple, safe clipboard API in lieu of browser support.
 
 If you believe you have a use case that warrants continued maintenance, please [file an issue](https://github.com/lgarron/clipboard-polyfill/issues/new)!
 
