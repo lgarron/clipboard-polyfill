@@ -1,5 +1,0 @@
-{
-  "main": "../dist/text/clipboard-polyfill.text.js",
-  "module": "../dist/text/clipboard-polyfill.text.esm.js",
-  "types": "../dist/text/targets/text.d.ts"
-}

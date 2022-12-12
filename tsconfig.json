@@ -1,19 +1,13 @@
 {
   "compilerOptions": {
-    "alwaysStrict": true,
-    "noImplicitAny": true,
-    "noImplicitReturns": true,
-    "sourceMap": true,
-    "strictNullChecks": true,
-    "lib": ["es6", "dom"],
+    "lib": [
+      "es5",
+      "dom"
+    ],
     "target": "es5",
-    "declaration": true,
-    "noUnusedLocals": true,
     "outDir": "dist"
   },
-  "exclude": [
-    "experiment",
-    "dist",
-    "test"
+  "include": [
+    "./src/clipboard-polyfill"
   ]
 }

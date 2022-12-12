@@ -1,3 +1,6 @@
-/node_modules
-/.rpt2_cache
+/.temp
 /dist
+/node_modules
+
+# Legacy
+/.rpt2_cache
