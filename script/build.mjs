@@ -1,6 +1,11 @@
 import { build } from "esbuild";
 
-build();
+await build({
+  entryPoints: ["src/clipboard-polyfill/targets/main.ts"],
+  target: "es5",
+  bundle: true,
+  outfile: "dist/main/clipboard-polyfill.js",
+});
 
 // ".": {
 //   "require": "./dist/main/clipboard-polyfill.js",

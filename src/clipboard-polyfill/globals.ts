@@ -22,34 +22,32 @@ import {
   ClipboardItems,
 } from "./ClipboardItem/spec";
 
-const originalNavigator =
+var originalNavigator =
   typeof navigator === "undefined" ? undefined : navigator;
-const originalNavigatorClipboard:
-  | Clipboard
-  | undefined = originalNavigator?.clipboard as any;
-export const originalNavigatorClipboardRead:
+var originalNavigatorClipboard: Clipboard | undefined =
+  originalNavigator?.clipboard as any;
+export var originalNavigatorClipboardRead:
   | (() => Promise<ClipboardItems>)
   | undefined = originalNavigatorClipboard?.read?.bind(
-  originalNavigatorClipboard
+  originalNavigatorClipboard,
 );
-export const originalNavigatorClipboardReadText:
+export var originalNavigatorClipboardReadText:
   | (() => Promise<string>)
   | undefined = originalNavigatorClipboard?.readText?.bind(
-  originalNavigatorClipboard
+  originalNavigatorClipboard,
 );
-export const originalNavigatorClipboardWrite:
+export var originalNavigatorClipboardWrite:
   | ((data: ClipboardItems) => Promise<void>)
   | undefined = originalNavigatorClipboard?.write?.bind(
-  originalNavigatorClipboard
+  originalNavigatorClipboard,
 );
-export const originalNavigatorClipboardWriteText:
+export var originalNavigatorClipboardWriteText:
   | ((data: string) => Promise<void>)
   | undefined = originalNavigatorClipboard?.writeText?.bind(
-  originalNavigatorClipboard
+  originalNavigatorClipboard,
 );
 
 // The spec specifies that this goes on `window`, not e.g. `globalThis`. It's not (currently) available in workers.
-export const originalWindow =
-  typeof window === "undefined" ? undefined : window;
-export const originalWindowClipboardItem: ClipboardItemConstructor | undefined =
+export var originalWindow = typeof window === "undefined" ? undefined : window;
+export var originalWindowClipboardItem: ClipboardItemConstructor | undefined =
   originalWindow?.ClipboardItem;

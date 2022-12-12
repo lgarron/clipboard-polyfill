@@ -1,2 +1,2 @@
-export const TEXT_PLAIN = "text/plain";
-export const TEXT_HTML = "text/html";
+export var TEXT_PLAIN = "text/plain";
+export var TEXT_HTML = "text/html";

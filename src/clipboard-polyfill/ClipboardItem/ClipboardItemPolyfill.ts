@@ -20,13 +20,13 @@ export class ClipboardItemPolyfillImpl implements ClipboardItemInterface {
     // implementations (e.g. Chrome 83) seem to assume `ClipboardItemDataType`
     // values. https://github.com/w3c/clipboard-apis/pull/126
     items: { [type: string]: ClipboardItemDataType },
-    options: ClipboardItemOptions = {}
+    options: ClipboardItemOptions = {},
   ) {
     this.types = Object.keys(items);
     this._items = {};
     // We avoid `Object.entries()` to avoid potential compatibility issues.
-    for (const type in items) {
-      const item = items[type];
+    for (var type in items) {
+      var item = items[type];
       if (typeof item === "string") {
         this._items[type] = stringToBlob(type, item);
       } else {
@@ -43,4 +43,5 @@ export class ClipboardItemPolyfillImpl implements ClipboardItemInterface {
   }
 }
 
-export const ClipboardItemPolyfill: ClipboardItemConstructor = ClipboardItemPolyfillImpl;
+export var ClipboardItemPolyfill: ClipboardItemConstructor =
+  ClipboardItemPolyfillImpl;

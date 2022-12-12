@@ -2,9 +2,9 @@ import { ClipboardItemInterface } from "./spec";
 
 export function hasItemWithType(
   clipboardItems: ClipboardItemInterface[],
-  typeName: string
+  typeName: string,
 ): boolean {
-  for (const item of clipboardItems) {
+  for (var item of clipboardItems) {
     if (item.types.indexOf(typeName) !== -1) {
       return true;
     }

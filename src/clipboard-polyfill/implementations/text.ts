@@ -9,7 +9,7 @@ import { readTextIE, seemToBeInIE } from "../strategies/internet-explorer";
 import { writeFallback } from "./write-fallback";
 
 function stringToStringItem(s: string): StringItem {
-  const stringItem: StringItem = {};
+  var stringItem: StringItem = {};
   stringItem[TEXT_PLAIN] = s;
   return stringItem;
 }

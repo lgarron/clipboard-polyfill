@@ -11,14 +11,14 @@ class FallbackTracker {
 function copyListener(
   tracker: FallbackTracker,
   data: StringItem,
-  e: ClipboardEvent
+  e: ClipboardEvent,
 ): void {
   debugLog("listener called");
   tracker.success = true;
   // tslint:disable-next-line: forin
-  for (const type in data) {
-    const value = data[type];
-    const clipboardData = e.clipboardData!;
+  for (var type in data) {
+    var value = data[type];
+    var clipboardData = e.clipboardData!;
     clipboardData.setData(type, value);
     if (type === TEXT_PLAIN && clipboardData.getData(type) !== value) {
       debugLog("setting text/plain failed");
@@ -29,8 +29,8 @@ function copyListener(
 }
 
 export function execCopy(data: StringItem): boolean {
-  const tracker = new FallbackTracker();
-  const listener = copyListener.bind(this, tracker, data);
+  var tracker = new FallbackTracker();
+  var listener = copyListener.bind(this, tracker, data);
 
   document.addEventListener("copy", listener);
   try {
@@ -47,10 +47,10 @@ export function execCopy(data: StringItem): boolean {
 // Temporarily select a DOM element, so that `execCommand()` is not rejected.
 export function copyUsingTempSelection(
   e: HTMLElement,
-  data: StringItem
+  data: StringItem,
 ): boolean {
   selectionSet(e);
-  const success = execCopy(data);
+  var success = execCopy(data);
   selectionClear();
   return success;
 }
@@ -58,7 +58,7 @@ export function copyUsingTempSelection(
 // Create a temporary DOM element to select, so that `execCommand()` is not
 // rejected.
 export function copyUsingTempElem(data: StringItem): boolean {
-  const tempElem = document.createElement("div");
+  var tempElem = document.createElement("div");
   // Setting an individual property does not support `!important`, so we set the
   // whole style instead of just the `-webkit-user-select` property.
   tempElem.setAttribute("style", "-webkit-user-select: text !important");
@@ -66,7 +66,7 @@ export function copyUsingTempElem(data: StringItem): boolean {
   tempElem.textContent = "temporary element";
   document.body.appendChild(tempElem);
 
-  const success = copyUsingTempSelection(tempElem, data);
+  var success = copyUsingTempSelection(tempElem, data);
 
   document.body.removeChild(tempElem);
   return success;
@@ -76,25 +76,25 @@ export function copyUsingTempElem(data: StringItem): boolean {
 export function copyTextUsingDOM(str: string): boolean {
   debugLog("copyTextUsingDOM");
 
-  const tempElem = document.createElement("div");
+  var tempElem = document.createElement("div");
   // Setting an individual property does not support `!important`, so we set the
   // whole style instead of just the `-webkit-user-select` property.
   tempElem.setAttribute("style", "-webkit-user-select: text !important");
   // Use shadow DOM if available.
-  let spanParent: Node = tempElem;
+  var spanParent: Node = tempElem;
   if (tempElem.attachShadow) {
     debugLog("Using shadow DOM.");
     spanParent = tempElem.attachShadow({ mode: "open" });
   }
 
-  const span = document.createElement("span");
+  var span = document.createElement("span");
   span.innerText = str;
 
   spanParent.appendChild(span);
   document.body.appendChild(tempElem);
   selectionSet(span);
 
-  const result = document.execCommand("copy");
+  var result = document.execCommand("copy");
 
   selectionClear();
   document.body.removeChild(tempElem);
@@ -105,9 +105,9 @@ export function copyTextUsingDOM(str: string): boolean {
 /******** Selection ********/
 
 function selectionSet(elem: Element): void {
-  const sel = document.getSelection();
+  var sel = document.getSelection();
   if (sel) {
-    const range = document.createRange();
+    var range = document.createRange();
     range.selectNodeContents(elem);
     sel.removeAllRanges();
     sel.addRange(range);
@@ -115,7 +115,7 @@ function selectionSet(elem: Element): void {
 }
 
 function selectionClear(): void {
-  const sel = document.getSelection();
+  var sel = document.getSelection();
   if (sel) {
     sel.removeAllRanges();
   }

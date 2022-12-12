@@ -12,7 +12,7 @@ import { seemToBeInIE, writeTextIE } from "../strategies/internet-explorer";
 // Note: the fallback order is carefully tuned for compatibility. It might seem
 // safe to move some of them around, but do not do so without testing all browsers.
 export async function writeFallback(stringItem: StringItem): Promise<boolean> {
-  const hasTextPlain = TEXT_PLAIN in stringItem;
+  var hasTextPlain = TEXT_PLAIN in stringItem;
 
   // Internet Explorer
   if (seemToBeInIE()) {
