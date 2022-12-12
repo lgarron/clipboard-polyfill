@@ -13,7 +13,7 @@ I am in the process of deprecating `clipboard-polyfill`, since it has finished s
 | Edge    | 79+ (first Chromium-based release)                            | January 2020 |
 | Safari  | 13.1+                                                         | March 2020   |
 
-See the "Compatibility" sction below for more details. If you believe you have a use case that warrants continued maintenance, please [file an issue](https://github.com/lgarron/clipboard-polyfill/issues/new)!
+See the "Compatibility" section below for more details. If you believe you have a use case that warrants continued maintenance, please [file an issue](https://github.com/lgarron/clipboard-polyfill/issues/new)!
 
 ### A brief history
 
