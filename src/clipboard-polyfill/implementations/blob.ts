@@ -9,6 +9,7 @@ import { TEXT_HTML, TEXT_PLAIN } from "../ClipboardItem/data-types";
 import { ClipboardItemInterface, ClipboardItems } from "../ClipboardItem/spec";
 import { debugLog, shouldShowWarnings } from "../debug";
 import {
+  promiseConstructor,
   originalNavigatorClipboardRead,
   originalNavigatorClipboardWrite,
   originalWindowClipboardItem,
@@ -18,7 +19,7 @@ import {
   truePromise,
   truePromiseFn,
   voidPromise,
-} from "../promise-compat";
+} from "../../promise/promise-compat";
 import { readText } from "./text";
 import { writeFallback } from "./write-fallback";
 
@@ -28,8 +29,9 @@ export function write(data: ClipboardItemInterface[]): Promise<void> {
   return (function write1(): Promise<boolean> {
     if (originalNavigatorClipboardWrite && originalWindowClipboardItem) {
       debugLog("Using `navigator.clipboard.write()`.");
-      return Promise.all(data.map(clipboardItemToGlobalClipboardItem)).then(
-        function (
+      return promiseConstructor
+        .all(data.map(clipboardItemToGlobalClipboardItem))
+        .then(function (
           globalClipboardItems: ClipboardItemInterface[],
         ): Promise<boolean> {
           return originalNavigatorClipboardWrite(globalClipboardItems)
@@ -47,10 +49,9 @@ export function write(data: ClipboardItemInterface[]): Promise<void> {
               }
               return falsePromise;
             });
-        },
-      );
+        });
     }
-    return Promise.resolve(true);
+    return promiseConstructor.resolve(true);
   })().then(function (continueAttempt: boolean) {
     if (!continueAttempt) {
       return voidPromise;

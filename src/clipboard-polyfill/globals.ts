@@ -16,6 +16,8 @@
 // it probably saves code), and 2) just in case an unknown/future implementation
 // allows overwriting `navigator.clipboard` like this.
 
+import type { PromiseConstructor } from "../promise/es2015-promise";
+
 import {
   ClipboardItemConstructor,
   Clipboard,
@@ -51,3 +53,5 @@ export var originalNavigatorClipboardWriteText:
 export var originalWindow = typeof window === "undefined" ? undefined : window;
 export var originalWindowClipboardItem: ClipboardItemConstructor | undefined =
   originalWindow?.ClipboardItem;
+
+export var promiseConstructor = (window as any).Promise as PromiseConstructor;

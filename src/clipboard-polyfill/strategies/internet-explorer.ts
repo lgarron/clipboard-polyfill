@@ -1,4 +1,4 @@
-import { originalWindow } from "../globals";
+import { promiseConstructor, originalWindow } from "../globals";
 
 interface IEWindow extends Window {
   clipboardData: {
@@ -26,7 +26,7 @@ export function writeTextIE(text: string): boolean {
 
 // Returns "" if the read failed, e.g. because the user rejected the permission.
 export function readTextIE(): Promise<string> {
-  return new globalThis.Promise((resolve, reject) => {
+  return new promiseConstructor((resolve, reject) => {
     var text = ieWindow.clipboardData.getData("Text");
     if (text === "") {
       reject(

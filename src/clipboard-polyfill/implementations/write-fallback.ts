@@ -1,7 +1,7 @@
 import { StringItem } from "../ClipboardItem/convert";
 import { TEXT_PLAIN } from "../ClipboardItem/data-types";
 import { debugLog } from "../debug";
-import { falsePromise, truePromise } from "../promise-compat";
+import { falsePromise, truePromise } from "../../promise/promise-compat";
 import {
   copyTextUsingDOM,
   copyUsingTempElem,

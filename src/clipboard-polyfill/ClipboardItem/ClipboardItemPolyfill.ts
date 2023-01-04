@@ -1,3 +1,4 @@
+import { promiseConstructor } from "../globals";
 import { stringToBlob } from "./convert";
 import {
   ClipboardItemConstructor,
@@ -28,7 +29,7 @@ function ClipboardItemPolyfillImpl(
   var presentationStyle = options?.presentationStyle ?? "unspecified";
 
   function getType(type: string): Promise<Blob> {
-    return Promise.resolve(this._items[type]);
+    return promiseConstructor.resolve(this._items[type]);
   }
   return {
     types: types,

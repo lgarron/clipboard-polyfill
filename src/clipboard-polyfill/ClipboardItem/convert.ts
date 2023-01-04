@@ -1,8 +1,8 @@
 import { ClipboardItemPolyfill } from "./ClipboardItemPolyfill";
 import { TEXT_PLAIN } from "./data-types";
 import { ClipboardItemInterface, ClipboardItemOptions } from "./spec";
-import { originalWindowClipboardItem } from "../globals";
-import { promiseRecordMap } from "../promise-compat";
+import { promiseConstructor, originalWindowClipboardItem } from "../globals";
+import { promiseRecordMap } from "../../promise/promise-compat";
 
 export function stringToBlob(type: string, str: string): Blob {
   return new Blob([str], {
@@ -11,7 +11,7 @@ export function stringToBlob(type: string, str: string): Blob {
 }
 
 export function blobToString(blob: Blob): Promise<string> {
-  return new Promise((resolve, reject) => {
+  return new promiseConstructor((resolve, reject) => {
     var fileReader = new FileReader();
     fileReader.addEventListener("load", () => {
       var result = fileReader.result;

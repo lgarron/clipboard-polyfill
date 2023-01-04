@@ -8,6 +8,8 @@
     "outDir": "dist"
   },
   "include": [
-    "./src/clipboard-polyfill"
+    "./src/clipboard-polyfill",
+    "src/promise/es2015-promise.d.ts",
+    "src/promise/promise-compat.ts"
   ]
 }
