@@ -1,4 +1,3 @@
-// Import `./globals` that the globals are cached before this runs.
 import { readText, writeText } from "../implementations/text";
 import { read, write } from "../implementations/blob";
 import { ClipboardItemPolyfill } from "../ClipboardItem/ClipboardItemPolyfill";
@@ -6,7 +5,6 @@ import {
   ClipboardEventTarget as ClipboardInterface,
   ClipboardItemConstructor,
 } from "../ClipboardItem/spec";
-import "../globals";
 
 declare global {
   // const ClipboardItem: ClipboardItemConstructor;

@@ -1,23 +1,29 @@
-// Import `./globals` that the globals are cached before this runs.
-import { readText, writeText } from "../implementations/text";
-import { read, write } from "../implementations/blob";
+// Import `../globals` that the globals are cached before this runs.
+import "../globals";
+
 import { ClipboardItemPolyfill } from "../ClipboardItem/ClipboardItemPolyfill";
 import {
   ClipboardItemConstructor,
   ClipboardWithoutEventTarget,
 } from "../ClipboardItem/spec";
-import "../globals";
+import { read, write } from "../implementations/blob";
+import { readText, writeText } from "../implementations/text";
+import { setDebugLog, suppressWarnings } from "../debug";
 
 declare global {
-  var clipboardPolyfill: ClipboardWithoutEventTarget & {
+  var clipboard: ClipboardWithoutEventTarget & {
     ClipboardItem: ClipboardItemConstructor;
+    setDebugLog: typeof setDebugLog;
+    suppressWarnings: typeof suppressWarnings;
   };
 }
 
-window.clipboardPolyfill = {
+window.clipboard = {
   read: read,
   readText: readText,
   write: write,
   writeText: writeText,
   ClipboardItem: ClipboardItemPolyfill,
+  setDebugLog: setDebugLog,
+  suppressWarnings: suppressWarnings,
 };

@@ -23,6 +23,7 @@ import {
   ClipboardEventTarget,
   ClipboardItems,
 } from "./ClipboardItem/spec";
+import { getPromiseConstructor } from "./promise/constructor";
 
 var originalNavigator =
   typeof navigator === "undefined" ? undefined : navigator;
@@ -54,17 +55,4 @@ export var originalWindow = typeof window === "undefined" ? undefined : window;
 export var originalWindowClipboardItem: ClipboardItemConstructor | undefined =
   originalWindow?.ClipboardItem;
 
-var promiseConstructorImpl: PromiseConstructor =
-  typeof window === "undefined"
-    ? undefined
-    : ((window as any).Promise as PromiseConstructor);
-export function setPromiseConstructor(
-  newPromiseConstructorImpl: PromiseConstructor,
-) {
-  return (promiseConstructorImpl = newPromiseConstructorImpl);
-}
-function callPromiseConstructor(executor: any) {
-  new promiseConstructorImpl(executor);
-}
-export var promiseConstructor: PromiseConstructor =
-  callPromiseConstructor as any as PromiseConstructor;
+export var promiseConstructor: PromiseConstructor = getPromiseConstructor();

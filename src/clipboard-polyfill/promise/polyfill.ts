@@ -330,3 +330,7 @@ PromisePolyfill._unhandledRejectionFn = function _unhandledRejectionFn(err) {
 
 export var PromisePolyfillConstructor: PromiseConstructor =
   PromisePolyfill as any as PromiseConstructor;
+
+// Set the Promise polyfill before getting globals.
+import { setPromiseConstructor } from "../promise/constructor";
+setPromiseConstructor(PromisePolyfillConstructor);
