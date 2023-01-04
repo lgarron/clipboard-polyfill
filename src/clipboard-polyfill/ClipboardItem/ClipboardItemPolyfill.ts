@@ -29,7 +29,7 @@ function ClipboardItemPolyfillImpl(
   var presentationStyle = options?.presentationStyle ?? "unspecified";
 
   function getType(type: string): Promise<Blob> {
-    return promiseConstructor.resolve(this._items[type]);
+    return promiseConstructor.resolve(_items[type]);
   }
   return {
     types: types,
