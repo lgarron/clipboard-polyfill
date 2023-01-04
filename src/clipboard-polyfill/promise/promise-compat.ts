@@ -11,7 +11,7 @@ export function promiseRecordMap<T>(
   }
   return promiseConstructor
     .all(promiseList)
-    .then(function (vList: T[]): Record<string, T> {
+    .then((vList: T[]): Record<string, T> => {
       var dataOut: Record<string, T> = {};
       for (var i = 0; i < keys.length; i++) {
         dataOut[keys[i]] = vList[i];

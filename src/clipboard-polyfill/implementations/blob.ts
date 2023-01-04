@@ -26,33 +26,35 @@ import { writeFallback } from "./write-fallback";
 export function write(data: ClipboardItemInterface[]): Promise<void> {
   // Use the browser implementation if it exists.
   // TODO: detect `text/html`.
-  return (function write1(): Promise<boolean> {
+  return ((): Promise<boolean> => {
     if (originalNavigatorClipboardWrite && originalWindowClipboardItem) {
       debugLog("Using `navigator.clipboard.write()`.");
       return promiseConstructor
         .all(data.map(clipboardItemToGlobalClipboardItem))
-        .then(function (
-          globalClipboardItems: ClipboardItemInterface[],
-        ): Promise<boolean> {
-          return originalNavigatorClipboardWrite(globalClipboardItems)
-            .then(truePromiseFn)
-            .catch(function (e: Error): Promise<boolean> {
-              // Chrome 83 will throw a DOMException or NotAllowedError because it doesn't support e.g. `text/html`.
-              // We want to fall back to the other strategies in a situation like this.
-              // See https://github.com/w3c/clipboard-apis/issues/128 and https://github.com/w3c/clipboard-apis/issues/67
-              if (
-                // rome-ignore lint/complexity/useSimplifiedLogicExpression: <explanation>
-                !hasItemWithType(data, TEXT_PLAIN) &&
-                !hasItemWithType(data, TEXT_HTML)
-              ) {
-                throw e;
-              }
-              return falsePromise;
-            });
-        });
+        .then(
+          (
+            globalClipboardItems: ClipboardItemInterface[],
+          ): Promise<boolean> => {
+            return originalNavigatorClipboardWrite(globalClipboardItems)
+              .then(truePromiseFn)
+              .catch((e: Error): Promise<boolean> => {
+                // Chrome 83 will throw a DOMException or NotAllowedError because it doesn't support e.g. `text/html`.
+                // We want to fall back to the other strategies in a situation like this.
+                // See https://github.com/w3c/clipboard-apis/issues/128 and https://github.com/w3c/clipboard-apis/issues/67
+                if (
+                  // rome-ignore lint/complexity/useSimplifiedLogicExpression: <explanation>
+                  !hasItemWithType(data, TEXT_PLAIN) &&
+                  !hasItemWithType(data, TEXT_HTML)
+                ) {
+                  throw e;
+                }
+                return falsePromise;
+              });
+          },
+        );
     }
     return promiseConstructor.resolve(true);
-  })().then(function (continueAttempt: boolean) {
+  })().then((continueAttempt: boolean) => {
     if (!continueAttempt) {
       return voidPromise;
     }
@@ -67,7 +69,7 @@ export function write(data: ClipboardItemInterface[]): Promise<void> {
       );
     }
 
-    return toStringItem(data[0]).then(function (stringItem: StringItem) {
+    return toStringItem(data[0]).then((stringItem: StringItem) => {
       if (!writeFallback(stringItem)) {
         throw new Error("write() failed");
       }
@@ -83,7 +85,7 @@ export function read(): Promise<ClipboardItems> {
   }
 
   // Fallback to reading text only.
-  readText().then(function (text: string) {
+  readText().then((text: string) => {
     return [textToClipboardItem(text)];
   });
 }

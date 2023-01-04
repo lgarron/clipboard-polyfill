@@ -7,15 +7,12 @@ function finallyConstructor(callback) {
   var thisConstructor = this.constructor;
   return this.then(
     function (value) {
-      // @ts-ignore
-      return thisConstructor.resolve(callback()).then(function () {
+      return thisConstructor.resolve(callback()).then(() => {
         return value;
       });
     },
     function (reason) {
-      // @ts-ignore
-      return thisConstructor.resolve(callback()).then(function () {
-        // @ts-ignore
+      return thisConstructor.resolve(callback()).then(() => {
         return thisConstructor.reject(reason);
       });
     },

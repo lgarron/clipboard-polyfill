@@ -33,7 +33,7 @@ export function clipboardItemToGlobalClipboardItem(
   // `getType()` is already `Blob` per the spec, so this is simple for us.
   return promiseRecordMap(clipboardItem.types, function (type: string) {
     return clipboardItem.getType(type);
-  }).then(function (items: Record<string, Blob>) {
+  }).then((items: Record<string, Blob>) => {
     var options: ClipboardItemOptions = {};
     if (clipboardItem.presentationStyle) {
       options.presentationStyle = clipboardItem.presentationStyle;
@@ -52,7 +52,7 @@ export function getTypeAsString(
   clipboardItem: ClipboardItemInterface,
   type: string,
 ): Promise<string> {
-  return clipboardItem.getType(type).then(function (text: Blob) {
+  return clipboardItem.getType(type).then((text: Blob) => {
     return blobToString(text);
   });
 }
