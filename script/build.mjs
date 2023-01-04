@@ -32,14 +32,9 @@ async function buildES5(src, targetStem) {
     bundle: true,
     banner: { js: '"use strict";' },
   };
-  // await build({
-  //   ...common,
-  //   outfile: `${targetStem}.es5.js`,
-  // });
   await build({
     ...common,
-    minify: true,
-    outfile: `${targetStem}.min.es5.js`,
+    outfile: `${targetStem}.es5.js`,
   });
 }
 
