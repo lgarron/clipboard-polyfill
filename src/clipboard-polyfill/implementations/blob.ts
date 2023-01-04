@@ -53,7 +53,7 @@ export function write(data: ClipboardItemInterface[]): Promise<void> {
     return Promise.resolve(true);
   })().then(function (continueAttempt: boolean) {
     if (!continueAttempt) {
-      return voidPromise();
+      return voidPromise;
     }
 
     var hasTextPlain = hasItemWithType(data, TEXT_PLAIN);
