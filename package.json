@@ -40,7 +40,7 @@
     "README.md"
   ],
   "scripts": {
-    "build": "node script/build.js",
+    "build": "node script/build.mjs",
     "dev": "node script/dev.js",
     "lint": "npx rome check ./script ./src",
     "format": "npx rome format ./script ./src",
