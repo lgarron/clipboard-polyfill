@@ -53,9 +53,9 @@ export function write(data: ClipboardItemInterface[]): Promise<void> {
           },
         );
     }
-    return promiseConstructor.resolve(true);
-  })().then((continueAttempt: boolean) => {
-    if (!continueAttempt) {
+    return falsePromise;
+  })().then((success: boolean) => {
+    if (success) {
       return voidPromise;
     }
 
