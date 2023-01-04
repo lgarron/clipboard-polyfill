@@ -4,8 +4,8 @@ import { debugLog } from "../debug";
 
 /******** Implementations ********/
 
-class FallbackTracker {
-  public success: boolean = false;
+interface FallbackTracker {
+  success: boolean;
 }
 
 function copyListener(
@@ -29,7 +29,7 @@ function copyListener(
 }
 
 export function execCopy(data: StringItem): boolean {
-  var tracker = new FallbackTracker();
+  var tracker: FallbackTracker = { success: false };
   var listener = copyListener.bind(this, tracker, data);
 
   document.addEventListener("copy", listener);
