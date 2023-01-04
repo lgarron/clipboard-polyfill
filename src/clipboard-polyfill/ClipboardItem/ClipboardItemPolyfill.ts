@@ -38,8 +38,8 @@ export class ClipboardItemPolyfillImpl implements ClipboardItemInterface {
     this.presentationStyle = options?.presentationStyle ?? "unspecified";
   }
 
-  public async getType(type: string): Promise<Blob> {
-    return this._items[type];
+  public getType(type: string): Promise<Blob> {
+    return Promise.resolve(this._items[type]);
   }
 }
 

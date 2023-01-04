@@ -76,7 +76,7 @@ export function write(data: ClipboardItemInterface[]): Promise<void> {
   });
 }
 
-export async function read(): Promise<ClipboardItems> {
+export function read(): Promise<ClipboardItems> {
   // Use the browser implementation if it exists.
   if (originalNavigatorClipboardRead) {
     debugLog("Using `navigator.clipboard.read()`.");
@@ -84,5 +84,7 @@ export async function read(): Promise<ClipboardItems> {
   }
 
   // Fallback to reading text only.
-  return [textToClipboardItem(await readText())];
+  readText().then(function (text: string) {
+    return [textToClipboardItem(text)];
+  });
 }

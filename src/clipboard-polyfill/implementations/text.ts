@@ -14,7 +14,7 @@ function stringToStringItem(s: string): StringItem {
   return stringItem;
 }
 
-export async function writeText(s: string): Promise<void> {
+export function writeText(s: string): Promise<void> {
   // Use the browser implementation if it exists.
   if (originalNavigatorClipboardWriteText) {
     debugLog("Using `navigator.clipboard.writeText()`.");
@@ -26,7 +26,7 @@ export async function writeText(s: string): Promise<void> {
   }
 }
 
-export async function readText(): Promise<string> {
+export function readText(): Promise<string> {
   // Use the browser implementation if it exists.
   if (originalNavigatorClipboardReadText) {
     debugLog("Using `navigator.clipboard.readText()`.");
