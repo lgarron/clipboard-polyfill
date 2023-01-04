@@ -20,13 +20,13 @@ import type { PromiseConstructor } from "../promise/es6-promise";
 
 import {
   ClipboardItemConstructor,
-  Clipboard,
+  ClipboardEventTarget,
   ClipboardItems,
 } from "./ClipboardItem/spec";
 
 var originalNavigator =
   typeof navigator === "undefined" ? undefined : navigator;
-var originalNavigatorClipboard: Clipboard | undefined =
+var originalNavigatorClipboard: ClipboardEventTarget | undefined =
   originalNavigator?.clipboard as any;
 export var originalNavigatorClipboardRead:
   | (() => Promise<ClipboardItems>)
