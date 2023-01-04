@@ -25,7 +25,7 @@ await build({
 });
 
 await build({
-  entryPoints: ["dist/esm/clipboard-polyfill.overwrite-globals.esm.js"],
+  entryPoints: ["src/clipboard-polyfill/targets/overwrite-globals.ts"],
   target: "es5",
   bundle: true,
   outfile: "dist/esm/clipboard-polyfill.overwrite-globals.es5.js",
