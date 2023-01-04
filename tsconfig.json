@@ -5,7 +5,9 @@
       "dom"
     ],
     "target": "es5",
-    "outDir": "dist"
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "outDir": "dist/types"
   },
   "include": [
     "./src/clipboard-polyfill/"

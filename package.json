@@ -41,7 +41,7 @@
     "README.md"
   ],
   "scripts": {
-    "build": "node script/build.mjs",
+    "build": "node script/build.mjs && npx tsc --project tsconfig.json",
     "dev": "node script/dev.js",
     "lint": "npx rome check ./script ./src",
     "format": "npx rome format ./script ./src",
@@ -55,11 +55,11 @@
     },
     "./overwrite-globals": {
       "import": "./clipboard-polyfill.overwrite-globals.es5.js",
-      "types": "./dist/overwrite-globals/targets/overwrite-globals.d.ts"
+      "types": "./dist/types/targets/overwrite-globals.d.ts"
     },
     "./text": {
       "import": "./es6/text/clipboard-polyfill.text.es6.js",
-      "types": "./dist/text/targets/text.d.ts"
+      "types": "./dist/types/targets/text.d.ts"
     }
   }
 }
