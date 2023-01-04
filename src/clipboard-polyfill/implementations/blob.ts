@@ -13,16 +13,14 @@ import {
   originalNavigatorClipboardWrite,
   originalWindowClipboardItem,
 } from "../globals";
+import {
+  falsePromise,
+  truePromise,
+  truePromiseFn,
+  voidPromise,
+} from "../promise-compat";
 import { readText } from "./text";
 import { writeFallback } from "./write-fallback";
-
-function voidPromise(): Promise<void> {
-  return Promise.resolve();
-}
-
-function truePromise(): Promise<boolean> {
-  return Promise.resolve(true);
-}
 
 export function write(data: ClipboardItemInterface[]): Promise<void> {
   // Use the browser implementation if it exists.
@@ -35,7 +33,7 @@ export function write(data: ClipboardItemInterface[]): Promise<void> {
           globalClipboardItems: ClipboardItemInterface[],
         ): Promise<boolean> {
           return originalNavigatorClipboardWrite(globalClipboardItems)
-            .then(truePromise)
+            .then(truePromiseFn)
             .catch(function (e: Error): Promise<boolean> {
               // Chrome 83 will throw a DOMException or NotAllowedError because it doesn't support e.g. `text/html`.
               // We want to fall back to the other strategies in a situation like this.
@@ -47,7 +45,7 @@ export function write(data: ClipboardItemInterface[]): Promise<void> {
               ) {
                 throw e;
               }
-              return Promise.resolve(false);
+              return falsePromise;
             });
         },
       );

@@ -8,7 +8,7 @@ interface IEWindow extends Window {
   };
 }
 
-var ieWindow = originalWindow as unknown as IEWindow;
+var ieWindow = originalWindow as any as IEWindow;
 
 export function seemToBeInIE(): boolean {
   return (

@@ -4,10 +4,9 @@ import {
   ClipboardItemDataType,
   ClipboardItemInterface,
   ClipboardItemOptions,
-  PresentationStyle,
 } from "./spec";
 
-export function ClipboardItemPolyfillImpl(
+function ClipboardItemPolyfillImpl(
   // TODO: The spec specifies values as `ClipboardItemData`, but
   // implementations (e.g. Chrome 83) seem to assume `ClipboardItemDataType`
   // values. https://github.com/w3c/clipboard-apis/pull/126
@@ -39,4 +38,4 @@ export function ClipboardItemPolyfillImpl(
 }
 
 export var ClipboardItemPolyfill: ClipboardItemConstructor =
-  ClipboardItemPolyfillImpl;
+  ClipboardItemPolyfillImpl as any as ClipboardItemConstructor;

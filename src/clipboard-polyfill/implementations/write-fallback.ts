@@ -1,6 +1,7 @@
 import { StringItem } from "../ClipboardItem/convert";
 import { TEXT_PLAIN } from "../ClipboardItem/data-types";
 import { debugLog } from "../debug";
+import { falsePromise, truePromise } from "../promise-compat";
 import {
   copyTextUsingDOM,
   copyUsingTempElem,
@@ -20,7 +21,7 @@ export function writeFallback(stringItem: StringItem): Promise<boolean> {
       throw new Error("No `text/plain` value was specified.");
     }
     if (writeTextIE(stringItem[TEXT_PLAIN])) {
-      return true;
+      return truePromise;
     } else {
       throw new Error("Copying failed, possibly because the user rejected it.");
     }
@@ -28,33 +29,33 @@ export function writeFallback(stringItem: StringItem): Promise<boolean> {
 
   if (execCopy(stringItem)) {
     debugLog("regular execCopy worked");
-    return true;
+    return truePromise;
   }
 
   // Success detection on Edge is not possible, due to bugs in all 4
   // detection mechanisms we could try to use. Assume success.
   if (navigator.userAgent.indexOf("Edge") > -1) {
     debugLog('UA "Edge" => assuming success');
-    return true;
+    return truePromise;
   }
 
   // Fallback 1 for desktop Safari.
   if (copyUsingTempSelection(document.body, stringItem)) {
     debugLog("copyUsingTempSelection worked");
-    return true;
+    return truePromise;
   }
 
   // Fallback 2 for desktop Safari.
   if (copyUsingTempElem(stringItem)) {
     debugLog("copyUsingTempElem worked");
-    return true;
+    return truePromise;
   }
 
   // Fallback for iOS Safari.
   if (copyTextUsingDOM(stringItem[TEXT_PLAIN])) {
     debugLog("copyTextUsingDOM worked");
-    return true;
+    return truePromise;
   }
 
-  return false;
+  return falsePromise;
 }

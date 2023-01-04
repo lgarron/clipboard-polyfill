@@ -17,3 +17,8 @@ export function promiseRecordMap<T>(
     return dataOut;
   });
 }
+
+export var voidPromise: Promise<void> = Promise.resolve();
+export var truePromiseFn: () => Promise<boolean> = () => Promise.resolve(true);
+export var truePromise: Promise<boolean> = truePromiseFn();
+export var falsePromise: Promise<boolean> = Promise.resolve(false);

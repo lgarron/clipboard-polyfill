@@ -2,7 +2,7 @@ import { ClipboardItemPolyfill } from "./ClipboardItemPolyfill";
 import { TEXT_PLAIN } from "./data-types";
 import { ClipboardItemInterface, ClipboardItemOptions } from "./spec";
 import { originalWindowClipboardItem } from "../globals";
-import { promiseRecordMap } from "../promiseRecordMap";
+import { promiseRecordMap } from "../promise-compat";
 
 export function stringToBlob(type: string, str: string): Blob {
   return new Blob([str], {
