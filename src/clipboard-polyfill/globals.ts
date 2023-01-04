@@ -16,7 +16,7 @@
 // it probably saves code), and 2) just in case an unknown/future implementation
 // allows overwriting `navigator.clipboard` like this.
 
-import type { PromiseConstructor } from "../promise/es2015-promise";
+import type { PromiseConstructor } from "../promise/es6-promise";
 
 import {
   ClipboardItemConstructor,

@@ -1,4 +1,5 @@
-// TypeScript's ES2015 definition for the `Promise` constructor, without the globally available variable.
+// TypeScript's ES6 definition for the `Promise` constructor, without the globally available variable.
+// Note that ES2015 is the same as ES6: https://262.ecma-international.org/6.0/
 
 export interface PromiseConstructor {
   /**

@@ -9,7 +9,7 @@
   },
   "include": [
     "./src/clipboard-polyfill",
-    "src/promise/es2015-promise.d.ts",
+    "src/promise/es6-promise.d.ts",
     "src/promise/promise-compat.ts"
   ]
 }
