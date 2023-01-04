@@ -8,8 +8,8 @@ import { PromisePolyfillConstructor } from "../promise/polyfill";
 
 import "./overwrite-globals";
 
-declare global {
-  // rome-ignore lint/suspicious/noShadowRestrictedNames: This is where we export `Promise`.
-  var Promise: PromiseConstructor;
-}
-window.Promise = PromisePolyfillConstructor;
+// declare global {
+//   // rome-ignore lint/suspicious/noShadowRestrictedNames: This is where we export `Promise`.
+//   var Promise: PromiseConstructor;
+// }
+(window as any).Promise = PromisePolyfillConstructor;

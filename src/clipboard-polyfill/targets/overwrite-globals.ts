@@ -6,13 +6,13 @@ import {
   ClipboardItemConstructor,
 } from "../ClipboardItem/spec";
 
-declare global {
-  // const ClipboardItem: ClipboardItemConstructor;
-  interface Window {
-    ClipboardItem: ClipboardItemConstructor;
-  }
-  interface Clipboard extends ClipboardInterface {}
-}
+// declare global {
+//   // const ClipboardItem: ClipboardItemConstructor;
+//   interface Window {
+//     ClipboardItem: ClipboardItemConstructor;
+//   }
+//   interface Clipboard extends ClipboardInterface {}
+// }
 
 // Create the `navigator.clipboard` object if it doesn't exist.
 if (!navigator.clipboard) {

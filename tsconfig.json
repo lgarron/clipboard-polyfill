@@ -8,6 +8,6 @@
     "outDir": "dist"
   },
   "include": [
-    "./src/clipboard-polyfill"
+    "./src/clipboard-polyfill/"
   ]
 }

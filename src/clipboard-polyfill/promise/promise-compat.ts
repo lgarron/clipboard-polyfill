@@ -1,7 +1,7 @@
 import { promiseConstructor } from "../globals";
 
 export function promiseRecordMap<T>(
-  keys: string[],
+  keys: readonly string[],
   f: (key: string) => Promise<T>,
 ): Promise<Record<string, T>> {
   var promiseList: Promise<T>[] = [];

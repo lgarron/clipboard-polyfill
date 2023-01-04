@@ -8,7 +8,8 @@
   "devDependencies": {
     "barely-a-dev-server": "^0.4.7",
     "esbuild": "^0.16.4",
-    "rome": "^11.0.0"
+    "rome": "^11.0.0",
+    "typescript": "^4.9.4"
   },
   "repository": {
     "type": "git",
@@ -49,22 +50,16 @@
   },
   "exports": {
     ".": {
-      "require": "./dist/main/clipboard-polyfill.js",
-      "import": "./dist/main/clipboard-polyfill.esm.js",
+      "import": "./es6/main/clipboard-polyfill.main.es6.js",
       "types": "./dist/main/targets/main.d.ts"
     },
     "./overwrite-globals": {
-      "require": "./dist/overwrite-globals/clipboard-polyfill.overwrite-globals.js",
-      "import": "./dist/overwrite-globals/clipboard-polyfill.overwrite-globals.esm.js",
+      "import": "./clipboard-polyfill.overwrite-globals.es5.js",
       "types": "./dist/overwrite-globals/targets/overwrite-globals.d.ts"
     },
     "./text": {
-      "require": "./dist/text/clipboard-polyfill.text.js",
-      "import": "./dist/text/clipboard-polyfill.text.esm.js",
+      "import": "./es6/text/clipboard-polyfill.text.es6.js",
       "types": "./dist/text/targets/text.d.ts"
     }
-  },
-  "dependencies": {
-    "promise-polyfill": "^8.2.3"
   }
 }

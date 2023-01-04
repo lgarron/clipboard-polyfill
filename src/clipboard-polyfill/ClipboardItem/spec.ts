@@ -57,7 +57,7 @@ export interface ClipboardItemInterface {
   readonly lastModified?: number; // [optional here, non-optional in spec]
   readonly delayed?: boolean; // [optional here, non-optional in spec]
 
-  readonly types: string[];
+  readonly types: ReadonlyArray<string>;
 
   getType(type: string): Promise<Blob>;
 }

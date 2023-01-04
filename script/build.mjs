@@ -18,13 +18,6 @@ await build({
   outfile: "dist/es6/text/clipboard-polyfill.text.es6.js",
 });
 
-await build({
-  entryPoints: ["src/clipboard-polyfill/targets/overwrite-globals.ts"],
-  ...es6,
-  outfile:
-    "dist/es6/overwrite-globals/clipboard-polyfill.overwrite-globals.es6.js",
-});
-
 async function buildES5(src, targetStem) {
   const common = {
     entryPoints: [src],
