@@ -3,7 +3,8 @@ export function promiseRecordMap<T>(
   f: (key: string) => Promise<T>,
 ): Promise<Record<string, T>> {
   var promiseList: Promise<T>[] = [];
-  for (var key of keys) {
+  for (var i in keys) {
+    var key = keys[i];
     promiseList.push(f(key));
   }
   return Promise.all(promiseList).then(function (

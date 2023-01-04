@@ -4,7 +4,8 @@ export function hasItemWithType(
   clipboardItems: ClipboardItemInterface[],
   typeName: string,
 ): boolean {
-  for (var item of clipboardItems) {
+  for (var i in clipboardItems) {
+    var item = clipboardItems[i];
     if (item.types.indexOf(typeName) !== -1) {
       return true;
     }
