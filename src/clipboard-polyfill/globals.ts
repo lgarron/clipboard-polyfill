@@ -16,7 +16,7 @@
 // it probably saves code), and 2) just in case an unknown/future implementation
 // allows overwriting `navigator.clipboard` like this.
 
-import type { PromiseConstructor } from "../promise/es6-promise";
+import type { PromiseConstructor } from "./promise/es6-promise";
 
 import {
   ClipboardItemConstructor,
@@ -54,4 +54,17 @@ export var originalWindow = typeof window === "undefined" ? undefined : window;
 export var originalWindowClipboardItem: ClipboardItemConstructor | undefined =
   originalWindow?.ClipboardItem;
 
-export var promiseConstructor = (window as any).Promise as PromiseConstructor;
+var promiseConstructorImpl: PromiseConstructor =
+  typeof window === "undefined"
+    ? undefined
+    : ((window as any).Promise as PromiseConstructor);
+export function setPromiseConstructor(
+  newPromiseConstructorImpl: PromiseConstructor,
+) {
+  return (promiseConstructorImpl = newPromiseConstructorImpl);
+}
+function callPromiseConstructor(executor: any) {
+  new promiseConstructorImpl(executor);
+}
+export var promiseConstructor: PromiseConstructor =
+  callPromiseConstructor as any as PromiseConstructor;

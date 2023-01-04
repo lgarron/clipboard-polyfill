@@ -3,9 +3,7 @@ import { readText, writeText } from "../implementations/text";
 import { read, write } from "../implementations/blob";
 import { ClipboardItemPolyfill } from "../ClipboardItem/ClipboardItemPolyfill";
 import {
-  ClipboardEventTarget as ClipboardInterface,
   ClipboardItemConstructor,
-  ClipboardItemInterface,
   ClipboardWithoutEventTarget,
 } from "../ClipboardItem/spec";
 import "../globals";

@@ -63,5 +63,8 @@
       "import": "./dist/text/clipboard-polyfill.text.esm.js",
       "types": "./dist/text/targets/text.d.ts"
     }
+  },
+  "dependencies": {
+    "promise-polyfill": "^8.2.3"
   }
 }

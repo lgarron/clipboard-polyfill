@@ -19,7 +19,7 @@ import {
   truePromise,
   truePromiseFn,
   voidPromise,
-} from "../../promise/promise-compat";
+} from "../promise/promise-compat";
 import { readText } from "./text";
 import { writeFallback } from "./write-fallback";
 

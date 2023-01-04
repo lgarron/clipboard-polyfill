@@ -1,4 +1,4 @@
-import { promiseConstructor } from "../clipboard-polyfill/globals";
+import { promiseConstructor } from "../globals";
 
 export function promiseRecordMap<T>(
   keys: string[],

@@ -17,15 +17,34 @@ await build({
 });
 
 await build({
-  entryPoints: ["src/clipboard-polyfill/targets/overwrite-globals.ts"],
-  target: "es5",
-  bundle: true,
-  outfile: "dist/overwrite-globals/clipboard-polyfill.overwrite-globals.es5.js",
-});
-
-await build({
   entryPoints: ["src/clipboard-polyfill/targets/global-var.ts"],
   target: "es5",
   bundle: true,
   outfile: "dist/global-var/clipboard-polyfill.global-var.es5.js",
+  banner: { js: '"use strict";' },
+});
+
+await build({
+  entryPoints: ["src/clipboard-polyfill/targets/global-var.promise.ts"],
+  target: "es5",
+  bundle: true,
+  outfile: "dist/global-var/clipboard-polyfill.global-var.promise.es5.js",
+  banner: { js: '"use strict";' },
+});
+
+await build({
+  entryPoints: ["src/clipboard-polyfill/targets/overwrite-globals.ts"],
+  target: "es5",
+  bundle: true,
+  outfile: "dist/overwrite-globals/clipboard-polyfill.overwrite-globals.es5.js",
+  banner: { js: '"use strict";' },
+});
+
+await build({
+  entryPoints: ["src/clipboard-polyfill/targets/overwrite-globals.promise.ts"],
+  target: "es5",
+  bundle: true,
+  outfile:
+    "dist/overwrite-globals/clipboard-polyfill.overwrite-globals.promise.es5.js",
+  banner: { js: '"use strict";' },
 });
