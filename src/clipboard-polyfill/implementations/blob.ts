@@ -15,7 +15,7 @@ import {
 import { readText } from "./text";
 import { writeFallback } from "./write-fallback";
 
-export async function write(data: ClipboardItemInterface[]): Promise<void> {
+export function write(data: ClipboardItemInterface[]): Promise<void> {
   // Use the browser implementation if it exists.
   // TODO: detect `text/html`.
   if (originalNavigatorClipboardWrite && originalWindowClipboardItem) {
