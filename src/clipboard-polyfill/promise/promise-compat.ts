@@ -23,5 +23,4 @@ export function promiseRecordMap<T>(
 export var voidPromise: Promise<void> = promiseConstructor.resolve();
 export var truePromiseFn: () => Promise<boolean> = () =>
   promiseConstructor.resolve(true);
-export var truePromise: Promise<boolean> = truePromiseFn();
 export var falsePromise: Promise<boolean> = promiseConstructor.resolve(false);

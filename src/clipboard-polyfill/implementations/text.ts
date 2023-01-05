@@ -18,9 +18,14 @@ export function writeText(s: string): Promise<void> {
   // Use the browser implementation if it exists.
   if (originalNavigatorClipboardWriteText) {
     debugLog("Using `navigator.clipboard.writeText()`.");
-    return originalNavigatorClipboardWriteText(s);
+    return originalNavigatorClipboardWriteText(s).catch(
+      writeTextStringFallback,
+    );
   }
+  writeTextStringFallback(s);
+}
 
+function writeTextStringFallback(s: string): void {
   if (!writeFallback(stringToStringItem(s))) {
     throw new Error("writeText() failed");
   }

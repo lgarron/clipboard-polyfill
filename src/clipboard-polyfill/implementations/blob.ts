@@ -16,7 +16,6 @@ import {
 } from "../builtin-globals";
 import {
   falsePromise,
-  truePromise,
   truePromiseFn,
   voidPromise,
 } from "../promise/promise-compat";
