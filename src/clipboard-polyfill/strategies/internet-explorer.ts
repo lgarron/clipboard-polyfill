@@ -1,4 +1,4 @@
-import { originalWindow } from "../globals";
+import { promiseConstructor, originalWindow } from "../builtin-globals";
 
 interface IEWindow extends Window {
   clipboardData: {
@@ -8,7 +8,7 @@ interface IEWindow extends Window {
   };
 }
 
-const ieWindow = (originalWindow as unknown) as IEWindow;
+var ieWindow = originalWindow as any as IEWindow;
 
 export function seemToBeInIE(): boolean {
   return (
@@ -25,12 +25,16 @@ export function writeTextIE(text: string): boolean {
 }
 
 // Returns "" if the read failed, e.g. because the user rejected the permission.
-export async function readTextIE(): Promise<string> {
-  const text = ieWindow.clipboardData.getData("Text");
-  if (text === "") {
-    throw new Error(
-      "Empty clipboard or could not read plain text from clipboard"
-    );
-  }
-  return text;
+export function readTextIE(): Promise<string> {
+  return new promiseConstructor((resolve, reject) => {
+    var text = ieWindow.clipboardData.getData("Text");
+    if (text === "") {
+      reject(
+        new Error(
+          "Empty clipboard or could not read plain text from clipboard",
+        ),
+      );
+    }
+    resolve(text);
+  });
 }

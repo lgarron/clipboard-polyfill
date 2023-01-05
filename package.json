@@ -2,29 +2,12 @@
   "name": "clipboard-polyfill",
   "version": "4.0.0-rc1",
   "description": "A polyfill for the asynchronous clipboard API",
-  "main": "dist/main/clipboard-polyfill.js",
-  "module": "dist/main/clipboard-polyfill.esm.js",
-  "types": "dist/main/targets/main.d.ts",
+  "type": "module",
   "devDependencies": {
-    "@babel/core": "^7.10.3",
-    "@babel/preset-env": "^7.10.3",
-    "@babel/preset-typescript": "^7.10.1",
-    "@types/es6-promise": "^3.3.0",
-    "@types/jest": "^27.4.0",
-    "@types/promise-polyfill": "^6.0.3",
-    "babel-preset-es2015-rollup": "^3.0.0",
-    "es6-promise": "^4.2.8",
-    "jest": "^26.6.3",
-    "promise-polyfill": "^8.1.3",
-    "rollup": "^1.32.1",
-    "rollup-plugin-babel": "^4.4.0",
-    "rollup-plugin-terser": "^6.1.0",
-    "rollup-plugin-tslint": "^0.2.2",
-    "rollup-plugin-typescript2": "^0.27.1",
-    "ts-jest": "^26.1.1",
-    "ts-loader": "^9.4.2",
-    "tslint": "^5.18.0",
-    "typescript": "^3.9.5"
+    "barely-a-dev-server": "^0.4.7",
+    "esbuild": "^0.16.4",
+    "rome": "^11.0.0",
+    "typescript": "^4.9.4"
   },
   "repository": {
     "type": "git",
@@ -56,29 +39,27 @@
     "README.md"
   ],
   "scripts": {
-    "build": "rollup -c",
-    "dev": "rollup -cw",
-    "clean": "rm -rf dist",
-    "test": "jest",
-    "setup": "npm install",
-    "lint": "tslint --fix --project . ; tslint --fix rollup.config.js",
+    "build": "node script/build.mjs && npx tsc --project tsconfig.json",
+    "dev": "node script/dev.js",
+    "lint": "npx rome check ./script ./src",
+    "format": "npx rome format ./script ./src",
+    "clean": "rm -rf ./dist",
     "prepack": "npm run clean && npm run build"
   },
+  "module": "./dist/es6/clipboard-polyfill.es6.js",
+  "types": "./dist/types/entries/es6/clipboard-polyfill.es6.d.ts",
   "exports": {
     ".": {
-      "require": "./dist/main/clipboard-polyfill.js",
-      "import": "./dist/main/clipboard-polyfill.esm.js",
-      "types": "./dist/main/targets/main.d.ts"
+      "import": "./dist/es6/clipboard-polyfill.es6.js",
+      "types": "./dist/types/entries/es6/clipboard-polyfill.es6.d.ts"
     },
     "./overwrite-globals": {
-      "require": "./dist/overwrite-globals/clipboard-polyfill.overwrite-globals.js",
-      "import": "./dist/overwrite-globals/clipboard-polyfill.overwrite-globals.esm.js",
-      "types": "./dist/overwrite-globals/targets/overwrite-globals.d.ts"
+      "import": "./dist/es5/overwrite-globals/clipboard-polyfill.overwrite-globals.es5.js",
+      "types": "./dist/types/targets/overwrite-globals.d.ts"
     },
     "./text": {
-      "require": "./dist/text/clipboard-polyfill.text.js",
-      "import": "./dist/text/clipboard-polyfill.text.esm.js",
-      "types": "./dist/text/targets/text.d.ts"
+      "import": "./dist/es6/clipboard-polyfill.text.es6.js",
+      "types": "./dist/types/entries/es6/clipboard-polyfill.text.es6.d.ts"
     }
   }
 }

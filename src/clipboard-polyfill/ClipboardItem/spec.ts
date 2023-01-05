@@ -11,12 +11,16 @@
 
 export type ClipboardItems = ClipboardItemInterface[];
 
-export interface Clipboard extends EventTarget {
+export interface ClipboardWithoutEventTarget {
   read(): Promise<ClipboardItems>;
   readText(): Promise<string>;
   write(data: ClipboardItems): Promise<void>;
   writeText(data: string): Promise<void>;
 }
+
+export interface ClipboardEventTarget
+  extends EventTarget,
+    ClipboardWithoutEventTarget {}
 
 export type ClipboardItemDataType = string | Blob;
 export type ClipboardItemData = Promise<ClipboardItemDataType>;
@@ -34,12 +38,13 @@ export interface ClipboardItemConstructor {
     // implementations (e.g. Chrome 83) seem to assume `ClipboardItemDataType`
     // values. https://github.com/w3c/clipboard-apis/pull/126
     items: { [type: string]: ClipboardItemDataType },
-    options?: ClipboardItemOptions
+    options?: ClipboardItemOptions,
   ): ClipboardItemInterface;
 
-  createDelayed?( // [optional here, non-optional in spec]
+  createDelayed?(
+    // [optional here, non-optional in spec]
     items: { [type: string]: () => ClipboardItemDelayedCallback },
-    options?: ClipboardItemOptions
+    options?: ClipboardItemOptions,
   ): ClipboardItemInterface;
 }
 
@@ -52,7 +57,7 @@ export interface ClipboardItemInterface {
   readonly lastModified?: number; // [optional here, non-optional in spec]
   readonly delayed?: boolean; // [optional here, non-optional in spec]
 
-  readonly types: string[];
+  readonly types: ReadonlyArray<string>;
 
   getType(type: string): Promise<Blob>;
 }
