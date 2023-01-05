@@ -7,18 +7,16 @@ const es6 = {
 };
 
 await build({
-  entryPoints: ["src/clipboard-polyfill/targets/main.ts"],
+  entryPoints: [
+    "./src/clipboard-polyfill/entries/es6/clipboard-polyfill.es6.ts",
+    "./src/clipboard-polyfill/entries/es6/clipboard-polyfill.text.es6.ts",
+  ],
   ...es6,
-  outfile: "dist/es6/main/clipboard-polyfill.main.es6.js",
+  splitting: true,
+  outdir: "./dist/es6/",
 });
 
-await build({
-  entryPoints: ["src/clipboard-polyfill/targets/text.ts"],
-  ...es6,
-  outfile: "dist/es6/text/clipboard-polyfill.text.es6.js",
-});
-
-async function buildES5(src, targetStem) {
+async function buildES5(src, entriestem) {
   const common = {
     entryPoints: [src],
     target: "es5",
@@ -27,23 +25,23 @@ async function buildES5(src, targetStem) {
   };
   await build({
     ...common,
-    outfile: `${targetStem}.es5.js`,
+    outfile: `${entriestem}.es5.js`,
   });
 }
 
 buildES5(
-  "src/clipboard-polyfill/targets/window-var.ts",
+  "src/clipboard-polyfill/entries/es5/window-var.ts",
   "dist/es5/window-var/clipboard-polyfill.window-var",
 );
 buildES5(
-  "src/clipboard-polyfill/targets/window-var.promise.ts",
+  "src/clipboard-polyfill/entries/es5/window-var.promise.ts",
   "dist/es5/window-var/clipboard-polyfill.window-var.promise",
 );
 buildES5(
-  "src/clipboard-polyfill/targets/overwrite-globals.ts",
+  "src/clipboard-polyfill/entries/es5/overwrite-globals.ts",
   "dist/es5/overwrite-globals/clipboard-polyfill.overwrite-globals",
 );
 buildES5(
-  "src/clipboard-polyfill/targets/overwrite-globals.promise.ts",
+  "src/clipboard-polyfill/entries/es5/overwrite-globals.promise.ts",
   "dist/es5/overwrite-globals/clipboard-polyfill.overwrite-globals.promise",
 );

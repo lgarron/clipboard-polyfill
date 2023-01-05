@@ -1,10 +1,6 @@
-import { readText, writeText } from "../implementations/text";
-import { read, write } from "../implementations/blob";
-import { ClipboardItemPolyfill } from "../ClipboardItem/ClipboardItemPolyfill";
-import {
-  ClipboardEventTarget as ClipboardInterface,
-  ClipboardItemConstructor,
-} from "../ClipboardItem/spec";
+import { readText, writeText } from "../../implementations/text";
+import { read, write } from "../../implementations/blob";
+import { ClipboardItemPolyfill } from "../../ClipboardItem/ClipboardItemPolyfill";
 
 // declare global {
 //   // const ClipboardItem: ClipboardItemConstructor;

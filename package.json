@@ -46,11 +46,11 @@
     "clean": "rm -rf ./dist",
     "prepack": "npm run clean && npm run build"
   },
-  "module": "./dist/es6/main/clipboard-polyfill.main.es6.js",
+  "module": "./dist/es6/clipboard-polyfill.es6.js",
   "types": "./dist/types/targets/main.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/es6/main/clipboard-polyfill.main.es6.js",
+      "import": "./dist/es6/clipboard-polyfill.es6.js",
       "types": "./dist/types/targets/main.d.ts"
     },
     "./overwrite-globals": {
@@ -58,7 +58,7 @@
       "types": "./dist/types/targets/overwrite-globals.d.ts"
     },
     "./text": {
-      "import": "./dist/es6/text/clipboard-polyfill.text.es6.js",
+      "import": "./dist/es6/clipboard-polyfill.text.es6.js",
       "types": "./dist/types/targets/text.d.ts"
     }
   }
