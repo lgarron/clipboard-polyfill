@@ -10,6 +10,6 @@
     "outDir": "dist/types"
   },
   "include": [
-    "./src/clipboard-polyfill/**/*.ts"
+    "./src/clipboard-polyfill/entries"
   ]
 }
