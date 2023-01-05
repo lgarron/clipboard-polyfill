@@ -15,3 +15,5 @@ jobs:
       - run: npm install
       - run: make build
       - run: make build-demo
+      - run: make lint
+      - run: make format
