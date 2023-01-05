@@ -41,6 +41,7 @@
   "scripts": {
     "build": "node script/build.js && npx tsc --project tsconfig.json",
     "build-demo": "node script/build-demo.js",
+    "test": "npm run build && npm run build-demo && npm run lint",
     "dev": "node script/dev.js",
     "lint": "npx rome check ./script ./src",
     "format": "npx rome format --write ./script ./src",
