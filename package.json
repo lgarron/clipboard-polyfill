@@ -43,7 +43,7 @@
     "build-demo": "node script/build-demo.js",
     "dev": "node script/dev.js",
     "lint": "npx rome check ./script ./src",
-    "format": "npx rome format ./script ./src",
+    "format": "npx rome format --write ./script ./src",
     "clean": "rm -rf ./dist",
     "prepack": "npm run clean && npm run build"
   },
