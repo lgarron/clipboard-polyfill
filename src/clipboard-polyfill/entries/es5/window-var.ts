@@ -1,6 +1,3 @@
-// Import `../globals` that the globals are cached before this runs.
-import "../../globals";
-
 import { ClipboardItemPolyfill } from "../../ClipboardItem/ClipboardItemPolyfill";
 import {
   ClipboardItemConstructor,
