@@ -6,7 +6,7 @@ import "../globals";
 import { PromiseConstructor } from "../promise/es6-promise";
 import { PromisePolyfillConstructor } from "../promise/polyfill";
 
-import "./global-var";
+import "./window-var";
 
 declare global {
   var PromisePolyfill: PromiseConstructor;

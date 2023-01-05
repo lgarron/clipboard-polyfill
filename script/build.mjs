@@ -32,12 +32,12 @@ async function buildES5(src, targetStem) {
 }
 
 buildES5(
-  "src/clipboard-polyfill/targets/global-var.ts",
-  "dist/es5/global-var/clipboard-polyfill.global-var",
+  "src/clipboard-polyfill/targets/window-var.ts",
+  "dist/es5/window-var/clipboard-polyfill.window-var",
 );
 buildES5(
-  "src/clipboard-polyfill/targets/global-var.promise.ts",
-  "dist/es5/global-var/clipboard-polyfill.global-var.promise",
+  "src/clipboard-polyfill/targets/window-var.promise.ts",
+  "dist/es5/window-var/clipboard-polyfill.window-var.promise",
 );
 buildES5(
   "src/clipboard-polyfill/targets/overwrite-globals.ts",
