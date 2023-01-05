@@ -179,6 +179,15 @@ If you need to grab a version that "just works", download [`clipboard-polyfill.w
 </script>
 ```
 
+### Minification
+
+Builds are not minified. To minify code, pass it through your bundler of choice. If you want to get a minified version of an ES5 build, you can run:
+
+```shell
+curl --location https://unpkg.com/clipboard-polyfill/dist/es5/window-var/clipboard-polyfill.window-var.promise.es5.js \
+  | npx esbuild --target=es5 --minify
+```
+
 ## Why `clipboard-polyfill`?
 
 Browsers have implemented several clipboard APIs over time, and writing to the clipboard without [triggering bugs in various old and current browsers](https://github.com/lgarron/clipboard-polyfill/blob/master/experiment/Conclusions.md) is fairly tricky. In every browser that supports copying to the clipboard in some way, `clipboard-polyfill` attempts to act as close as possible to the async clipboard API. (See above for disclaimers and limitations.)
