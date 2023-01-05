@@ -39,7 +39,7 @@
     "README.md"
   ],
   "scripts": {
-    "build": "node script/build.mjs && npx tsc --project tsconfig.json",
+    "build": "node script/build.js && npx tsc --project tsconfig.json",
     "build-demo": "node script/build-demo.js",
     "dev": "node script/dev.js",
     "lint": "npx rome check ./script ./src",
