@@ -40,7 +40,9 @@ Thanks to Gary Kacmarcik, Hallvord Steen, and others for helping to bring the [a
 
 Makes copying on the web as easy as:
 
-    clipboard.writeText("hello world");
+```js
+clipboard.writeText("hello world");
+```
 
 This library is a [ponyfill](https://github.com/sindresorhus/ponyfill)/polyfill for the modern `Promise`-based [asynchronous clipboard API](https://www.w3.org/TR/clipboard-apis/#async-clipboard-api).
 
