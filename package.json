@@ -1,6 +1,6 @@
 {
   "name": "clipboard-polyfill",
-  "version": "4.0.0-rc2",
+  "version": "4.0.0-rc3",
   "description": "A polyfill for the asynchronous clipboard API",
   "type": "module",
   "devDependencies": {
