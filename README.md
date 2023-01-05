@@ -166,10 +166,10 @@ This approach is not recommended, because it may break any other code that inter
 
 ### Flat-file version with `Promise` included
 
-If you need to grab a version that "just works", download [`clipboard-polyfill.promise.js`](https://unpkg.com/browse/clipboard-polyfill/dist/promise/clipboard-polyfill.promise.js) and include it using a `<script>` tag:
+If you need to grab a version that "just works", download [`clipboard-polyfill.window-var.promise.es5.js`](https://unpkg.com/clipboard-polyfill/dist/es5/window-var/clipboard-polyfill.window-var.promise.es5.js) and include it using a `<script>` tag:
 
 ```html
-<script src="./clipboard-polyfill.promise.js"></script>
+<script src="./clipboard-polyfill.window-var.promise.es5.js"></script>
 <button onclick="copy()">Copy text!</button>
 <script>
   // `clipboard` is defined on the global `window` object.
