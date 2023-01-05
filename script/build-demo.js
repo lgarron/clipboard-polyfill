@@ -5,6 +5,7 @@ barelyServe({
   entryRoot: "./src/demo",
   outDir: "./dist/demo",
   esbuildOptions: {
+    minify: false,
     target: "es5",
   },
 });
