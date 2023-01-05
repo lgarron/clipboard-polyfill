@@ -1,4 +1,4 @@
 {
   "import": "../dist/es6/clipboard-polyfill.text.es6.js",
-  "types": "../dist/types/targets/text.d.ts"
+  "types": "../dist/types/entries/es6/clipboard-polyfill.text.es6.d.ts"
 }
