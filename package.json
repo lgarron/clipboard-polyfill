@@ -2,9 +2,7 @@
   "name": "clipboard-polyfill",
   "version": "4.0.0-rc1",
   "description": "A polyfill for the asynchronous clipboard API",
-  "main": "dist/main/clipboard-polyfill.js",
-  "module": "dist/main/clipboard-polyfill.esm.js",
-  "types": "dist/main/targets/main.d.ts",
+  "type": "module",
   "devDependencies": {
     "barely-a-dev-server": "^0.4.7",
     "esbuild": "^0.16.4",
@@ -48,17 +46,19 @@
     "clean": "rm -rf ./dist",
     "prepack": "npm run clean && npm run build"
   },
+  "module": "./dist/es6/main/clipboard-polyfill.main.es6.js",
+  "types": "./dist/types/targets/main.d.ts",
   "exports": {
     ".": {
-      "import": "./es6/main/clipboard-polyfill.main.es6.js",
-      "types": "./dist/main/targets/main.d.ts"
+      "import": "./dist/es6/main/clipboard-polyfill.main.es6.js",
+      "types": "./dist/types/targets/main.d.ts"
     },
     "./overwrite-globals": {
-      "import": "./clipboard-polyfill.overwrite-globals.es5.js",
+      "import": "./dist/es5/overwrite-globals/clipboard-polyfill.overwrite-globals.es5.js",
       "types": "./dist/types/targets/overwrite-globals.d.ts"
     },
     "./text": {
-      "import": "./es6/text/clipboard-polyfill.text.es6.js",
+      "import": "./dist/es6/text/clipboard-polyfill.text.es6.js",
       "types": "./dist/types/targets/text.d.ts"
     }
   }
