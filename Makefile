@@ -2,7 +2,7 @@
 # https://github.com/lgarron/Makefile-scripts
 
 # Note: the first command becomes the default `make` target.
-NPM_COMMANDS = build dev lint format clean
+NPM_COMMANDS = build build-demo dev lint format clean prepack
 
 .PHONY: $(NPM_COMMANDS)
 $(NPM_COMMANDS):
@@ -22,8 +22,8 @@ publish:
 	npm publish
 
 .PHONY: deploy
-deploy:
-	rsync -avz ./ garron.net:~/garron.net/code/clipboard-polyfill/ \
+deploy: build-demo
+	rsync -avz ./dist/demo/ garron.net:~/garron.net/code/clipboard-polyfill/ \
 		--exclude .git \
 		--exclude node_modules \
 		--exclude .rpt2_cache

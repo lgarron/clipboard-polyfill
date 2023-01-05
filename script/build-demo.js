@@ -1,8 +1,9 @@
 import { barelyServe } from "barely-a-dev-server";
 
 barelyServe({
+  dev: false,
   entryRoot: "./src/demo",
-  outDir: "./.temp/dev",
+  outDir: "./dist/demo",
   esbuildOptions: {
     target: "es5",
   },

@@ -5,7 +5,8 @@
   <meta charset="utf-8" />
   <title>clipboard-polyfill</title>
   <link rel="stylesheet" href="index.css">
-  <script src="dist/promise/clipboard-polyfill.promise.js"></script>
+  <!-- NOTE: this is synchronous ES5, therefore no type="module" -->
+  <script src="./demo.js"></script>
   <script>
     // Workaround for:
     // - IE9 (can't bind console functions directly), and
@@ -74,7 +75,7 @@
         // });
         var resultField = document.getElementById("markup-copy-result");
 
-        var item = new ClipboardItem({
+        var item = new clipboard.ClipboardItem({
           "text/html": stringToBlob("text/html", "<i>Markup</i> <b>text</b>. Paste me into a rich text editor."),
           "text/plain": stringToBlob("text/plain", "Fallback markup text. Paste me into a rich text editor.")
         });
