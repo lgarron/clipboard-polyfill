@@ -5,6 +5,7 @@
   <meta charset="utf-8" />
   <title>clipboard-polyfill</title>
   <link rel="stylesheet" href="index.css">
+  <meta name="viewport" content="width=device-width, initial-scale=0.75">
   <!-- NOTE: this is synchronous ES5, therefore no type="module" -->
   <script src="./demo.js"></script>
   <script>
@@ -39,122 +40,160 @@
 
 <body>
 
-  <div class="header">
-    <a href="https://github.com/lgarron/clipboard-polyfill">clipboard-polyfill</a>
-  </div>
-  <div class="ribbon"></div>
-  <div class="content">
+  <header>
+    <img src="./clipboard-polyfill-logo.svg">
+    <h1>
+      <a href="https://github.com/lgarron/clipboard-polyfill">clipboard-polyfill</a>
+      <br>
+      Demo/test page
+    </h1>
+  </header>
+  <table>
 
-    <h2>Plain Text</h2>
+    <tr>
+      <td>
+        Plain text
+      </td>
+      <td>
+        <button id="plain-copy">Copy text (plain)</button>
+      </td>
+      <td>
+        <span id="plain-copy-result"></span>
+        <script>
+          document.getElementById("plain-copy").addEventListener("click", function () {
+            var resultField = document.getElementById("plain-copy-result");
 
-    <button id="plain-copy">Copy text (plain)</button>
-    <span id="plain-copy-result"></span>
-    <script>
-      document.getElementById("plain-copy").addEventListener("click", function () {
-        var resultField = document.getElementById("plain-copy-result");
+            clipboard.writeText("This text is plain.").then(function () {
+              resultField.textContent = "success";
+            }, function (err) {
+              resultField.textContent = err;
+            });
+          });
+        </script>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Markup
+      </td>
+      <td>
+        <button id="markup-copy">Copy text (markup)</button>
+      </td>
+      <td>
+        <span id="markup-copy-result"></span>
+        <script>
+          document.getElementById("markup-copy").addEventListener("click", function () {
+            // var data = [new ClipboardItem({ "text/plain": new Blob(["Text data"], { type: "text/plain" }) })];
+            // clipboard.write(data).then(function () {
+            //   console.log("Copied to clipboard successfully!");
+            // }, function () {
+            //   console.error("Unable to write to clipboard. :-(");
+            // });
+            var resultField = document.getElementById("markup-copy-result");
+            var item = new clipboard.ClipboardItem({
+              "text/html": stringToBlob("text/html", "<i>Markup</i> <b>text</b>. Paste me into a rich text editor."),
+              "text/plain": stringToBlob("text/plain", "Fallback markup text. Paste me into a rich text editor.")
+            });
+            clipboard.write([item]).then(function () {
+              resultField.textContent = "success";
+            }, function (err) {
+              resultField.textContent = err;
+            });
+          });
+        </script>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        DOM node
+      </td>
+      <td>
+        <button id="markup-dom-copy">Copy markup (DOM node &rarr; markup)</button>
+        <br>
+        <span id="markup-dom-copy-source" style="font-family: Helvetica;"><i><span
+              style="font-size: 150%">T</span>his</i>
+          <span style="background: orange; padding: 0px 2px">will be</span> <b>copied</b>.</span>
+      </td>
+      <td>
+        <span id="markup-dom-copy-result"></span>
+        <script>
+          document.getElementById("markup-dom-copy").addEventListener("click", function () {
+            var resultField = document.getElementById("markup-dom-copy-result");
 
-        clipboard.writeText("This text is plain.").then(function () {
-          resultField.textContent = "success";
-        }, function (err) {
-          resultField.textContent = err;
-        });
-      });
-    </script>
+            var blob = new Blob([new XMLSerializer().serializeToString(document.getElementById("markup-dom-copy-source"))], { type: "text/html" });//stringToBlob("text/plain", document.getElementById("markup-dom-copy-source").innerText);
+            var items = [new clipboard.ClipboardItem({
+              "text/html": blob
+            })];
+            // var dt = new clipboard.DT();
+            // dt.setData("text/html", new XMLSerializer().serializeToString(document.getElementById("markup-dom-copy-source")));
+            // dt.setData("text/plain", document.getElementById("markup-dom-copy-source").innerText);
+            clipboard.write(items).then(function () {
+              resultField.textContent = "success";
+            }, function (err) {
+              resultField.textContent = err;
+            });
+          });
+        </script>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Image (PNG)
+      </td>
+      <td>
+        <button id="image-png-copy">Copy image (PNG)</button>
+      </td>
+      <td>
+        <span id="image-png-copy-result"></span>
+        <br>
+        <script>
+          document.getElementById("image-png-copy").addEventListener("click", function () {
+            var resultField = document.getElementById("image-png-copy-result");
 
-    <h2>Markup</h2>
+            var blob = new Blob([new Uint8Array(imgBytes)], { type: "image/png" });//stringToBlob("text/plain", document.getElementById("markup-dom-copy-source").innerText);
+            var items = [new clipboard.ClipboardItem({
+              "image/png": blob
+            })];
+            clipboard.write(items).then(function () {
+              resultField.textContent = "success";
+            }, function (err) {
+              resultField.textContent = err;
+            });
+          });
+        </script>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Paste text
+      </td>
+      <td>
+        <button id="paste">Paste text</button>
+      </td>
+      <td>
+        <span id="paste-result"></span>
+        <script>
+          document.getElementById("paste").addEventListener("click", function () {
+            var resultField = document.getElementById("paste-result");
 
-    <button id="markup-copy">Copy text (markup)</button>
-    <span id="markup-copy-result"></span>
-    <script>
-      document.getElementById("markup-copy").addEventListener("click", function () {
-        // var data = [new ClipboardItem({ "text/plain": new Blob(["Text data"], { type: "text/plain" }) })];
-        // clipboard.write(data).then(function () {
-        //   console.log("Copied to clipboard successfully!");
-        // }, function () {
-        //   console.error("Unable to write to clipboard. :-(");
-        // });
-        var resultField = document.getElementById("markup-copy-result");
-
-        var item = new clipboard.ClipboardItem({
-          "text/html": stringToBlob("text/html", "<i>Markup</i> <b>text</b>. Paste me into a rich text editor."),
-          "text/plain": stringToBlob("text/plain", "Fallback markup text. Paste me into a rich text editor.")
-        });
-        clipboard.write([item]).then(function () {
-          resultField.textContent = "success";
-        }, function (err) {
-          resultField.textContent = err;
-        });
-      });
-    </script>
-
-    <h2>DOM node</h2>
-
-    <button id="markup-dom-copy">Copy markup (DOM node &rarr; markup)</button>
-    <span id="markup-dom-copy-result"></span>
-    <br>
-    <span id="markup-dom-copy-source" style="font-family: Helvetica;"><i><span style="font-size: 150%">T</span>his</i>
-      <span style="background: orange; padding: 0px 2px">will be</span> <b>copied</b>.</span>
-    <script>
-      document.getElementById("markup-dom-copy").addEventListener("click", function () {
-        var resultField = document.getElementById("markup-dom-copy-result");
-
-        var blob = new Blob([new XMLSerializer().serializeToString(document.getElementById("markup-dom-copy-source"))], { type: "text/html" });//stringToBlob("text/plain", document.getElementById("markup-dom-copy-source").innerText);
-        var items = [new clipboard.ClipboardItem({
-          "text/html": blob
-        })];
-        // var dt = new clipboard.DT();
-        // dt.setData("text/html", new XMLSerializer().serializeToString(document.getElementById("markup-dom-copy-source")));
-        // dt.setData("text/plain", document.getElementById("markup-dom-copy-source").innerText);
-        clipboard.write(items).then(function () {
-          resultField.textContent = "success";
-        }, function (err) {
-          resultField.textContent = err;
-        });
-      });
-    </script>
-
-    <h2>Image (PNG)</h2>
-
-    <button id="image-png-copy">Copy image (PNG)</button>
-    <span id="image-png-copy-result"></span>
-    <br>
-    <script>
-      document.getElementById("image-png-copy").addEventListener("click", function () {
-        var resultField = document.getElementById("image-png-copy-result");
-
-        var blob = new Blob([new Uint8Array(imgBytes)], { type: "image/png" });//stringToBlob("text/plain", document.getElementById("markup-dom-copy-source").innerText);
-        var items = [new clipboard.ClipboardItem({
-          "image/png": blob
-        })];
-        clipboard.write(items).then(function () {
-          resultField.textContent = "success";
-        }, function (err) {
-          resultField.textContent = err;
-        });
-      });
-    </script>
-
-    <h2>Paste Text</h2>
-
-    <button id="paste">Paste Text</button>
-    <span id="paste-result"></span>
-    <script>
-      document.getElementById("paste").addEventListener("click", function () {
-        var resultField = document.getElementById("paste-result");
-
-        clipboard.readText().then(function (result) {
-          resultField.textContent = result;
-        }, function (err) {
-          resultField.textContent = err;
-        });
-      });
-    </script>
-
-    <br>
-    <br>
-    <h2>Paste Area</h2>
-    <div contenteditable="true" class="editable"></div>
-  </div>
+            clipboard.readText().then(function (result) {
+              resultField.textContent = result;
+            }, function (err) {
+              resultField.textContent = err;
+            });
+          });
+        </script>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Paste area
+      </td>
+      <td colspan="2">
+        <div contenteditable="true" class="editable"></div>
+      </td>
+    </tr>
+  </table>
 
 </body>
 
