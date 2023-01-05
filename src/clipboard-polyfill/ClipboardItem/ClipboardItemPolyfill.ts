@@ -1,4 +1,4 @@
-import { promiseConstructor } from "../globals";
+import { promiseConstructor } from "../builtin-globals";
 import { stringToBlob } from "./convert";
 import {
   ClipboardItemConstructor,

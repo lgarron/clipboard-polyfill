@@ -1,4 +1,4 @@
-import { promiseConstructor, originalWindow } from "../globals";
+import { promiseConstructor, originalWindow } from "../builtin-globals";
 
 interface IEWindow extends Window {
   clipboardData: {

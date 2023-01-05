@@ -1,4 +1,4 @@
-import { promiseConstructor } from "../globals";
+import { promiseConstructor } from "../builtin-globals";
 
 export function promiseRecordMap<T>(
   keys: readonly string[],

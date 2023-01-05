@@ -4,7 +4,7 @@ import { debugLog } from "../debug";
 import {
   originalNavigatorClipboardReadText,
   originalNavigatorClipboardWriteText,
-} from "../globals";
+} from "../builtin-globals";
 import { readTextIE, seemToBeInIE } from "../strategies/internet-explorer";
 import { writeFallback } from "./write-fallback";
 

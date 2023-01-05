@@ -1,7 +1,7 @@
 // Set the Promise polyfill before globals.
 import "../../promise/set-promise-polyfill-if-needed";
 // Import `./globals` that the globals are cached before this runs.
-import "../../globals";
+import "../../builtin-globals";
 
 import { PromisePolyfillConstructor } from "../../promise/polyfill";
 

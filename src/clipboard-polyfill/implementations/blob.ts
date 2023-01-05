@@ -13,7 +13,7 @@ import {
   originalNavigatorClipboardRead,
   originalNavigatorClipboardWrite,
   originalWindowClipboardItem,
-} from "../globals";
+} from "../builtin-globals";
 import {
   falsePromise,
   truePromise,
