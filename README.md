@@ -2,11 +2,17 @@
 
 # `clipboard-polyfill`
 
-## ⚠️⚠️⚠️ DEPRECATED ⚠️⚠️⚠️
+## ⚠️ You don't need `clipboard-polyfill` to copy text! ⚠️
 
-I am in the process of deprecating `clipboard-polyfill`, since it has finished serving its purpose of providing a simple, safe clipboard API in lieu of browser support.
 
-| Browser | First version supporting<br>`navigator.clipboard.writeText()` | Release Date |
+Note: As of 2021, you can use `navigator.clipboard.writeText(...)` [in the stable versions of all major browsers](https://caniuse.com/mdn-api_clipboard_writetext). This library will only be useful to you if you want to:
+
+- target older browsers (see below for compatibility) for text copy,
+- copy `text/html` in Firefox,
+- use the `ClipboardItem` API in Firefox, or
+- polyfill the API shape in a non-browser environment (e.g. in [`jsdom`](https://github.com/jsdom/jsdom/issues/1568)).
+
+| Browser | First version supporting<br>`navigator.clipboard.writeText(...)` | Release Date |
 | ------- | ------------------------------------------------------------- | ------------ |
 | Chrome  | 66+                                                           | April 2018   |
 | Firefox | 53+                                                           | October 2018 |
@@ -37,13 +43,6 @@ Makes copying on the web as easy as:
     clipboard.writeText("hello world");
 
 This library is a [ponyfill](https://github.com/sindresorhus/ponyfill)/polyfill for the modern `Promise`-based [asynchronous clipboard API](https://www.w3.org/TR/clipboard-apis/#async-clipboard-api).
-
-Note: As of 2021, you can use `navigator.clipboard` [in the stable versions of all major browsers](https://caniuse.com/mdn-api_clipboard_writetext). This library will only be useful to you if you want to:
-
-- target older browsers (see below for compatibility) for text copy,
-- copy `text/html` in Firefox,
-- use the `ClipboardItem` API in Firefox, or
-- polyfill the API shape in a non-browser environment (e.g. in [`jsdom`](https://github.com/jsdom/jsdom/issues/1568)).
 
 ## Usage
 
