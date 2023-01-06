@@ -4,7 +4,7 @@ import { ClipboardItemInterface, ClipboardItemOptions } from "./spec";
 import {
   promiseConstructor,
   originalWindowClipboardItem,
-} from "../builtin-globals";
+} from "../builtins/builtin-globals";
 import { promiseRecordMap } from "../promise/promise-compat";
 
 export function stringToBlob(type: string, str: string): Blob {

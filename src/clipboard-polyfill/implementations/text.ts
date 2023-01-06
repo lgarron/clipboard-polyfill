@@ -5,7 +5,7 @@ import {
   originalNavigatorClipboardReadText,
   originalNavigatorClipboardWriteText,
   promiseConstructor,
-} from "../builtin-globals";
+} from "../builtins/builtin-globals";
 import { readTextIE, seemToBeInIE } from "../strategies/internet-explorer";
 import { writeFallback } from "./write-fallback";
 import { rejectThrownErrors } from "../promise/promise-compat";
@@ -45,10 +45,7 @@ export function readText(): Promise<string> {
 
     // Fallback for IE.
     if (seemToBeInIE()) {
-      debugLog("Reading text using IE strategy.");
-      console.log("fooly");
       var result = readTextIE();
-      console.log(result);
       return promiseConstructor.resolve(result);
     }
 

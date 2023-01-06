@@ -1,4 +1,4 @@
-import { originalWindow } from "../builtin-globals";
+import { originalWindow } from "../builtins/window-globalThis";
 import { debugLog } from "../debug";
 
 interface IEWindow extends Window {
@@ -9,20 +9,20 @@ interface IEWindow extends Window {
   };
 }
 
-var ieWindow = originalWindow as any as IEWindow;
+var ieWindow = originalWindow as IEWindow | undefined;
 
 export function seemToBeInIE(): boolean {
   return (
     typeof ClipboardEvent === "undefined" &&
-    typeof ieWindow.clipboardData !== "undefined" &&
-    typeof ieWindow.clipboardData.setData !== "undefined"
+    typeof ieWindow?.clipboardData !== "undefined" &&
+    typeof ieWindow?.clipboardData.setData !== "undefined"
   );
 }
 
 export function writeTextIE(text: string): boolean {
   // IE supports text or URL, but not HTML: https://msdn.microsoft.com/en-us/library/ms536744(v=vs.85).aspx
   // TODO: Write URLs to `text/uri-list`? https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API/Recommended_drag_types
-  var success = ieWindow.clipboardData.setData("Text", text);
+  var success = ieWindow!.clipboardData.setData("Text", text);
   if (success) {
     debugLog("writeTextIE worked");
   }
@@ -31,7 +31,7 @@ export function writeTextIE(text: string): boolean {
 
 // Returns "" if the read failed, e.g. because the user rejected the permission.
 export function readTextIE(): string {
-  var text = ieWindow.clipboardData.getData("Text");
+  var text = ieWindow!.clipboardData.getData("Text");
   console.log(text);
   if (text === "") {
     throw new Error(

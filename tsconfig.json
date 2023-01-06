@@ -4,7 +4,7 @@
       "es5",
       "dom"
     ],
-    "target": "es5",
+    "strictNullChecks": true,
     "declaration": true,
     "emitDeclarationOnly": true,
     "outDir": "dist/types"

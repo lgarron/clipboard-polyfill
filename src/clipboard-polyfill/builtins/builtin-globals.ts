@@ -16,14 +16,15 @@
 // it probably saves code), and 2) just in case an unknown/future implementation
 // allows overwriting `navigator.clipboard` like this.
 
-import type { PromiseConstructor } from "./promise/es6-promise";
+import type { PromiseConstructor } from "../promise/es6-promise";
+import { originalWindow } from "./window-globalThis";
 
 import {
   ClipboardItemConstructor,
   ClipboardEventTarget,
   ClipboardItems,
-} from "./ClipboardItem/spec";
-import { getPromiseConstructor } from "./promise/constructor";
+} from "../ClipboardItem/spec";
+import { getPromiseConstructor } from "./promise-constructor";
 
 var originalNavigator =
   typeof navigator === "undefined" ? undefined : navigator;
@@ -51,7 +52,6 @@ export var originalNavigatorClipboardWriteText:
 );
 
 // The spec specifies that this goes on `window`, not e.g. `globalThis`. It's not (currently) available in workers.
-export var originalWindow = typeof window === "undefined" ? undefined : window;
 export var originalWindowClipboardItem: ClipboardItemConstructor | undefined =
   originalWindow?.ClipboardItem;
 

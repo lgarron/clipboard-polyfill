@@ -329,5 +329,5 @@ export var PromisePolyfillConstructor: PromiseConstructor =
   PromisePolyfill as any as PromiseConstructor;
 
 // Set the Promise polyfill before getting globals.
-import { setPromiseConstructor } from "../promise/constructor";
+import { setPromiseConstructor } from "../builtins/promise-constructor";
 setPromiseConstructor(PromisePolyfillConstructor);
