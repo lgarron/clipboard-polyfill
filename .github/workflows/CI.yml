@@ -17,4 +17,5 @@ jobs:
       - run: make build-demo
       - run: make lint
       - run: make test-no-es6-browser-globals
+      - run: make mock-test
       - run: make format
