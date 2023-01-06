@@ -1,4 +1,4 @@
-import { promiseConstructor, originalWindow } from "../builtin-globals";
+import { originalWindow } from "../builtin-globals";
 import { debugLog } from "../debug";
 
 interface IEWindow extends Window {
