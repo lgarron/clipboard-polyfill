@@ -4,6 +4,8 @@ import { originalGlobalThis, originalWindow } from "./window-globalThis";
 var promiseConstructorImpl: PromiseConstructor =
   (originalWindow as { Promise?: PromiseConstructor } | undefined)?.Promise ??
   originalGlobalThis?.Promise;
+
+// This must be called *before* `builtin-globals.ts` is imported, or it has no effect.
 export function setPromiseConstructor(
   newPromiseConstructorImpl: PromiseConstructor,
 ) {
