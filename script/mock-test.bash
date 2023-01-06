@@ -2,11 +2,16 @@
 
 set -euo pipefail
 
-npx esbuild \
-  --format=esm --target=es2020 \
-  --bundle --external:node:assert \
-  --supported:top-level-await=true \
-  --outfile=./dist/mock-test/modern-writeText.js \
-  ./src/mock-test/modern-writeText.ts
+function runMockText {
+  BASENAME="${1}"
+  npx esbuild \
+    --format=esm --target=es2020 \
+    --bundle --external:node:assert \
+    --supported:top-level-await=true \
+    --outfile="./dist/mock-test/${BASENAME}.js" \
+    "./src/mock-test/${BASENAME}.ts"
 
-node ./dist/mock-test/modern-writeText.js
+  node "./dist/mock-test/${BASENAME}.js"
+}
+
+runMockText modern-writeText
