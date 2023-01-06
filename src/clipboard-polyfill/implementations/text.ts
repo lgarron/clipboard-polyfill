@@ -4,6 +4,7 @@ import { debugLog } from "../debug";
 import {
   originalNavigatorClipboardReadText,
   originalNavigatorClipboardWriteText,
+  promiseConstructor,
 } from "../builtin-globals";
 import { readTextIE, seemToBeInIE } from "../strategies/internet-explorer";
 import { writeFallback } from "./write-fallback";
@@ -22,7 +23,7 @@ export function writeText(s: string): Promise<void> {
       writeTextStringFallback,
     );
   }
-  writeTextStringFallback(s);
+  return promiseConstructor.resolve(writeTextStringFallback(s));
 }
 
 function writeTextStringFallback(s: string): void {
