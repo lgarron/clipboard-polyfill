@@ -15,3 +15,4 @@ function runMockText {
 }
 
 runMockText modern-writeText
+runMockText missing-Promise
