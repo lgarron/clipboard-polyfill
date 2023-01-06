@@ -51,6 +51,7 @@
     "clean": "rm -rf ./dist",
     "prepack": "npm run clean && npm run build"
   },
+  "main": "./dist/es6/clipboard-polyfill.es6.js",
   "module": "./dist/es6/clipboard-polyfill.es6.js",
   "types": "./dist/types/entries/es6/clipboard-polyfill.es6.d.ts",
   "exports": {

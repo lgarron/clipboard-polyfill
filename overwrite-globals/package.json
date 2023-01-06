@@ -1,4 +1,4 @@
 {
-  "import": "../dist/es5/overwrite-globals/clipboard-polyfill.overwrite-globals.es5.js",
+  "main": "../dist/es5/overwrite-globals/clipboard-polyfill.overwrite-globals.es5.js",
   "types": "../dist/types/targets/overwrite-globals.d.ts"
 }
