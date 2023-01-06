@@ -8,6 +8,7 @@ import {
 } from "../builtin-globals";
 import { readTextIE, seemToBeInIE } from "../strategies/internet-explorer";
 import { writeFallback } from "./write-fallback";
+import { rejectThrownErrors } from "../promise/promise-compat";
 
 function stringToStringItem(s: string): StringItem {
   var stringItem: StringItem = {};
@@ -16,14 +17,16 @@ function stringToStringItem(s: string): StringItem {
 }
 
 export function writeText(s: string): Promise<void> {
-  // Use the browser implementation if it exists.
-  if (originalNavigatorClipboardWriteText) {
-    debugLog("Using `navigator.clipboard.writeText()`.");
-    return originalNavigatorClipboardWriteText(s).catch(
-      writeTextStringFallback,
-    );
-  }
-  return promiseConstructor.resolve(writeTextStringFallback(s));
+  return rejectThrownErrors(() => {
+    // Use the browser implementation if it exists.
+    if (originalNavigatorClipboardWriteText) {
+      debugLog("Using `navigator.clipboard.writeText()`.");
+      return originalNavigatorClipboardWriteText(s).catch(
+        writeTextStringFallback,
+      );
+    }
+    return promiseConstructor.resolve(writeTextStringFallback(s));
+  });
 }
 
 function writeTextStringFallback(s: string): void {
@@ -33,17 +36,22 @@ function writeTextStringFallback(s: string): void {
 }
 
 export function readText(): Promise<string> {
-  // Use the browser implementation if it exists.
-  if (originalNavigatorClipboardReadText) {
-    debugLog("Using `navigator.clipboard.readText()`.");
-    return originalNavigatorClipboardReadText();
-  }
+  return rejectThrownErrors(() => {
+    // Use the browser implementation if it exists.
+    if (originalNavigatorClipboardReadText) {
+      debugLog("Using `navigator.clipboard.readText()`.");
+      return originalNavigatorClipboardReadText();
+    }
 
-  // Fallback for IE.
-  if (seemToBeInIE()) {
-    debugLog("Reading text using IE strategy.");
-    return promiseConstructor.resolve(readTextIE());
-  }
+    // Fallback for IE.
+    if (seemToBeInIE()) {
+      debugLog("Reading text using IE strategy.");
+      console.log("fooly");
+      var result = readTextIE();
+      console.log(result);
+      return promiseConstructor.resolve(result);
+    }
 
-  throw new Error("Read is not supported in your browser.");
+    throw new Error("Read is not supported in your browser.");
+  });
 }

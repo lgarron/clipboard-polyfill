@@ -32,6 +32,7 @@ export function writeTextIE(text: string): boolean {
 // Returns "" if the read failed, e.g. because the user rejected the permission.
 export function readTextIE(): string {
   var text = ieWindow.clipboardData.getData("Text");
+  console.log(text);
   if (text === "") {
     throw new Error(
       "Empty clipboard or could not read plain text from clipboard",

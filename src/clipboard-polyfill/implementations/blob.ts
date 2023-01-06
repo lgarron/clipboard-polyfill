@@ -16,6 +16,7 @@ import {
 } from "../builtin-globals";
 import {
   falsePromise,
+  rejectThrownErrors,
   truePromiseFn,
   voidPromise,
 } from "../promise/promise-compat";
@@ -25,7 +26,7 @@ import { writeFallback } from "./write-fallback";
 export function write(data: ClipboardItemInterface[]): Promise<void> {
   // Use the browser implementation if it exists.
   // TODO: detect `text/html`.
-  return ((): Promise<boolean> => {
+  return rejectThrownErrors((): Promise<boolean> => {
     if (originalNavigatorClipboardWrite && originalWindowClipboardItem) {
       debugLog("Using `navigator.clipboard.write()`.");
       return promiseConstructor
@@ -53,7 +54,7 @@ export function write(data: ClipboardItemInterface[]): Promise<void> {
         );
     }
     return falsePromise;
-  })().then((success: boolean) => {
+  }).then((success: boolean) => {
     if (success) {
       return voidPromise;
     }
@@ -77,14 +78,16 @@ export function write(data: ClipboardItemInterface[]): Promise<void> {
 }
 
 export function read(): Promise<ClipboardItems> {
-  // Use the browser implementation if it exists.
-  if (originalNavigatorClipboardRead) {
-    debugLog("Using `navigator.clipboard.read()`.");
-    return originalNavigatorClipboardRead();
-  }
+  return rejectThrownErrors(() => {
+    // Use the browser implementation if it exists.
+    if (originalNavigatorClipboardRead) {
+      debugLog("Using `navigator.clipboard.read()`.");
+      return originalNavigatorClipboardRead();
+    }
 
-  // Fallback to reading text only.
-  readText().then((text: string) => {
-    return [textToClipboardItem(text)];
+    // Fallback to reading text only.
+    readText().then((text: string) => {
+      return [textToClipboardItem(text)];
+    });
   });
 }

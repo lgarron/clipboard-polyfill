@@ -24,3 +24,13 @@ export var voidPromise: Promise<void> = promiseConstructor.resolve();
 export var truePromiseFn: () => Promise<boolean> = () =>
   promiseConstructor.resolve(true);
 export var falsePromise: Promise<boolean> = promiseConstructor.resolve(false);
+
+export function rejectThrownErrors<T>(executor: () => Promise<T>): Promise<T> {
+  return new promiseConstructor((resolve, reject) => {
+    try {
+      resolve(executor());
+    } catch (e) {
+      reject(e);
+    }
+  });
+}
