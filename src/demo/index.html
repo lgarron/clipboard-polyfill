@@ -27,12 +27,39 @@
         type: type,
       });
     }
+
+    function handleResult(resultFieldID, promise) {
+      var resultField = document.getElementById(resultFieldID)
+      promise.then(function (result) {
+        resultField.textContent = result;
+        resultField.class = ""; // Can't use `classList`, so we set the entire `class`.
+      }, function (err) {
+        resultField.textContent = err;
+        resultField.setAttribute("class", "error"); // Can't use `classList`, so we set the entire `class`.
+      })
+    }
+
+    function handleVoidResult(resultFieldID, promise) {
+      var resultField = document.getElementById(resultFieldID)
+      promise.then(function (result) {
+        resultField.textContent = "success";
+        resultField.class = ""; // Can't use `classList`, so we set the entire `class`.
+      }, function (err) {
+        resultField.textContent = err;
+        console.log("foo")
+        resultField.setAttribute("class", "error"); // Can't use `classList`, so we set the entire `class`.
+      })
+    }
   </script>
   <style>
     .editable {
       min-width: 20px;
       min-height: 1em;
       border: 1px solid #AAA;
+    }
+
+    .error {
+      color: #F55;
     }
 
   </style>
@@ -61,13 +88,7 @@
         <span id="plain-copy-result"></span>
         <script>
           document.getElementById("plain-copy").addEventListener("click", function () {
-            var resultField = document.getElementById("plain-copy-result");
-
-            clipboard.writeText("This text is plain.").then(function () {
-              resultField.textContent = "success";
-            }, function (err) {
-              resultField.textContent = err;
-            });
+            handleVoidResult("plain-copy-result", clipboard.writeText("This text is plain."));
           });
         </script>
       </td>
@@ -84,21 +105,11 @@
         <script>
           document.getElementById("markup-copy").addEventListener("click", function () {
             // var data = [new ClipboardItem({ "text/plain": new Blob(["Text data"], { type: "text/plain" }) })];
-            // clipboard.write(data).then(function () {
-            //   console.log("Copied to clipboard successfully!");
-            // }, function () {
-            //   console.error("Unable to write to clipboard. :-(");
-            // });
-            var resultField = document.getElementById("markup-copy-result");
             var item = new clipboard.ClipboardItem({
               "text/html": stringToBlob("text/html", "<i>Markup</i> <b>text</b>. Paste me into a rich text editor."),
               "text/plain": stringToBlob("text/plain", "Fallback markup text. Paste me into a rich text editor.")
             });
-            clipboard.write([item]).then(function () {
-              resultField.textContent = "success";
-            }, function (err) {
-              resultField.textContent = err;
-            });
+            handleVoidResult("markup-copy-result", clipboard.write([item]));
           });
         </script>
       </td>
@@ -118,8 +129,6 @@
         <span id="markup-dom-copy-result"></span>
         <script>
           document.getElementById("markup-dom-copy").addEventListener("click", function () {
-            var resultField = document.getElementById("markup-dom-copy-result");
-
             var blob = new Blob([new XMLSerializer().serializeToString(document.getElementById("markup-dom-copy-source"))], { type: "text/html" });//stringToBlob("text/plain", document.getElementById("markup-dom-copy-source").innerText);
             var items = [new clipboard.ClipboardItem({
               "text/html": blob
@@ -127,11 +136,7 @@
             // var dt = new clipboard.DT();
             // dt.setData("text/html", new XMLSerializer().serializeToString(document.getElementById("markup-dom-copy-source")));
             // dt.setData("text/plain", document.getElementById("markup-dom-copy-source").innerText);
-            clipboard.write(items).then(function () {
-              resultField.textContent = "success";
-            }, function (err) {
-              resultField.textContent = err;
-            });
+            handleVoidResult("markup-dom-copy-result", clipboard.write(items));
           });
         </script>
       </td>
@@ -148,17 +153,11 @@
         <br>
         <script>
           document.getElementById("image-png-copy").addEventListener("click", function () {
-            var resultField = document.getElementById("image-png-copy-result");
-
             var blob = new Blob([new Uint8Array(imgBytes)], { type: "image/png" });//stringToBlob("text/plain", document.getElementById("markup-dom-copy-source").innerText);
             var items = [new clipboard.ClipboardItem({
               "image/png": blob
             })];
-            clipboard.write(items).then(function () {
-              resultField.textContent = "success";
-            }, function (err) {
-              resultField.textContent = err;
-            });
+            handleVoidResult("image-png-copy-result", clipboard.write(items));
           });
         </script>
       </td>
@@ -174,13 +173,7 @@
         <span id="paste-result"></span>
         <script>
           document.getElementById("paste").addEventListener("click", function () {
-            var resultField = document.getElementById("paste-result");
-
-            clipboard.readText().then(function (result) {
-              resultField.textContent = result;
-            }, function (err) {
-              resultField.textContent = err;
-            });
+            handleResult("paste-result", clipboard.readText())
           });
         </script>
       </td>
