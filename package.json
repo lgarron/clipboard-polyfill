@@ -61,7 +61,7 @@
     },
     "./overwrite-globals": {
       "import": "./dist/es5/overwrite-globals/clipboard-polyfill.overwrite-globals.es5.js",
-      "types": "./dist/types/targets/overwrite-globals.d.ts"
+      "types": "./dist/types/entries/es5/overwrite-globals.d.ts"
     },
     "./text": {
       "import": "./dist/es6/clipboard-polyfill.text.es6.js",
