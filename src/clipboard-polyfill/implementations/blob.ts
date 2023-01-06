@@ -28,6 +28,9 @@ export function write(data: ClipboardItemInterface[]): Promise<void> {
   // TODO: detect `text/html`.
   return rejectThrownErrors((): Promise<boolean> => {
     if (originalNavigatorClipboardWrite && originalWindowClipboardItem) {
+      // TODO: This reference is a workaround for TypeScript inference.
+      var originalNavigatorClipboardWriteReference =
+        originalNavigatorClipboardWrite;
       debugLog("Using `navigator.clipboard.write()`.");
       return promiseConstructor
         .all(data.map(clipboardItemToGlobalClipboardItem))
@@ -35,7 +38,9 @@ export function write(data: ClipboardItemInterface[]): Promise<void> {
           (
             globalClipboardItems: ClipboardItemInterface[],
           ): Promise<boolean> => {
-            return originalNavigatorClipboardWrite(globalClipboardItems)
+            return originalNavigatorClipboardWriteReference(
+              globalClipboardItems,
+            )
               .then(truePromiseFn)
               .catch((e: Error): Promise<boolean> => {
                 // Chrome 83 will throw a DOMException or NotAllowedError because it doesn't support e.g. `text/html`.
