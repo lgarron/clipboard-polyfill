@@ -42,7 +42,7 @@ export function readText(): Promise<string> {
   // Fallback for IE.
   if (seemToBeInIE()) {
     debugLog("Reading text using IE strategy.");
-    return readTextIE();
+    return promiseConstructor.resolve(readTextIE());
   }
 
   throw new Error("Read is not supported in your browser.");

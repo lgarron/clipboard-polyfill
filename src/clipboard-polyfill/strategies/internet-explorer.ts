@@ -30,16 +30,12 @@ export function writeTextIE(text: string): boolean {
 }
 
 // Returns "" if the read failed, e.g. because the user rejected the permission.
-export function readTextIE(): Promise<string> {
-  return new promiseConstructor((resolve, reject) => {
-    var text = ieWindow.clipboardData.getData("Text");
-    if (text === "") {
-      reject(
-        new Error(
-          "Empty clipboard or could not read plain text from clipboard",
-        ),
-      );
-    }
-    resolve(text);
-  });
+export function readTextIE(): string {
+  var text = ieWindow.clipboardData.getData("Text");
+  if (text === "") {
+    throw new Error(
+      "Empty clipboard or could not read plain text from clipboard",
+    );
+  }
+  return text;
 }
