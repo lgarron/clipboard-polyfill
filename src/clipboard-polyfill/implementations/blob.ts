@@ -86,7 +86,7 @@ export function read(): Promise<ClipboardItems> {
     }
 
     // Fallback to reading text only.
-    readText().then((text: string) => {
+    return readText().then((text: string) => {
       return [textToClipboardItem(text)];
     });
   });
