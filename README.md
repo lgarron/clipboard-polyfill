@@ -57,9 +57,7 @@ npm install clipboard-polyfill
 Sample app that copies text to the clipboard:
 
 ```js
-// Using the `clipboard/text` build saves code size.
-// This is recommended if you only need to copy text.
-import * as clipboard from "clipboard-polyfill/text";
+import * as clipboard from "clipboard-polyfill";
 
 function handler() {
   clipboard.writeText("This text is plain.").then(
@@ -87,7 +85,7 @@ Notes:
 ## `async`/`await` syntax
 
 ```js
-import * as clipboard from "clipboard-polyfill/text";
+import * as clipboard from "clipboard-polyfill";
 
 async function handler() {
   console.log("Previous clipboard text:", await clipboard.readText());

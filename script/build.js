@@ -1,18 +1,12 @@
 import { build } from "esbuild";
 
-const es6 = {
-  format: "esm",
-  target: "es6",
-  bundle: true,
-};
-
 await build({
   entryPoints: [
     "./src/clipboard-polyfill/entries/es6/clipboard-polyfill.es6.ts",
-    "./src/clipboard-polyfill/entries/es6/clipboard-polyfill.text.es6.ts",
   ],
-  ...es6,
-  splitting: true,
+  format: "esm",
+  target: "es6",
+  bundle: true,
   outdir: "./dist/es6/",
 });
 

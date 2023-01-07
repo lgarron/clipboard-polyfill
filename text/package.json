@@ -1,4 +1,0 @@
-{
-  "main": "../dist/es6/clipboard-polyfill.text.es6.js",
-  "types": "../dist/types/entries/es6/clipboard-polyfill.text.es6.d.ts"
-}

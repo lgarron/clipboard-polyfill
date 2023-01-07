@@ -44,7 +44,7 @@
     "build-demo": "node script/build-demo.js",
     "test": "npm run build && npm run build-demo && npm run lint && npm run test-no-es6-browser-globals",
     "mock-test": "./script/mock-test.bash",
-    "test-no-es6-browser-globals": "node dist/es6/clipboard-polyfill.es6.js && node dist/es6/clipboard-polyfill.text.es6.js",
+    "test-no-es6-browser-globals": "node dist/es6/clipboard-polyfill.es6.js",
     "dev": "node script/dev.js",
     "lint": "npx rome check ./script ./src",
     "format": "npx rome format --write ./script ./src",
@@ -62,10 +62,6 @@
     "./overwrite-globals": {
       "import": "./dist/es5/overwrite-globals/clipboard-polyfill.overwrite-globals.es5.js",
       "types": "./dist/types/entries/es5/overwrite-globals.d.ts"
-    },
-    "./text": {
-      "import": "./dist/es6/clipboard-polyfill.text.es6.js",
-      "types": "./dist/types/entries/es6/clipboard-polyfill.text.es6.d.ts"
     }
   }
 }
