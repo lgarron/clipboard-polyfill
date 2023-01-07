@@ -11,7 +11,7 @@ Note: As of 2020, you can use `navigator.clipboard.writeText(...)` [in the stabl
 - use the `ClipboardItem` API in Firefox, or
 - polyfill the API shape in a non-browser environment (e.g. in [`jsdom`](https://github.com/jsdom/jsdom/issues/1568)).
 
-See the "Compatibility" section below for more details.
+See the [Compatibility section](#compatibility) below for more details.
 
 ---
 
