@@ -12,15 +12,12 @@ await build({
 });
 
 async function buildES5(src, entriestem) {
-  const common = {
+  await build({
     entryPoints: [src],
     target: "es5",
     bundle: true,
     sourcemap: true,
     banner: { js: '"use strict";' },
-  };
-  await build({
-    ...common,
     outfile: `${entriestem}.es5.js`,
   });
 }
