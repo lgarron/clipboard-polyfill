@@ -222,9 +222,9 @@ Read support:
 
 `clipboard-polyfill` uses a variety of heuristics to work around compatibility bugs. Please [let us know](https://github.com/lgarron/clipboard-polyfill/issues/new) if you are running into compatibility issues with any of the browsers listed above.
 
-### History
+## History
 
-## Browser history
+### Browser history
 
 | Browser | First version supporting<br>`navigator.clipboard.writeText(...)` | Release Date |
 | ------- | ------------------------------------------------------------- | ------------ |
