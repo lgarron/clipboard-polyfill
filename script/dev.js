@@ -5,5 +5,6 @@ barelyServe({
   outDir: "./.temp/dev",
   esbuildOptions: {
     target: "es5",
+    splitting: false,
   },
 });
