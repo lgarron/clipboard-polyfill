@@ -7,6 +7,7 @@ await build({
   format: "esm",
   target: "es6",
   bundle: true,
+  sourcemap: true,
   outdir: "./dist/es6/",
 });
 
@@ -15,6 +16,7 @@ async function buildES5(src, entriestem) {
     entryPoints: [src],
     target: "es5",
     bundle: true,
+    sourcemap: true,
     banner: { js: '"use strict";' },
   };
   await build({
