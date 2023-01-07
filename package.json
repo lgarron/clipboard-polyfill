@@ -32,11 +32,9 @@
     "url": "https://github.com/lgarron/clipboard-polyfill/issues"
   },
   "files": [
-    "/build",
     "/dist",
     "/src",
     "/overwrite-globals",
-    "/text",
     "README.md"
   ],
   "scripts": {
