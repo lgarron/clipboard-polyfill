@@ -1,4 +1,5 @@
 import { setPromiseConstructor } from "../builtins/promise-constructor";
+import { originalWindow } from "../builtins/window-globalThis";
 import { PromisePolyfillConstructor } from "./polyfill";
 
-(window as any).Promise || setPromiseConstructor(PromisePolyfillConstructor);
+originalWindow?.Promise || setPromiseConstructor(PromisePolyfillConstructor);
