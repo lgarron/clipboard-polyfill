@@ -18,6 +18,7 @@ function copyListener(
   // tslint:disable-next-line: forin
   for (var type in data) {
     var value = data[type];
+    // biome-ignore lint/style/noNonNullAssertion: We assume the data is present if the listener was called.
     var clipboardData = e.clipboardData!;
     clipboardData.setData(type, value);
     if (type === TEXT_PLAIN && clipboardData.getData(type) !== value) {

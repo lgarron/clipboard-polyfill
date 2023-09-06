@@ -25,7 +25,7 @@ function allSettled(arr) {
     if (!(arr && typeof arr.length !== "undefined")) {
       return reject(
         new TypeError(
-          // rome-ignore lint/style/useTemplate: Vendored code.
+          // biome-ignore lint/style/useTemplate: Vendored code.
           typeof arr +
             " " +
             arr +
@@ -81,7 +81,7 @@ function noop() {}
 // Polyfill for Function.prototype.bind
 function bind(fn, thisArg) {
   return function () {
-    // rome-ignore lint/style/noArguments: Vendored code.
+    // biome-ignore lint/style/noArguments: Vendored code.
     fn.apply(thisArg, arguments);
   };
 }
@@ -109,6 +109,7 @@ export function PromisePolyfill(fn) {
 
 function handle(self, deferred) {
   while (self._state === 3) {
+    // biome-ignore lint/style/noParameterAssign: Inherited from library code.
     self = self._value;
   }
   if (self._state === 0) {

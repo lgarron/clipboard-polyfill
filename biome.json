@@ -11,18 +11,13 @@
     "rules": {
       "recommended": true,
       "suspicious": {
-        "noExplicitAny": "off",
-        "noRedeclare": "off",
-        "noAssignInExpressions": "off"
+        "noExplicitAny": "off"
       },
       "performance": {
         "noDelete": "off"
       },
       "style": {
-        "noVar": "off",
-        "noParameterAssign": "off",
-        "noNonNullAssertion": "off",
-        "noInferrableTypes": "off"
+        "noVar": "off"
       },
       "correctness": {
         "noInnerDeclarations": "off"

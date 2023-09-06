@@ -9,7 +9,7 @@ var promiseConstructorImpl: PromiseConstructor | undefined =
 export function setPromiseConstructor(
   newPromiseConstructorImpl: PromiseConstructor,
 ) {
-  return (promiseConstructorImpl = newPromiseConstructorImpl);
+  promiseConstructorImpl = newPromiseConstructorImpl;
 }
 
 export function getPromiseConstructor(): PromiseConstructor {
