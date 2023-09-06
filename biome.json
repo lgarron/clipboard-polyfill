@@ -1,0 +1,35 @@
+{
+  "organizeImports": {
+    "enabled": false
+  },
+  "formatter": {
+    "indentStyle": "space",
+    "indentSize": 2
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "recommended": true,
+      "suspicious": {
+        "noExplicitAny": "off",
+        "noRedeclare": "off",
+        "noAssignInExpressions": "off"
+      },
+      "performance": {
+        "noDelete": "off"
+      },
+      "style": {
+        "noVar": "off",
+        "noParameterAssign": "off",
+        "noNonNullAssertion": "off",
+        "noInferrableTypes": "off"
+      },
+      "correctness": {
+        "noInnerDeclarations": "off"
+      },
+      "complexity": {
+        "useLiteralKeys": "off"
+      }
+    }
+  }
+}
