@@ -1,4 +1,7 @@
 {
+  "organizeImports": {
+    "enabled": false
+  },
   "formatter": {
     "indentStyle": "space",
     "indentSize": 2
@@ -12,6 +15,15 @@
       },
       "performance": {
         "noDelete": "off"
+      },
+      "style": {
+        "noVar": "off"
+      },
+      "correctness": {
+        "noInnerDeclarations": "off"
+      },
+      "complexity": {
+        "useLiteralKeys": "off"
       }
     }
   }

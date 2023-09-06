@@ -16,6 +16,7 @@ function ClipboardItemPolyfillImpl(
 ): ClipboardItemInterface {
   var types = Object.keys(items);
   var _items: { [type: string]: Blob } = {};
+  // biome-ignore lint/suspicious/noRedeclare: This is a false positive from Biome. https://github.com/biomejs/biome/issues/175
   for (var type in items) {
     var item = items[type];
     if (typeof item === "string") {

@@ -45,7 +45,6 @@ export function write(data: ClipboardItemInterface[]): Promise<void> {
                 // We want to fall back to the other strategies in a situation like this.
                 // See https://github.com/w3c/clipboard-apis/issues/128 and https://github.com/w3c/clipboard-apis/issues/67
                 if (
-                  // rome-ignore lint/complexity/useSimplifiedLogicExpression: <explanation>
                   !hasItemWithType(data, TEXT_PLAIN) &&
                   !hasItemWithType(data, TEXT_HTML)
                 ) {

@@ -37,11 +37,17 @@ export function clipboardItemToGlobalClipboardItem(
   return promiseRecordMap(clipboardItem.types, function (type: string) {
     return clipboardItem.getType(type);
   }).then((items: Record<string, Blob>) => {
-    var options: ClipboardItemOptions = {};
-    if (clipboardItem.presentationStyle) {
-      options.presentationStyle = clipboardItem.presentationStyle;
-    }
-    return new originalWindowClipboardItem!(items, options);
+    return new Promise((resolve, reject) => {
+      var options: ClipboardItemOptions = {};
+      if (clipboardItem.presentationStyle) {
+        options.presentationStyle = clipboardItem.presentationStyle;
+      }
+      if (originalWindowClipboardItem) {
+        resolve(new originalWindowClipboardItem(items, options));
+      } else {
+        reject("window.ClipboardItem is not defined");
+      }
+    });
   });
 }
 
