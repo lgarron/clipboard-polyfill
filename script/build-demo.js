@@ -7,5 +7,6 @@ barelyServe({
   esbuildOptions: {
     minify: false,
     target: "es5",
+    splitting: false,
   },
 });
