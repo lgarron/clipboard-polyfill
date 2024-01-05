@@ -37,7 +37,7 @@ export function clipboardItemToGlobalClipboardItem(
   return promiseRecordMap(clipboardItem.types, function (type: string) {
     return clipboardItem.getType(type);
   }).then((items: Record<string, Blob>) => {
-    return new Promise((resolve, reject) => {
+    return new promiseConstructor((resolve, reject) => {
       var options: ClipboardItemOptions = {};
       if (clipboardItem.presentationStyle) {
         options.presentationStyle = clipboardItem.presentationStyle;
