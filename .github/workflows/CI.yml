@@ -12,10 +12,12 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 19.4
+      - uses: oven-sh/setup-bun@v1
       - run: npm install
       - run: make build
       - run: make build-demo
       - run: make lint
       - run: make test-no-es6-browser-globals
+      - run: make test-bun
       - run: make mock-test
       - run: make format

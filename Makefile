@@ -2,7 +2,7 @@
 # https://github.com/lgarron/Makefile-scripts
 
 # Note: the first command becomes the default `make` target.
-NPM_COMMANDS = build build-demo test mock-test test-no-es6-browser-globals dev lint format clean prepack
+NPM_COMMANDS = build build-demo test mock-test test-no-es6-browser-globals test-bun dev lint format clean prepack
 
 .PHONY: $(NPM_COMMANDS)
 $(NPM_COMMANDS):
