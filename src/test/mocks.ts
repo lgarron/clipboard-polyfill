@@ -2,8 +2,6 @@ import { mock, Mock } from "bun:test";
 import { setDebugLog } from "../clipboard-polyfill/debug";
 import { argv } from "bun";
 
-console.log(argv);
-
 const emptyFunction = () => {};
 const asyncEmptyFunction = async () => {};
 
