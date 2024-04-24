@@ -17,16 +17,20 @@ function stringToStringItem(s: string): StringItem {
 }
 
 export function writeText(s: string): Promise<void> {
-  return rejectThrownErrors(() => {
-    // Use the browser implementation if it exists.
-    if (originalNavigatorClipboardWriteText) {
-      debugLog("Using `navigator.clipboard.writeText()`.");
-      return originalNavigatorClipboardWriteText(s).catch(
-        writeTextStringFallback,
-      );
-    }
-    return promiseConstructor.resolve(writeTextStringFallback(s));
-  });
+  // Use the browser implementation if it exists.
+  if (originalNavigatorClipboardWriteText) {
+    debugLog("Using `navigator.clipboard.writeText()`.");
+    return originalNavigatorClipboardWriteText(s).catch((e) => {
+      writeTextStringFallbackPromise(s);
+    });
+  }
+  return writeTextStringFallbackPromise(s);
+}
+
+function writeTextStringFallbackPromise(s: string): Promise<void> {
+  return rejectThrownErrors(() =>
+    promiseConstructor.resolve(writeTextStringFallback(s)),
+  );
 }
 
 function writeTextStringFallback(s: string): void {
