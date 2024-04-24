@@ -1,6 +1,6 @@
 {
   "name": "clipboard-polyfill",
-  "version": "4.0.2",
+  "version": "4.1.0",
   "description": "A polyfill for the asynchronous clipboard API",
   "type": "module",
   "devDependencies": {
@@ -31,7 +31,11 @@
   "bugs": {
     "url": "https://github.com/lgarron/clipboard-polyfill/issues"
   },
-  "files": ["/dist", "/overwrite-globals", "README.md"],
+  "files": [
+    "/dist",
+    "/overwrite-globals",
+    "README.md"
+  ],
   "scripts": {
     "build": "node script/build.js && npx tsc --project tsconfig.json",
     "build-demo": "node script/build-demo.js",
