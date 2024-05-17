@@ -20,9 +20,9 @@ export function writeText(s: string): Promise<void> {
   // Use the browser implementation if it exists.
   if (originalNavigatorClipboardWriteText) {
     debugLog("Using `navigator.clipboard.writeText()`.");
-    return originalNavigatorClipboardWriteText(s).catch((e) => {
-      writeTextStringFallbackPromise(s);
-    });
+    return originalNavigatorClipboardWriteText(s).catch(() =>
+      writeTextStringFallbackPromise(s),
+    );
   }
   return writeTextStringFallbackPromise(s);
 }
