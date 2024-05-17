@@ -8,7 +8,7 @@ import { test, expect, mock } from "bun:test";
 const debugLogConsoleMock = createDebugLogConsoleMock();
 const { documentMock, eventMock } = createDocumentMock();
 
-test("writeText(…) execCommand fallback", async () => {
+test("writeText(…) execCommand fallback in a modern browser", async () => {
   const { writeText } = await import("./text");
 
   expect(() => writeText("hello execCommand fallback")).not.toThrow();

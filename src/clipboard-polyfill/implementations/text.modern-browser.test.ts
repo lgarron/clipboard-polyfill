@@ -9,7 +9,7 @@ const debugLogConsoleMock = createDebugLogConsoleMock();
 const writeTextMock = createWriteTextMock();
 const { documentMock } = createDocumentMock();
 
-test("writeText(…) success", async () => {
+test("writeText(…) success in a modern browser", async () => {
   const { writeText } = await import("./text");
 
   expect(() => writeText("hello modern browser")).not.toThrow();
