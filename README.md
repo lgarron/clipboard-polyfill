@@ -6,9 +6,9 @@
 
 Note: As of 2020, you can use `navigator.clipboard.writeText(...)` [in the stable versions of all major browsers](https://caniuse.com/mdn-api_clipboard_writetext). This library will only be useful to you if you want to:
 
-- target older browsers (see below for compatibility) for text copy,
-- copy `text/html` in Firefox,
-- use the `ClipboardItem` API in Firefox, or
+- target very old browsers (see below for compatibility) for text copy,
+- copy `text/html` in Firefox ≤126,
+- use the `ClipboardItem` API in Firefox ≤126, or
 - polyfill the API shape in a non-browser environment (e.g. in [`jsdom`](https://github.com/jsdom/jsdom/issues/1568)).
 
 See the [Compatibility section](#compatibility) below for more details.
