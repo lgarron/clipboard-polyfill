@@ -41,12 +41,12 @@
   "types": "./dist/types/entries/es6/clipboard-polyfill.es6.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/es6/clipboard-polyfill.es6.js",
-      "types": "./dist/types/entries/es6/clipboard-polyfill.es6.d.ts"
+      "types": "./dist/types/entries/es6/clipboard-polyfill.es6.d.ts",
+      "default": "./dist/es6/clipboard-polyfill.es6.js"
     },
     "./overwrite-globals": {
-      "import": "./dist/es5/overwrite-globals/clipboard-polyfill.overwrite-globals.es5.js",
-      "types": "./dist/types/entries/es5/overwrite-globals.d.ts"
+      "types": "./dist/types/entries/es5/overwrite-globals.d.ts",
+      "default": "./dist/es5/overwrite-globals/clipboard-polyfill.overwrite-globals.es5.js"
     }
   }
 }
