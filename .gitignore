@@ -1,6 +1,4 @@
 /.temp
 /dist
 /node_modules
-
-# Legacy
-/.rpt2_cache
+/package-lock.json

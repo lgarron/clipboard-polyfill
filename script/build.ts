@@ -22,19 +22,19 @@ async function buildES5(src, entriestem) {
   });
 }
 
-buildES5(
+await buildES5(
   "src/clipboard-polyfill/entries/es5/window-var.ts",
   "dist/es5/window-var/clipboard-polyfill.window-var",
 );
-buildES5(
+await buildES5(
   "src/clipboard-polyfill/entries/es5/window-var.promise.ts",
   "dist/es5/window-var/clipboard-polyfill.window-var.promise",
 );
-buildES5(
+await buildES5(
   "src/clipboard-polyfill/entries/es5/overwrite-globals.ts",
   "dist/es5/overwrite-globals/clipboard-polyfill.overwrite-globals",
 );
-buildES5(
+await buildES5(
   "src/clipboard-polyfill/entries/es5/overwrite-globals.promise.ts",
   "dist/es5/overwrite-globals/clipboard-polyfill.overwrite-globals.promise",
 );

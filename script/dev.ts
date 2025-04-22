@@ -1,6 +1,6 @@
 import { barelyServe } from "barely-a-dev-server";
 
-barelyServe({
+await barelyServe({
   entryRoot: "./src/demo",
   outDir: "./.temp/dev",
   esbuildOptions: {

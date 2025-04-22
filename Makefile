@@ -1,48 +1,60 @@
 
 .PHONY: build
-build:
-		node script/build.js
-		npx tsc --project tsconfig.json
+build: build-js build-types
+
+.PHONY: build-js
+build-js: setup
+	bun run script/build.ts
+
+.PHONY: build-types
+build-types: setup
+	bun x tsc --project tsconfig.json
+
+.PHONY: setup
+setup:
+	bun install --frozen-lockfile
 
 .PHONY: build-demo
-build-demo:
-		node script/build-demo.js
+build-demo: setup
+	bun run script/build-demo.ts
 
 .PHONY: test
 test: build build-demo lint test-bun test-no-es6-browser-globals
 
 .PHONY: mock-test
-mock-test:
-		./script/mock-test.bash
+mock-test: setup
+	./script/mock-test.bash
 
 .PHONY: test-no-es6-browser-globals
-test-no-es6-browser-globals:
-		node dist/es6/clipboard-polyfill.es6.js
+test-no-es6-browser-globals: build-js
+	bun run dist/es6/clipboard-polyfill.es6.js
 
 .PHONY: test-bun
-test-bun:
-		bun script/test-bun.ts
+test-bun: setup
+	bun script/test-bun.ts
 
 .PHONY: dev
-dev:
-		node script/dev.js
+dev: setup
+	bun run script/dev.ts
 
 .PHONY: lint
-lint:
-		npx @biomejs/biome check ./script ./src
+lint: setup
+	bun x @biomejs/biome check ./script ./src
 
 .PHONY: format
-format:
-		npx @biomejs/biome format --write ./script ./src
+format: setup
+	bun x @biomejs/biome format --write ./script ./src
 
 .PHONY: clean
 clean:
-		rm -rf ./dist
+	rm -rf ./dist
 
-.PHONY: prepack
-prepack:
-		npm run clean && npm run build
+.PHONY: reset
+reset: clean
+	rm -rf ./node_modules
 
+.PHONY: prepublishOnly
+prepublishOnly: clean build
 
 # This is here because `npm` has issues with a `script` field named `publish`.
 .PHONY: publish
@@ -52,6 +64,6 @@ publish:
 .PHONY: deploy
 deploy: build-demo
 	rsync -avz ./dist/demo/ garron.net:~/garron.net/code/clipboard-polyfill/ \
-		--exclude .git \
-		--exclude node_modules \
-		--exclude .rpt2_cache
+	--exclude .git \
+	--exclude node_modules \
+	--exclude .rpt2_cache

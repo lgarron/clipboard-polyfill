@@ -2,13 +2,26 @@
   "name": "clipboard-polyfill",
   "version": "4.1.1",
   "description": "A polyfill for the asynchronous clipboard API",
+  "author": "Lucas Garron <code@garron.net> (https://garron.net/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/lgarron/clipboard-polyfill/issues"
+  },
   "type": "module",
-  "devDependencies": {
-    "@biomejs/biome": "^1.1.0",
-    "@types/bun": "^1.1.0",
-    "barely-a-dev-server": "^0.7.1",
-    "esbuild": "^0.25.0",
-    "typescript": "^5.4.5"
+  "main": "./dist/es6/clipboard-polyfill.es6.js",
+  "module": "./dist/es6/clipboard-polyfill.es6.js",
+  "types": "./dist/types/entries/es6/clipboard-polyfill.es6.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/types/entries/es6/clipboard-polyfill.es6.d.ts",
+      "import": "./dist/es6/clipboard-polyfill.es6.js",
+      "default": "./dist/es6/clipboard-polyfill.es6.js"
+    },
+    "./overwrite-globals": {
+      "types": "./dist/types/entries/es5/overwrite-globals.d.ts",
+      "import": "./dist/es5/overwrite-globals/clipboard-polyfill.overwrite-globals.es5.js",
+      "default": "./dist/es5/overwrite-globals/clipboard-polyfill.overwrite-globals.es5.js"
+    }
   },
   "repository": {
     "type": "git",
@@ -26,29 +39,16 @@
     "getData",
     "polyfill"
   ],
-  "author": "Lucas Garron <code@garron.net> (https://garron.net/)",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/lgarron/clipboard-polyfill/issues"
+  "files": ["/dist", "/overwrite-globals", "README.md"],
+  "devDependencies": {
+    "@biomejs/biome": "^1.1.0",
+    "@cubing/deploy": "^0.1.8",
+    "@types/bun": "^1.1.0",
+    "barely-a-dev-server": "^0.7.1",
+    "esbuild": "^0.25.0",
+    "typescript": "^5.4.5"
   },
-  "files": [
-    "/dist",
-    "/overwrite-globals",
-    "README.md"
-  ],
-  "main": "./dist/es6/clipboard-polyfill.es6.js",
-  "module": "./dist/es6/clipboard-polyfill.es6.js",
-  "types": "./dist/types/entries/es6/clipboard-polyfill.es6.d.ts",
-  "exports": {
-    ".": {
-      "types": "./dist/types/entries/es6/clipboard-polyfill.es6.d.ts",
-      "import": "./dist/es6/clipboard-polyfill.es6.js",
-      "default": "./dist/es6/clipboard-polyfill.es6.js"
-    },
-    "./overwrite-globals": {
-      "types": "./dist/types/entries/es5/overwrite-globals.d.ts",
-      "import": "./dist/es5/overwrite-globals/clipboard-polyfill.overwrite-globals.es5.js",
-      "default": "./dist/es5/overwrite-globals/clipboard-polyfill.overwrite-globals.es5.js"
-    }
+  "scripts": {
+    "prepublishOnly": "make prepublishOnly"
   }
 }
