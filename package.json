@@ -41,7 +41,7 @@
   ],
   "files": ["/dist", "/overwrite-globals", "README.md"],
   "devDependencies": {
-    "@biomejs/biome": "^1.1.0",
+    "@biomejs/biome": "v1.9.4",
     "@cubing/deploy": "^0.1.8",
     "@types/bun": "^1.1.0",
     "barely-a-dev-server": "^0.7.1",
