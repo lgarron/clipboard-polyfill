@@ -54,5 +54,11 @@
   },
   "scripts": {
     "prepublishOnly": "make prepublishOnly"
+  },
+  "@cubing/deploy": {
+    "$schema": "./node_modules/@cubing/deploy/config-schema.json",
+    "https://garron.net/code/clipboard-polyfill": {
+      "fromLocalDir": "./dist/demo/"
+    }
   }
 }

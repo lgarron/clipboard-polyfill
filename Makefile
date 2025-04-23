@@ -63,7 +63,4 @@ publish:
 
 .PHONY: deploy
 deploy: build-demo
-	rsync -avz ./dist/demo/ garron.net:~/garron.net/code/clipboard-polyfill/ \
-	--exclude .git \
-	--exclude node_modules \
-	--exclude .rpt2_cache
+	bun x @cubing/deploy
