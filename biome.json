@@ -1,23 +1,19 @@
 {
-  "organizeImports": {
-    "enabled": false
+  "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
+  "files": {
+    "includes": ["**", "!.temp", "!dist"]
   },
   "formatter": {
     "indentStyle": "space",
-    "indentSize": 2
+    "indentWidth": 2
   },
   "linter": {
-    "enabled": true,
     "rules": {
-      "recommended": true,
       "suspicious": {
         "noExplicitAny": "off"
       },
       "performance": {
         "noDelete": "off"
-      },
-      "style": {
-        "noVar": "off"
       },
       "correctness": {
         "noInnerDeclarations": "off"

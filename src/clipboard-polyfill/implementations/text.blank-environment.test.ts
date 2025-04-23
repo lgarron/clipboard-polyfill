@@ -1,5 +1,5 @@
+import { expect, mock, test } from "bun:test";
 import { setDebugLog } from "../debug";
-import { test, expect, mock } from "bun:test";
 
 const consoleLogMock = mock(console.log);
 setDebugLog(consoleLogMock);

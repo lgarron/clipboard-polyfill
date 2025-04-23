@@ -1,14 +1,14 @@
-import { StringItem } from "../ClipboardItem/convert";
-import { TEXT_PLAIN } from "../ClipboardItem/data-types";
-import { debugLog } from "../debug";
 import {
   originalNavigatorClipboardReadText,
   originalNavigatorClipboardWriteText,
   promiseConstructor,
 } from "../builtins/builtin-globals";
+import type { StringItem } from "../ClipboardItem/convert";
+import { TEXT_PLAIN } from "../ClipboardItem/data-types";
+import { debugLog } from "../debug";
+import { rejectThrownErrors } from "../promise/promise-compat";
 import { readTextIE, seemToBeInIE } from "../strategies/internet-explorer";
 import { writeFallback } from "./write-fallback";
-import { rejectThrownErrors } from "../promise/promise-compat";
 
 function stringToStringItem(s: string): StringItem {
   var stringItem: StringItem = {};

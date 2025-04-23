@@ -27,7 +27,6 @@ export function shouldShowWarnings(): boolean {
 // - IE9 (can't bind console functions directly), and
 // - Edge Issue #14495220 (referencing `console` without F12 Developer Tools can cause an exception)
 function warnOrLog() {
-  // biome-ignore lint/style/noArguments: `arguments` is ES5-compatible.
   (console.warn || console.log).apply(console, arguments);
 }
 

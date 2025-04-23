@@ -39,11 +39,11 @@ dev: setup
 
 .PHONY: lint
 lint: setup
-	bun x @biomejs/biome check ./script ./src
+	bun x @biomejs/biome check
 
 .PHONY: format
 format: setup
-	bun x @biomejs/biome format --write ./script ./src
+	bun x @biomejs/biome format --write
 
 .PHONY: clean
 clean:

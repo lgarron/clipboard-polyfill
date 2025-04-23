@@ -1,14 +1,14 @@
-export { writeText, readText } from "../../implementations/text";
-export { write, read } from "../../implementations/blob";
-export { setDebugLog, suppressWarnings } from "../../debug";
 export { ClipboardItemPolyfill as ClipboardItem } from "../../ClipboardItem/ClipboardItemPolyfill";
 export type {
-  ClipboardItems,
-  ClipboardItemData,
   ClipboardItemConstructor,
+  ClipboardItemData,
   ClipboardItemDataType,
   ClipboardItemDelayedCallback,
   ClipboardItemInterface,
-  PresentationStyle,
   ClipboardItemOptions,
+  ClipboardItems,
+  PresentationStyle,
 } from "../../ClipboardItem/spec";
+export { setDebugLog, suppressWarnings } from "../../debug";
+export { read, write } from "../../implementations/blob";
+export { readText, writeText } from "../../implementations/text";

@@ -1,4 +1,4 @@
-import { StringItem } from "../ClipboardItem/convert";
+import type { StringItem } from "../ClipboardItem/convert";
 import { TEXT_PLAIN } from "../ClipboardItem/data-types";
 import { debugLog } from "../debug";
 import {
@@ -21,9 +21,8 @@ export function writeFallback(stringItem: StringItem): boolean {
     }
     if (writeTextIE(stringItem[TEXT_PLAIN])) {
       return true;
-    } else {
-      throw new Error("Copying failed, possibly because the user rejected it.");
     }
+    throw new Error("Copying failed, possibly because the user rejected it.");
   }
 
   if (execCopy(stringItem)) {

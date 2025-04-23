@@ -1,8 +1,7 @@
-import type { ClipboardWithoutEventTarget } from "../clipboard-polyfill/ClipboardItem/spec";
 import { equal } from "node:assert";
+import type { ClipboardWithoutEventTarget } from "../clipboard-polyfill/ClipboardItem/spec";
 
 const mockStringClipboard = new (class MockStringClipboard {
-  // biome-ignore lint/style/noInferrableTypes: Better to be as explicit as possible throughout this codebase.
   value: string = "";
   setText(s: string) {
     this.value = s;

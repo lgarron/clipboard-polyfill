@@ -1,4 +1,4 @@
-import { test, expect } from "bun:test";
+import { expect, test } from "bun:test";
 
 test("`bun test` must be run one file at a time", () => {
   console.error(

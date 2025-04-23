@@ -16,15 +16,14 @@
 // it probably saves code), and 2) just in case an unknown/future implementation
 // allows overwriting `navigator.clipboard` like this.
 
-import type { PromiseConstructor } from "../promise/es6-promise";
-import { originalWindow } from "./window-globalThis";
-
-import {
-  ClipboardItemConstructor,
+import type {
   ClipboardEventTarget,
+  ClipboardItemConstructor,
   ClipboardItems,
 } from "../ClipboardItem/spec";
+import type { PromiseConstructor } from "../promise/es6-promise";
 import { getPromiseConstructor } from "./promise-constructor";
+import { originalWindow } from "./window-globalThis";
 
 var originalNavigator =
   typeof navigator === "undefined" ? undefined : navigator;

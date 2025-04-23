@@ -1,16 +1,11 @@
 {
   "compilerOptions": {
-    "lib": [
-      "es5",
-      "dom"
-    ],
+    "lib": ["es5", "dom"],
     "strictNullChecks": true,
     "declaration": true,
     "emitDeclarationOnly": true,
     "outDir": "dist/types",
     "skipLibCheck": true
   },
-  "include": [
-    "./src/clipboard-polyfill/entries"
-  ]
+  "include": ["./src/clipboard-polyfill/entries"]
 }

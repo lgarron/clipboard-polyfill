@@ -3,9 +3,9 @@ import {
   ClipboardItemConstructor,
   ClipboardWithoutEventTarget,
 } from "../../ClipboardItem/spec";
+import { setDebugLog, suppressWarnings } from "../../debug";
 import { read, write } from "../../implementations/blob";
 import { readText, writeText } from "../../implementations/text";
-import { setDebugLog, suppressWarnings } from "../../debug";
 
 declare global {
   var clipboard: ClipboardWithoutEventTarget & {

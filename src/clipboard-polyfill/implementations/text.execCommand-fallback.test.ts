@@ -1,9 +1,8 @@
+import { expect, test } from "bun:test";
 import {
-  createDocumentMock,
   createDebugLogConsoleMock,
-  createWriteTextMock,
+  createDocumentMock,
 } from "../../test/mocks";
-import { test, expect, mock } from "bun:test";
 
 const debugLogConsoleMock = createDebugLogConsoleMock();
 const { documentMock, eventMock } = createDocumentMock();

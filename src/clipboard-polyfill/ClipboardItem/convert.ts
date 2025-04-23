@@ -1,11 +1,11 @@
-import { ClipboardItemPolyfill } from "./ClipboardItemPolyfill";
-import { TEXT_PLAIN } from "./data-types";
-import { ClipboardItemInterface, ClipboardItemOptions } from "./spec";
 import {
-  promiseConstructor,
   originalWindowClipboardItem,
+  promiseConstructor,
 } from "../builtins/builtin-globals";
 import { promiseRecordMap } from "../promise/promise-compat";
+import { ClipboardItemPolyfill } from "./ClipboardItemPolyfill";
+import { TEXT_PLAIN } from "./data-types";
+import type { ClipboardItemInterface, ClipboardItemOptions } from "./spec";
 
 export function stringToBlob(type: string, str: string): Blob {
   return new Blob([str], {
@@ -34,7 +34,7 @@ export function clipboardItemToGlobalClipboardItem(
   // Note that we use `Blob` instead of `ClipboardItemDataType`. This is because
   // Chrome 83 can only accept `Blob` (not `string`). The return value of
   // `getType()` is already `Blob` per the spec, so this is simple for us.
-  return promiseRecordMap(clipboardItem.types, function (type: string) {
+  return promiseRecordMap(clipboardItem.types, (type: string) => {
     return clipboardItem.getType(type);
   }).then((items: Record<string, Blob>) => {
     return new promiseConstructor((resolve, reject) => {
@@ -73,7 +73,7 @@ export interface StringItem {
 export function toStringItem(
   data: ClipboardItemInterface,
 ): Promise<StringItem> {
-  return promiseRecordMap(data.types, function (type: string) {
-    return getTypeAsString(data, type);
-  });
+  return promiseRecordMap(data.types, (type: string) =>
+    getTypeAsString(data, type),
+  );
 }

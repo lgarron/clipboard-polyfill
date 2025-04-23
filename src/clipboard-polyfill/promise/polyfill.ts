@@ -1,3 +1,5 @@
+// biome-ignore-all lint/complexity/useArrowFunction: Vendored code.
+
 import type { PromiseConstructor } from "./es6-promise";
 
 /**
@@ -20,12 +22,12 @@ function finallyConstructor(callback) {
 }
 
 function allSettled(arr) {
+  // biome-ignore lint/complexity/noUselessThisAlias: Vendored code.
   var P = this;
   return new P(function (resolve, reject) {
     if (!(arr && typeof arr.length !== "undefined")) {
       return reject(
         new TypeError(
-          // biome-ignore lint/style/useTemplate: Vendored code.
           typeof arr +
             " " +
             arr +
@@ -81,7 +83,6 @@ function noop() {}
 // Polyfill for Function.prototype.bind
 function bind(fn, thisArg) {
   return function () {
-    // biome-ignore lint/style/noArguments: Vendored code.
     fn.apply(thisArg, arguments);
   };
 }
@@ -109,7 +110,6 @@ export function PromisePolyfill(fn) {
 
 function handle(self, deferred) {
   while (self._state === 3) {
-    // biome-ignore lint/style/noParameterAssign: Inherited from library code.
     self = self._value;
   }
   if (self._state === 0) {
@@ -123,6 +123,7 @@ function handle(self, deferred) {
       (self._state === 1 ? resolve : reject)(deferred.promise, self._value);
       return;
     }
+    // biome-ignore lint/suspicious/noImplicitAnyLet: Vendored code.
     var ret;
     try {
       ret = cb(self._value);
@@ -224,6 +225,7 @@ PromisePolyfill.prototype["catch"] = function (onRejected) {
   return this.then(null, onRejected);
 };
 
+// biome-ignore lint/suspicious/noThenProperty: This is specifically implementing the `Promise` API.
 PromisePolyfill.prototype.then = function (onFulfilled, onRejected) {
   // @ts-ignore
   var prom = new this.constructor(noop);
@@ -331,4 +333,5 @@ export var PromisePolyfillConstructor: PromiseConstructor =
 
 // Set the Promise polyfill before getting globals.
 import { setPromiseConstructor } from "../builtins/promise-constructor";
+
 setPromiseConstructor(PromisePolyfillConstructor);

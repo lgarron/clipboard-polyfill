@@ -1,6 +1,5 @@
-import { mock, Mock } from "bun:test";
+import { Mock, mock } from "bun:test";
 import { setDebugLog } from "../clipboard-polyfill/debug";
-import { argv } from "bun";
 
 const emptyFunction = () => {};
 const asyncEmptyFunction = async () => {};

@@ -4,11 +4,11 @@ body {
   font-family: "Roboto", Helvetica, Tahoma, sans-serif;
 }
 
-.header{
+.header {
   font-size: 20px;
   color: rgb(66, 66, 66);
   letter-spacing: 0.02em;
-  display:flex;
+  display: flex;
   align-items: center;
   height: 64px;
   padding: 0 16px 0 40px;
@@ -19,7 +19,7 @@ body {
 .ribbon {
   width: 100%;
   height: 40vh;
-  background-color: #3F51B5;
+  background-color: #3f51b5;
 }
 
 .content {
@@ -30,7 +30,8 @@ body {
   margin: calc(-35vh + 16px) auto 80px;
   max-width: 939px;
   width: calc(66.66667% - 138px);
-  box-shadow:0 4px 5px 0 rgba(0,0,0,.14),0 1px 10px 0 rgba(0,0,0,.12),0 2px 4px -1px rgba(0,0,0,.2);
+  box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12),
+    0 2px 4px -1px rgba(0, 0, 0, 0.2);
   border-radius: 2px;
 
   line-height: 24px;
@@ -38,7 +39,7 @@ body {
 
 @media (max-width: 839px) {
   .content {
-    width:calc(100% - 88px);
+    width: calc(100% - 88px);
     padding: 40px 28px;
   }
 
@@ -47,8 +48,8 @@ body {
   }
 }
 
-.crumbs{
-  color:#9e9e9e;
+.crumbs {
+  color: #9e9e9e;
   line-height: 20px;
 }
 

@@ -1,19 +1,22 @@
-import { hasItemWithType } from "../ClipboardItem/check";
 import {
-  clipboardItemToGlobalClipboardItem,
-  toStringItem,
-  textToClipboardItem,
-  StringItem,
-} from "../ClipboardItem/convert";
-import { TEXT_HTML, TEXT_PLAIN } from "../ClipboardItem/data-types";
-import { ClipboardItemInterface, ClipboardItems } from "../ClipboardItem/spec";
-import { debugLog, shouldShowWarnings } from "../debug";
-import {
-  promiseConstructor,
   originalNavigatorClipboardRead,
   originalNavigatorClipboardWrite,
   originalWindowClipboardItem,
+  promiseConstructor,
 } from "../builtins/builtin-globals";
+import { hasItemWithType } from "../ClipboardItem/check";
+import {
+  clipboardItemToGlobalClipboardItem,
+  type StringItem,
+  textToClipboardItem,
+  toStringItem,
+} from "../ClipboardItem/convert";
+import { TEXT_HTML, TEXT_PLAIN } from "../ClipboardItem/data-types";
+import type {
+  ClipboardItemInterface,
+  ClipboardItems,
+} from "../ClipboardItem/spec";
+import { debugLog, shouldShowWarnings } from "../debug";
 import {
   falsePromise,
   rejectThrownErrors,

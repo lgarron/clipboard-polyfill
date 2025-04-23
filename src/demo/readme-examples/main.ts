@@ -11,7 +11,7 @@ function handler() {
   );
 }
 
-window.addEventListener("DOMContentLoaded", function () {
+window.addEventListener("DOMContentLoaded", () => {
   var button = document.body.appendChild(document.createElement("button"));
   button.textContent = "Copy";
   button.addEventListener("click", handler);
