@@ -13,7 +13,7 @@ jobs:
         with:
           node-version: 19.4
       - uses: oven-sh/setup-bun@v1
-      - run: npm install
+      - run: make setup
       - run: make build
       - run: make build-demo
 
@@ -27,7 +27,7 @@ jobs:
         with:
           node-version: 19.4
       - uses: oven-sh/setup-bun@v1
-      - run: npm install
+      - run: make setup
       - run: make lint
       - run: make test-no-es6-browser-globals
       - run: make test-bun
