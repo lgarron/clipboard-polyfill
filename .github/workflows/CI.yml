@@ -16,6 +16,18 @@ jobs:
       - run: npm install
       - run: make build
       - run: make build-demo
+
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js 19.4
+        uses: actions/setup-node@v4
+        with:
+          node-version: 19.4
+      - uses: oven-sh/setup-bun@v1
+      - run: npm install
       - run: make lint
       - run: make test-no-es6-browser-globals
       - run: make test-bun
