@@ -1,4 +1,4 @@
-import { Mock, mock } from "bun:test";
+import { type Mock, mock } from "bun:test";
 import { setDebugLog } from "../clipboard-polyfill/debug";
 
 const emptyFunction = () => {};

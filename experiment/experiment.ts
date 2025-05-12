@@ -1,16 +1,19 @@
+/** biome-ignore-all lint/style/noNonNullAssertion: We assume that the `.clipboardData` field is present. */
+
 // https://developer.mozilla.org/en-US/docs/Web/API/DataTransfer/setData
+// biome-ignore lint/correctness/noUnusedVariables: TODO
 interface DataTransfer {
   setData: (key: string, value: any) => void;
   getData: (key: string) => any;
 }
 
-interface IEWindowClipbardData {
+interface IEWindowClipboardData {
   setData: (key: string, value: string) => void;
   getData: (key: string) => string;
 }
 
 interface IEWindow extends Window {
-  clipboardData: IEWindowClipbardData;
+  clipboardData: IEWindowClipboardData;
 }
 
 export class Test {
@@ -48,7 +51,7 @@ export class Test {
     console.log(JSON.stringify(this.results, null, "  "));
   }
   setup() {}
-  copyListener(e: ClipboardEvent) {}
+  copyListener(_e: ClipboardEvent) {}
   teardown() {}
   select(e: Element) {
     var sel = document.getSelection()!;

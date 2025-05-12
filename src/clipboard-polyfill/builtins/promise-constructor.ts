@@ -1,4 +1,4 @@
-import { PromiseConstructor } from "../promise/es6-promise";
+import type { PromiseConstructor } from "../promise/es6-promise";
 import { originalGlobalThis, originalWindow } from "./window-globalThis";
 
 var promiseConstructorImpl: PromiseConstructor | undefined =

@@ -1,4 +1,4 @@
-import { StringItem } from "../ClipboardItem/convert";
+import type { StringItem } from "../ClipboardItem/convert";
 import { TEXT_PLAIN } from "../ClipboardItem/data-types";
 import { debugLog } from "../debug";
 
@@ -19,6 +19,7 @@ function copyListener(
   for (var type in data) {
     var value = data[type];
 
+    // biome-ignore lint/style/noNonNullAssertion: We assume this field is present.
     var clipboardData = e.clipboardData!;
     clipboardData.setData(type, value);
     if (type === TEXT_PLAIN && clipboardData.getData(type) !== value) {

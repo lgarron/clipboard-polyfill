@@ -1,7 +1,7 @@
 /******** Debug Logging ********/
 
 // tslint:disable-next-line: no-empty
-var debugLogImpl = (s: string) => {};
+var debugLogImpl = (_s: string) => {};
 
 export function debugLog(s: string) {
   debugLogImpl(s);
@@ -27,6 +27,7 @@ export function shouldShowWarnings(): boolean {
 // - IE9 (can't bind console functions directly), and
 // - Edge Issue #14495220 (referencing `console` without F12 Developer Tools can cause an exception)
 function warnOrLog() {
+  // biome-ignore lint/style/noArguments: Intentional old-fashioned code.
   (console.warn || console.log).apply(console, arguments);
 }
 

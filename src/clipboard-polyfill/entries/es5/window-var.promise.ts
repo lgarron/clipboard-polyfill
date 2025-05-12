@@ -1,7 +1,7 @@
 // Set the Promise polyfill before globals.
 import "../../promise/set-promise-polyfill-if-needed";
 
-import { PromiseConstructor } from "../../promise/es6-promise";
+import type { PromiseConstructor } from "../../promise/es6-promise";
 import { PromisePolyfillConstructor } from "../../promise/polyfill";
 
 import "./window-var";

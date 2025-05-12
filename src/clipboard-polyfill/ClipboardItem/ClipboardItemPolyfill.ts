@@ -1,6 +1,6 @@
 import { promiseConstructor } from "../builtins/builtin-globals";
 import { stringToBlob } from "./convert";
-import {
+import type {
   ClipboardItemConstructor,
   ClipboardItemDataType,
   ClipboardItemInterface,

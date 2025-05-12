@@ -1,4 +1,4 @@
-import { ClipboardItemInterface } from "./spec";
+import type { ClipboardItemInterface } from "./spec";
 
 export function hasItemWithType(
   clipboardItems: ClipboardItemInterface[],

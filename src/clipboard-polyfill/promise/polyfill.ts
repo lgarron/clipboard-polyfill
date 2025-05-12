@@ -83,6 +83,7 @@ function noop() {}
 // Polyfill for Function.prototype.bind
 function bind(fn, thisArg) {
   return function () {
+    // biome-ignore lint/style/noArguments: Vendored code.
     fn.apply(thisArg, arguments);
   };
 }
@@ -293,7 +294,7 @@ PromisePolyfill.resolve = function (value) {
 };
 
 PromisePolyfill.reject = function (value) {
-  return new PromisePolyfill(function (resolve, reject) {
+  return new PromisePolyfill(function (_resolve, reject) {
     reject(value);
   });
 };

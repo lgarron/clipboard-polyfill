@@ -1,5 +1,5 @@
 import { ClipboardItemPolyfill } from "../../ClipboardItem/ClipboardItemPolyfill";
-import {
+import type {
   ClipboardItemConstructor,
   ClipboardWithoutEventTarget,
 } from "../../ClipboardItem/spec";

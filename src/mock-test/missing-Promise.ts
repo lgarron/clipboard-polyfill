@@ -19,6 +19,7 @@ import { equal } from "node:assert";
 
 // TODO: Use `match` once `node` v19.4 is available from Homebrew: https://nodejs.org/api/assert.html#assertmatchstring-regexp-messageg
 equal(
+  // biome-ignore lint/style/noNonNullAssertion: Error must be caught.
   !!caughtError!.message.match(/No `Promise` implementation available/),
   true,
 );
