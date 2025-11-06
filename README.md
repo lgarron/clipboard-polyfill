@@ -168,7 +168,7 @@ mkdir temp && cd temp && npm install clipboard-polyfill esbuild
 # Minify the ES6 build:
 echo 'export * from "clipboard-polyfill";' | npx esbuild --format=esm --target=es6 --bundle --minify
 
-# Include just the `writeText()` export and minify:
+# Include just the `writeText(…)` export and minify:
 echo 'export { writeText } from "clipboard-polyfill";' | npx esbuild --format=esm --target=es6 --bundle --minify
 
 # Minify an ES5 build:
