@@ -172,7 +172,7 @@ echo 'export * from "clipboard-polyfill";' | npx esbuild --format=esm --target=e
 echo 'export { writeText } from "clipboard-polyfill";' | npx esbuild --format=esm --target=es6 --bundle --minify
 
 # Minify an ES5 build:
-cat node_modules/clipboard-polyfill/dist/es5/window-var/clipboard-polyfill.window-var.promise.es5.js | npx esbuild --format=esm --target=es5 --bundle --minify
+npx esbuild --format=esm --target=es5 --bundle --minify node_modules/clipboard-polyfill/dist/es5/window-var/clipboard-polyfill.window-var.promise.es5.js
 
 # Get a CommonJS build:
 echo 'export * from "clipboard-polyfill";' | npx esbuild --format=cjs --target=es6 --bundle
